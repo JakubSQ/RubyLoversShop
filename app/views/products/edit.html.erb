@@ -1,0 +1,6 @@
+<h3><%= @product.name %></h3>
+<%= form_with model: @product, local: true do |f| %>
+<%= f.label :cover_image %>
+<%= f.file_field :cover_photo %>
+<%= f.submit %>
+<% end %>
