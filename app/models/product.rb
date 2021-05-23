@@ -1,4 +1,4 @@
 class Product < ApplicationRecord
   has_one_attached :cover_photo
-  belongs_to :category
+  validates :name, :description, :cover_photo, presence: true
 end
