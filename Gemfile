@@ -15,6 +15,8 @@ gem 'image_processing', '~> 1.2'
 gem 'graphicsmagick'
 gem 'imagemagick-binaries', '~> 6.8', '>= 6.8.7.5.1'
 gem 'rmagick'
+gem 'ransack'
+
 
 group :development, :test do
   gem 'pry-rails'
