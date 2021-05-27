@@ -1,15 +1,27 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe PagesController, :type => :controller do
-  describe "GET home" do
+require 'rails_helper'
+
+RSpec.describe PagesController, type: :controller do
+  describe 'GET home' do
     let!(:product) { create(:product) }
-    render_views
 
-    it "renders product" do
-      get :home
-      expect(response.body).to include("Coat")
-      expect(response.body).to include("cotton coat")
-      expect(response.body).to include("coat.jpg")
-    end
+    render_views
+      describe 'GET home' do
+        it 'renders product name in body' do
+          get :home
+          expect(response.body).to include('Coat')
+        end
+
+        it 'renders product description in body' do
+          get :home
+          expect(response.body).to include('cotton coat')
+        end
+
+        it 'renders product photo in body' do
+          get :home
+          expect(response.body).to include('coat.jpg')
+        end
+      end
   end
 end
