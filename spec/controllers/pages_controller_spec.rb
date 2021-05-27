@@ -7,21 +7,20 @@ RSpec.describe PagesController, type: :controller do
     let!(:product) { create(:product) }
 
     render_views
-      describe 'GET home' do
-        it 'renders product name in body' do
-          get :home
-          expect(response.body).to include('Coat')
-        end
 
-        it 'renders product description in body' do
-          get :home
-          expect(response.body).to include('cotton coat')
-        end
+    it 'renders product name in body' do
+      get :home
+      expect(response.body).to include('Coat')
+    end
 
-        it 'renders product photo in body' do
-          get :home
-          expect(response.body).to include('coat.jpg')
-        end
-      end
+    it 'renders product description in body' do
+      get :home
+      expect(response.body).to include('cotton coat')
+    end
+
+    it 'renders product photo in body' do
+      get :home
+      expect(response.body).to include('coat.jpg')
+    end
   end
 end
