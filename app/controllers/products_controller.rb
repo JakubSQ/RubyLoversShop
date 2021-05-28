@@ -1,7 +1,6 @@
 class ProductsController < ApplicationController
 
   def index
-    binding.pry
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category)
     @categories = Category.all
