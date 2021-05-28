@@ -1,5 +1,6 @@
-class ProductsController < ApplicationController
+# frozen_string_literal: true
 
+class ProductsController < ApplicationController
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category)
@@ -16,11 +17,12 @@ class ProductsController < ApplicationController
     if @product.update(product_params)
       redirect_to root_path
     else
-      render "edit"
+      render 'edit'
     end
   end
 
   private
+
   def product_params
     params.require(:product).permit(:name, :description, :cover_photo, :category_id)
   end

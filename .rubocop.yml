@@ -25,3 +25,8 @@ Style/Documentation:
   Enabled: false
 Style/GuardClause:
   Enabled: false
+RSpec/LetSetup:
+  Enabled: false
+RSpec/DescribeClass:
+  Exclude:
+    - spec/features/user_sees_only_one_category_spec.rb
