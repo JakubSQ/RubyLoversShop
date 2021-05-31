@@ -25,3 +25,5 @@ Style/Documentation:
   Enabled: false
 Style/GuardClause:
   Enabled: false
+RSpec/LetSetup:
+  Enabled: false
