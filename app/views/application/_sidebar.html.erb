@@ -13,9 +13,3 @@
   <%= link_to category.title.capitalize, root_path(q: { category_title_eq: category.title, commit: "Search"}), class: "list-group-item" %>
   <% end %>
 </div>
-<h3 class="my-4">Brands</h3>
-<div class="list-group">
-  <% @brands.each do |brand| %>
-  <%= link_to brand.title.capitalize, root_path(q: { brand_title_eq: brand.title, commit: "Search"}), class: "list-group-item" %>
-  <% end %>
-</div>
