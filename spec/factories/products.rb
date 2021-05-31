@@ -5,7 +5,10 @@ FactoryBot.define do
     name { 'Coat' }
     description { 'cotton coat' }
     cover_photo { Rack::Test::UploadedFile.new(Pathname.new(Rails.root.join('spec/fixtures/coat.jpg'))) }
+<<<<<<< HEAD
 
     category
+=======
+>>>>>>> master
   end
 end
