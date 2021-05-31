@@ -2,7 +2,9 @@
 
 class PagesController < ApplicationController
   def home
-    @products = Product.all
+    @q = Product.ransack(params[:q])
+    @products = @q.result.includes(:category, :brand)
     @categories = Category.all
+    @brands = Brand.all
   end
 end

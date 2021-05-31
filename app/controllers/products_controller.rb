@@ -3,8 +3,9 @@
 class ProductsController < ApplicationController
   def index
     @q = Product.ransack(params[:q])
-    @products = @q.result.includes(:category)
+    @products = @q.result.includes(:category, :brand)
     @categories = Category.all
+    @brands = Brand.all
   end
 
   def edit
@@ -24,6 +25,6 @@ class ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :description, :cover_photo, :category_id)
+    params.require(:product).permit(:name, :description, :cover_photo, :category_id, :brand_id)
   end
 end
