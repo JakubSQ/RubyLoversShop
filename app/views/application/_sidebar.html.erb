@@ -1,6 +1,15 @@
+<%= search_form_for @q do |f| %>
+<div class="list-group">
+  <%= f.label :category_title_eq, "Category" %>
+  <%= f.select :category_title_eq, @categories_list_presenter, prompt: "Select category", class: "list-group-item" %>
+  <%= f.label :brand_title_eq, "Brand", class: "mt-1"  %>
+  <%= f.select :brand_title_eq, @brands_list_presenter, prompt: "Select brand", class: "list-group-item" %>
+</div>
+  <%= f.submit class: "mt-2" %>
+<% end %>
 <h3 class="my-4">Categories</h3>
 <div class="list-group">
   <% @categories.each do |category| %>
-  <%= link_to category.title.capitalize, products_path(q: { category_title_eq: category.title, commit: "Search"}), class: "list-group-item" %>
+  <%= link_to category.title.capitalize, root_path(q: { category_title_eq: category.title, commit: "Search"}), class: "list-group-item" %>
   <% end %>
 </div>

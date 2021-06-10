@@ -7,5 +7,6 @@ FactoryBot.define do
     cover_photo { Rack::Test::UploadedFile.new(Pathname.new(Rails.root.join('spec/fixtures/coat.jpg'))) }
 
     category
+    brand
   end
 end
