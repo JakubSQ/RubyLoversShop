@@ -31,7 +31,10 @@ RSpec/DescribeClass:
   Exclude:
     - spec/features/user_sees_only_one_category_spec.rb
     - spec/features/user_sees_only_one_category_and_one_brand_spec.rb
+    - spec/features/creating_account_spec.rb
 RSpec/MultipleMemoizedHelpers:
   Max: 7
 Metrics/BlockLength:
   IgnoredMethods: ['describe']
+RSpec/ExampleLength:
+  Max: 7
