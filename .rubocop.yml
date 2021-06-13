@@ -32,6 +32,7 @@ RSpec/DescribeClass:
     - spec/features/user_sees_only_one_category_spec.rb
     - spec/features/user_sees_only_one_category_and_one_brand_spec.rb
     - spec/features/creating_account_spec.rb
+    - spec/features/log_in_spec.rb
 RSpec/MultipleMemoizedHelpers:
   Max: 7
 Metrics/BlockLength:
