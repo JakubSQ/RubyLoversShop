@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Restoring password' do
-  let!(:user) { build(:user) }
+  let!(:user) { create(:user) }
 
   describe 'User restore password' do
     it 'with correct email address' do

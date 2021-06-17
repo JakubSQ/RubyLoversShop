@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Category filter' do
-  let!(:product1) { build(:product) }
-  let!(:product2) { build(:product, name: 'trousers', category: category1) }
-  let!(:product3) { build(:product, name: 'hat', category: category2) }
-  let!(:category1) { build(:category, title: 'men') }
-  let!(:category2) { build(:category, title: 'unisex') }
+  let!(:product1) { create(:product) }
+  let!(:product2) { create(:product, name: 'trousers', category: category1) }
+  let!(:product3) { create(:product, name: 'hat', category: category2) }
+  let!(:category1) { create(:category, title: 'men') }
+  let!(:category2) { create(:category, title: 'unisex') }
 
   describe 'User sees only one category' do
     it 'page includes coat' do

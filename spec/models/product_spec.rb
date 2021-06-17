@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
-  let(:product) { build(:product) }
+  let(:product) { create(:product) }
 
   it 'name should be present' do
     product.name = nil
