@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Log out form visible on view' do
   describe 'User log in' do
+    let!(:user) { build(:user) }
     it 'with correct credentials' do
       visit root_path
       click_on 'Log in'
