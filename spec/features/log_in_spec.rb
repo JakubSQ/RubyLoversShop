@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Logging in' do
-  let!(:user1) { create(:user) }
-
   describe 'User log in' do
     it 'with correct credentials' do
       visit root_path
