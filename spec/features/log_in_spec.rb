@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Logging in' do
   describe 'User log in' do
     let!(:user) { build(:user) }
-    
+
     it 'with correct credentials' do
       visit root_path
       click_on 'Log in'
