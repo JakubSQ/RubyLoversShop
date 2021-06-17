@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe PagesController, type: :controller do
   describe 'GET home' do
-    let!(:product) { create(:product) }
+    let!(:product) { build(:product) }
 
     render_views
 

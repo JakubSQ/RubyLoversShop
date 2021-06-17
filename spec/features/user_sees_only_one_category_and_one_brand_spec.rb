@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Filter' do
-  let!(:product1) { create(:product) }
-  let!(:product2) { create(:product, name: 'trousers', category: category1, brand: brand1) }
-  let!(:product3) { create(:product, name: 'hat', category: category2, brand: brand2) }
-  let!(:category1) { create(:category, title: 'men') }
-  let!(:category2) { create(:category, title: 'women') }
-  let!(:brand1) { create(:brand, title: 'nike') }
-  let!(:brand2) { create(:brand, title: 'zara') }
+  let!(:product1) { build(:product) }
+  let!(:product2) { build(:product, name: 'trousers', category: category1, brand: brand1) }
+  let!(:product3) { build(:product, name: 'hat', category: category2, brand: brand2) }
+  let!(:category1) { build(:category, title: 'men') }
+  let!(:category2) { build(:category, title: 'women') }
+  let!(:brand1) { build(:brand, title: 'nike') }
+  let!(:brand2) { build(:brand, title: 'zara') }
 
   describe 'User sees product with specific category and brand' do
     it 'page includes coat' do
