@@ -10,7 +10,7 @@ RSpec.describe 'Restoring password' do
       visit root_path
       click_on 'Log in'
       click_on 'Forgot your password?'
-      fill_in 'user_email', with: 'someemail@email.com'
+      fill_in 'user_email', with: user.email
       click_on 'Send me reset password instructions'
       expect(page).to have_content('You will receive an email')
     end
@@ -19,7 +19,7 @@ RSpec.describe 'Restoring password' do
       visit root_path
       click_on 'Log in'
       click_on 'Forgot your password?'
-      fill_in 'user_email', with: 'someemail1@email.com'
+      fill_in 'user_email', with: "johndoe@example.com"
       click_on 'Send me reset password instructions'
       expect(page).to have_content('Email not found')
     end
