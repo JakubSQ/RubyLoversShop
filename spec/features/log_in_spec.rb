@@ -18,7 +18,7 @@ RSpec.describe 'Logging in' do
     it 'with incorrect email' do
       visit root_path
       click_on 'Log in'
-      fill_in 'user_email', with: "johndoe@example.com"
+      fill_in 'user_email', with: 'johndoe@example.com'
       fill_in 'user_password', with: 'password'
       click_button 'Log in'
       expect(page).not_to have_content('Signed in successfully.')
