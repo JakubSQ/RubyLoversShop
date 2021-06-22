@@ -3,14 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe 'Restoring password' do
-  let!(:user1) { create(:user) }
+  let!(:user) { create(:user) }
 
   describe 'User restore password' do
     it 'with correct email address' do
       visit root_path
       click_on 'Log in'
       click_on 'Forgot your password?'
-      fill_in 'user_email', with: 'someemail@email.com'
+      fill_in 'user_email', with: user.email
       click_on 'Send me reset password instructions'
       expect(page).to have_content('You will receive an email')
     end
@@ -19,7 +19,7 @@ RSpec.describe 'Restoring password' do
       visit root_path
       click_on 'Log in'
       click_on 'Forgot your password?'
-      fill_in 'user_email', with: 'someemail1@email.com'
+      fill_in 'user_email', with: 'johndoe@example.com'
       click_on 'Send me reset password instructions'
       expect(page).to have_content('Email not found')
     end

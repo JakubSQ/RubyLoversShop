@@ -29,8 +29,6 @@ RSpec/LetSetup:
   Enabled: false
 RSpec/DescribeClass:
   Enabled: false
-
-
 RSpec/MultipleMemoizedHelpers:
   Max: 7
 Metrics/BlockLength:
