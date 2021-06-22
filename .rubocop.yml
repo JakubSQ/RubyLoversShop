@@ -19,6 +19,8 @@ Metrics/MethodLength:
   Enabled: false
 Style/BlockComments:
   Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
 Bundler/OrderedGems:
   Enabled: false
 Style/Documentation:
