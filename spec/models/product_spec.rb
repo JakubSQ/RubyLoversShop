@@ -10,7 +10,7 @@ RSpec.describe Product, type: :model do
     expect(product).not_to be_valid
   end
 
-  it 'description should be present' do
+  it 'prize should be present' do
     product.prize = nil
     expect(product).not_to be_valid
   end
