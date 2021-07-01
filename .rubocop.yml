@@ -36,4 +36,8 @@ RSpec/MultipleMemoizedHelpers:
 Metrics/BlockLength:
   IgnoredMethods: ['describe']
 RSpec/ExampleLength:
-  Max: 7
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ContextWording:
+  Enabled: false

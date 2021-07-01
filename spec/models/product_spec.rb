@@ -11,12 +11,7 @@ RSpec.describe Product, type: :model do
   end
 
   it 'description should be present' do
-    product.description = nil
-    expect(product).not_to be_valid
-  end
-
-  it 'photo should be present' do
-    product.cover_photo = nil
+    product.prize = nil
     expect(product).not_to be_valid
   end
 end

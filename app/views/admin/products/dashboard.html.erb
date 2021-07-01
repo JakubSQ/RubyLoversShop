@@ -1,16 +1,39 @@
-<div class="row">
-  <% @products.each do |product| %>
-  <div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100">
-      <%= image_tag product.cover_photo, :size => '250x260' %>
-      <div class="card-body">
-        <h4 class="card-title">
-          <a href="#"><%= product.name %></a>
-        </h4>
-        <h5><%= product.prize %>$</h5>
-        <p class="card-text"><%= product.description %></p>
-      </div>
-    </div>
-  </div>
-  <% end %>
-</div>
+
+<%= link_to 'Add new product', new_admin_product_path, class: "btn btn-outline-success mb-3" %>
+<tbody>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Prize</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+
+
+      <% @products.each.with_index(1) do |product, index| %>
+      <tr>
+        <td><%= index %></td>
+        <td><% if product.cover_photo.attached? %>
+              <%= image_tag product.cover_photo, :size => '100x100' %></td>
+            <% else %>
+              <a href="#"><img class="card-img-top product-card-placeholder-img" src="http://placehold.it/700x400" alt=""></a>
+            <% end %>
+        <td><%= product.name %></td>
+        <td><%= product.prize %>$</td>
+        <td><%= product.description.truncate(10) %></td>
+        <td><%= product.category.title %></td>
+        <td><%= product.brand.title %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_product_path(product), class: "btn btn-outline-primary btn-sm" %>
+          <%= link_to 'Delete', admin_product_path(product), method: :delete, class: "btn btn-outline-danger btn-sm" %>
+        </td>
+      </tr>
+      <% end %>
+  </table>
+</tbody>
