@@ -18,9 +18,9 @@ RSpec.describe PagesController, type: :controller do
       expect(response.body).to include(product.description)
     end
 
-    it 'renders product prize in body' do
+    it 'renders product photo in body' do
       get :home
-      expect(response.body).to include(product.prize)
+      expect(response.body).to include('coat.jpg')
     end
   end
 end
