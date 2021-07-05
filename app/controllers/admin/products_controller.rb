@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Admin::ProductsController < Admin::BaseController
-  before_action :disable_sidebar, only: %i[new edit create update]
-
   def dashboard
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category, :brand)
@@ -50,10 +48,6 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   private
-
-  def disable_sidebar
-    @disable_sidebar = true
-  end
 
   def product_params
     params.require(:product).permit(:name, :prize, :description, :cover_photo, :category_id, :brand_id,

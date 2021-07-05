@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminCRUD', type: :request do
+RSpec.describe '/admin/products', type: :request do
   describe 'Admin CRUD actions' do
     let!(:admin) { create :admin }
     let!(:category) { create :category }
