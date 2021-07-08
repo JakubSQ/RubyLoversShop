@@ -22,10 +22,10 @@
       <tr>
         <td><%= index %></td>
         <td><% if product.cover_photo.attached? %>
-              <%= image_tag product.cover_photo, :size => '100x100' %>
-            <% else %>
-              <a href="#"><img class="card-img-top product-card-placeholder-img" src="http://placehold.it/700x400" alt=""></a>
-            <% end %></td>
+            <%= image_tag product.cover_photo, :size => '100x100' %>
+          <% else %>
+            <a href="#"><img class="card-img-top product-card-placeholder-img" src="http://placehold.it/700x400" alt=""></a>
+          <% end %></td>
         <td><%= product.name %></td>
         <td><%= product.prize %>$</td>
         <td><%= product.description.truncate(10) %></td>
