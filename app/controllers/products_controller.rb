@@ -4,6 +4,7 @@ class ProductsController < ApplicationController
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category, :brand)
+    @categories = Category.all
     @categories_list_presenter = CategoryPresenter.list
     @brands_list_presenter = BrandPresenter.list
   end
