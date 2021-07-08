@@ -1,0 +1,9 @@
+<%= search_form_for(@q, url: admin_root_path, method: :get) do |f| %>
+<div class="list-group">
+  <%= f.label :category_title_eq, "Category" %>
+  <%= f.select :category_title_eq, @categories_list_presenter, prompt: "Select category", include_blank: true, class: "list-group-item" %>
+  <%= f.label :brand_title_eq, "Brand", class: "mt-1"  %>
+  <%= f.select :brand_title_eq, @brands_list_presenter, prompt: "Select brand", include_blank: true, class: "list-group-item" %>
+</div>
+  <%= f.submit class: "mt-2" %>
+<% end %>
