@@ -13,6 +13,7 @@ gem 'webpacker', '~> 4.0'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'ransack'
 gem 'devise'
+gem 'faker'
 
 group :development, :test do
   gem 'pry-rails'
@@ -28,7 +29,6 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
-  gem 'faker'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
