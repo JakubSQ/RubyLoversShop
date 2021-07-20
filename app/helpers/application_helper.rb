@@ -15,4 +15,16 @@ module ApplicationHelper
       flash_type.to_s
     end
   end
+
+  def cart_count_over_one
+    return total_cart_items if total_cart_items.positive?
+  end
+
+  def total_cart_items
+    cart = Cart.where(id: session[:cart_id]).first
+    return if cart.nil?
+
+    total = cart.line_items.map(&:quantity).sum
+    total.zero? ? nil : total
+  end
 end

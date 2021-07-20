@@ -16,12 +16,12 @@
       <div class="row">
         <div class="col-lg-9">
           <%= render 'products_carousel' %>
-
+          
           <%= yield %>
         </div>
 
         <div class="col-lg-3">
-          <%= render 'sidebar' %>
+          <%= yield :sidebar %>
         </div>
       </div>
     </div>
