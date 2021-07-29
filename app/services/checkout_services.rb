@@ -1,23 +1,27 @@
 module CheckoutServices
   class Checkout
-    def call(order, cart, user)
-      if checkout(order, cart, user)
-        OpenStruct.new({ success?: true, payload: order })
-      else
-        OpenStruct.new({ success?: false, payload: { error: 'Something went wrong' } })
+    def call(cart, user)
+      if checkout(cart, user)
+        OpenStruct.new({ success?: true, payload: @order })
+      else 
+        OpenStruct.new({ success?: false, payload: { error: @error } })
       end
     end
 
     private
     
-    def checkout(order, cart, user)
+    def checkout(cart, user)
       ActiveRecord::Base.transaction do
-        order = Order.create!(user_id: user.id)
+        @order = Order.create!(user_id: user.id)
         cart.line_items.each do |line_item|
-          line_item.update!(cart_id: nil, order_id: order.id)
+          line_item.update!(cart_id: nil, order_id: @order.id)
+          Brand.create!
         end
-      end    
-      order
+      end
+    rescue ActiveRecord::RecordInvalid => exception
+      @error = exception.message
+
+      @order if @error.empty?
     end
   end
 end
