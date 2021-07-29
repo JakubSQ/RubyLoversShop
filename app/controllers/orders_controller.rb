@@ -2,7 +2,6 @@
 
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  # before_action :set_cart, only: [:new, :create, :index]
   before_action :set_order, only: %i[show edit update destroy index]
 
   def index; end
@@ -16,15 +15,11 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params)
-    @order.add_line_items_from_cart(cart)
-    @order.user_id = current_user.id
-    if @order.save
-      Cart.destroy(session[:cart_id])
-      session[:cart_id] = nil
+    checkout = CheckoutServices::Checkout.new.call(Order.new, cart, current_user)
+    if checkout.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else
-      redirect_to @order, notice: 'Something went wrong.'
+      redirect_to root_path, notice: 'Something went wrong'
     end
   end
 

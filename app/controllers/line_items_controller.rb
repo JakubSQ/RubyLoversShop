@@ -4,13 +4,9 @@ class LineItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_line_item, only: %i[show edit update destroy]
 
-  # GET /line_items
-  def index
-    @line_items = LineItem.all
-  end
-
   # GET /line_items/1
-  def show; end
+  def show
+  end
 
   # GET /line_items/new
   def new
@@ -23,11 +19,11 @@ class LineItemsController < ApplicationController
   # POST /line_items
   def create
     product = Product.find(params[:product_id])
-    @line_item = cart.add_product(product)
-    if @line_item.save
-      redirect_to @line_item.cart, notice: 'Item added to cart'
+    add_product = CartServices::AddProduct.new.call(cart, product)
+    if add_product.success?
+      redirect_to cart, notice: 'Item added to cart'
     else
-      render :new
+      redirect_to root_path
     end
   end
 
@@ -43,8 +39,13 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   def destroy
     @cart = Cart.find(session[:cart_id])
-    @line_item.destroy
-    redirect_to cart_path(@cart), notice: 'Line item was successfully destroyed.'
+    @line_item.destroy if @line_item.cart.id == @cart.id
+    if @cart.line_items.count < 1
+      @cart.destroy
+      redirect_to root_path, notice: 'Your shopping cart is empty.'
+    else
+      redirect_to cart_path(@cart), notice: 'Line item was successfully destroyed.'     
+    end
   end
 
   private
