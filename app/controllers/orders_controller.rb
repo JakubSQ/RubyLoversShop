@@ -17,15 +17,9 @@ class OrdersController < ApplicationController
   def create
     checkout = CheckoutServices::Checkout.new.call(cart, current_user)
     if checkout.success?
-      
-      binding.pry
-      
       redirect_to root_path, notice: 'Order successfully created.'
     else
-  
-      binding.pry
-  
-      redirect_to root_path, notice: 'Something went wrong'
+      redirect_to root_path, notice: checkout.payload[:error]
     end
   end
 

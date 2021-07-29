@@ -15,13 +15,12 @@ module CheckoutServices
         @order = Order.create!(user_id: user.id)
         cart.line_items.each do |line_item|
           line_item.update!(cart_id: nil, order_id: @order.id)
-          Brand.create!
         end
       end
     rescue ActiveRecord::RecordInvalid => exception
       @error = exception.message
 
-      @order if @error.empty?
+      nil if @error.present?
     end
   end
 end
