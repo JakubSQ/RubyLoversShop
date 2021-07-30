@@ -14,21 +14,15 @@ class LineItemsController < ApplicationController
   end
 
   def destroy
-    @line_item = LineItem.find(params[:id])
-    @cart = Cart.find(session[:cart_id])
-    @line_item.destroy if @line_item.cart.id == @cart.id
-    if cart_empty?(@cart)
-      redirect_to root_path, notice: 'Your shopping cart is empty'
+    delete_line_item = LineItemServices::DeleteLineItem.new.call(cart, LineItem.find(params[:id]))
+    if delete_line_item.success?
+      redirect_to root_path, notice: delete_line_item.payload
     else
-      redirect_to cart_path(@cart), notice: 'Line item was successfully destroyed.'
+      redirect_to cart_path(cart), notice: delete_linexite_item.payload
     end
   end
 
   private
-
-  def cart_empty?(cart)
-    cart.destroy if cart.line_items.count < 1
-  end
 
   def cart
     cart = Cart.where(id: session[:cart_id]).first_or_create
