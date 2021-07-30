@@ -17,15 +17,18 @@ class LineItemsController < ApplicationController
     @line_item = LineItem.find(params[:id])
     @cart = Cart.find(session[:cart_id])
     @line_item.destroy if @line_item.cart.id == @cart.id
-    if @cart.line_items.count < 1
-      @cart.destroy
-      redirect_to root_path, notice: 'Your shopping cart is empty.'
+    if cart_empty?(@cart)
+      redirect_to root_path, notice: 'Your shopping cart is empty'
     else
       redirect_to cart_path(@cart), notice: 'Line item was successfully destroyed.'
     end
   end
 
   private
+
+  def cart_empty?(cart)
+    cart.destroy if cart.line_items.count < 1
+  end
 
   def cart
     cart = Cart.where(id: session[:cart_id]).first_or_create

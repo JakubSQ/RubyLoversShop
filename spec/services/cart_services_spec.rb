@@ -8,6 +8,6 @@ RSpec.describe CartServices, type: :model do
 
   it 'product added to a cart' do
     CartServices::AddProduct.new.call(cart, product)
-    expect(cart.line_items.count).to eq 1
+    expect(cart.line_items.count).to eq(1)
   end
 end

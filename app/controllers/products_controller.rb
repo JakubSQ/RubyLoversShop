@@ -2,7 +2,7 @@
 
 class ProductsController < ApplicationController
   before_action :cart
-  
+
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category, :brand)

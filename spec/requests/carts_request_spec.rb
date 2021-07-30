@@ -15,7 +15,7 @@ RSpec.describe 'Carts', type: :request do
       it 'allows adding only one product on the list with the same name' do
         2.times { post "/line_items?product_id=#{product.id}" }
 
-        expect(Product.count).to eq 1
+        expect(Product.count).to eq(1)
       end
 
       it 'displays product added to the cart' do

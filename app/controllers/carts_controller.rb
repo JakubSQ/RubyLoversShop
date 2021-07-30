@@ -9,7 +9,7 @@ class CartsController < ApplicationController
   end
 
   def create
-    @cart = Cart.new(params)
+    @cart = Cart.new
     if @cart.save
       redirect_to @cart, notice: 'Cart was successfully created.'
     else

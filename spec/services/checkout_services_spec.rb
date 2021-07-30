@@ -6,7 +6,7 @@ RSpec.describe CheckoutServices, type: :model do
   let!(:cart) { create(:cart) }
   let!(:user) { create(:user) }
 
-  it 'product added to a cart' do
+  it 'user checkouts an order' do
     CheckoutServices::Checkout.new.call(cart, user)
     order = Order.last
     expect(order.state).to eq('new')
