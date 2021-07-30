@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module CheckoutServices
   class Checkout
     def call(cart, user)
       if checkout(cart, user)
         OpenStruct.new({ success?: true, payload: @order })
-      else 
+      else
         OpenStruct.new({ success?: false, payload: { error: @error } })
       end
     end
 
     private
-    
+
     def checkout(cart, user)
       ActiveRecord::Base.transaction do
         @order = Order.create!(user_id: user.id)
@@ -17,8 +19,8 @@ module CheckoutServices
           line_item.update!(cart_id: nil, order_id: @order.id)
         end
       end
-    rescue ActiveRecord::RecordInvalid => exception
-      @error = exception.message
+    rescue ActiveRecord::RecordInvalid => e
+      @error = e.message
 
       nil if @error.present?
     end
