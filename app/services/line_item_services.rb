@@ -21,7 +21,7 @@ module LineItemServices
     end
 
     def cart_empty?(cart)
-      cart.destroy if cart.line_items.count < 1
+      cart.line_items.count < 1
     end
   end
 end

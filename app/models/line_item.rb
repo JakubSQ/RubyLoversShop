@@ -6,6 +6,6 @@ class LineItem < ApplicationRecord
   belongs_to :order, optional: true
 
   def total_price
-    product.prize.to_i * quantity.to_i
+    product.prize * quantity
   end
 end

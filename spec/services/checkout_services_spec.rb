@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutServices, type: :model do
-  let!(:cart) { create(:cart) }
+  let!(:cart) { Cart.create }
   let!(:user) { create(:user) }
 
   it 'user checkouts an order' do

@@ -18,7 +18,7 @@ class LineItemsController < ApplicationController
     if delete_line_item.success?
       redirect_to root_path, notice: delete_line_item.payload
     else
-      redirect_to cart_path(cart), notice: delete_linexite_item.payload
+      redirect_to cart_path(cart), notice: delete_line_item.payload
     end
   end
 
