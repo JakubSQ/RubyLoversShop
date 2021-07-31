@@ -1,0 +1,46 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-md-offset-1">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Product</th>
+						<th>Quantity</th>
+						<th class="text-center">Price</th>
+						<th class="text-center">Total</th>
+						<th> </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+            <td class="col-sm-8 col-md-6">
+              <div class="media">
+                <% if line_item.product.cover_photo.attached? %>
+                    <%= image_tag line_item.product.cover_photo, :size => '100x100' %>
+                  <% else %>
+                    <a class="thumbnail pull-left" href="#"><img class="media-object" src="https://via.placeholder.com/100" alt=""></a>
+                  <% end %>
+                <div class="media-body ml-3">
+                  <h4 class="media-heading"><a href="#"><%= line_item.product.name %></a></h4>
+                  <h5 class="media-heading"> by <a href="#"><%= line_item.product.brand.title %></a></h5>
+                  <h5 class="media-heading"> Category: <a href="#"><%= line_item.product.category.title %></a></h5>
+                </div>
+              </div>
+            </td>
+            <td class="col-sm-1 col-md-1" style="text-align: center">
+              <%= line_item.quantity %>
+            </td>
+            <td class="col-sm-1 col-md-1 text-center"><strong><%= number_to_currency(line_item.product.prize) %></strong></td>
+            <td class="col-sm-1 col-md-1 text-center"><strong><%= number_to_currency(line_item.total_price) %></strong></td>
+            <td class="col-sm-1 col-md-1">
+              <%= button_to 'Remove', line_item_path(line_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+            </td>   
+          </tr>
+					<tr>
+					  <td>Description: <%= line_item.product.description %></td>
+          </tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

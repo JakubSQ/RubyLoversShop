@@ -41,3 +41,5 @@ RSpec/MultipleExpectations:
   Enabled: false
 RSpec/ContextWording:
   Enabled: false
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
