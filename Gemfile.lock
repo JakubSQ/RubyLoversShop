@@ -123,6 +123,7 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    pagy (4.10.1)
     parallel (1.20.1)
     parser (3.0.1.0)
       ast (~> 2.4.1)
@@ -272,6 +273,7 @@ DEPENDENCIES
   faker
   letter_opener
   listen (>= 3.0.5, < 3.2)
+  pagy
   pg (>= 0.18, < 2.0)
   pry-rails
   puma (~> 4.1)
