@@ -20,7 +20,7 @@
         <td><%= order.state %></td>
         <td><%= order.created_at %></td>
         <td>
-          <%= link_to 'Show', '#', class: "btn btn-outline-primary btn-sm" %>
+          <%= link_to 'Show', admin_order_path(order), class: "btn btn-outline-primary btn-sm" %>
         </td>
       </tr>
       <% end %>

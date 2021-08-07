@@ -1,0 +1,17 @@
+<%= render partial: 'flash_messages' %>
+
+<div class="card">
+  <div class="card-header">
+    Order id: <%= @order.id %> set by: <%= @order.user_email %> (user id: <%= @order.user_id %>) at <%= @order.created_at %> with current state: <%= @order.state %>
+  </div>
+  <div class="card-body">
+    <% @order.line_items.each.with_index(1) do |item, index|%>
+      <h5 class="card-title">#<%= index %> <%= item.product_name %> (Product id: <%= item.product_id %>)</h5>
+      <p class="card-text">Category: <%= item.product.category_title %> | Brand: <%= item.product.brand_title %></p>
+      <p class="card-text">Quantity: <%= item.quantity %> | Prize: <%= number_to_currency(item.product_prize) %></p>
+      <p class="card-text">Subtotal: <%= number_to_currency(item.total_price) %></p>
+    <% end %>
+      <h5 class="card-title">Total: <%= number_to_currency(@order.total_price) %></h5>
+      <%= link_to 'Go Back', admin_root_path, class: "btn btn-primary" %>
+  </div>
+</div>
