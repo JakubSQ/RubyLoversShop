@@ -2,9 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminUpdatingProducts', type: :system do
+RSpec.describe 'AdminOrdersList', type: :system do
   let!(:admin) { create(:admin) }
-  let!(:order) { Order.create }
+  let!(:user) { create(:user) }
+  let!(:order) { Order.create(user_id: user.id) }
 
   before do
     driven_by(:rack_test)
