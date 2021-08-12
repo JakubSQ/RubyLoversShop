@@ -1,0 +1,28 @@
+<tbody>
+  <table class="table">
+  <%== pagy_bootstrap_nav(@pagy) %>
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">User</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">State</th>
+        <th scope="col">Created</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+
+      <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.user.email %></td>
+        <td><%= order.products.count %></td>
+        <td><%= order.state %></td>
+        <td><%= order.created_at %></td>
+        <td>
+          <%= link_to 'Show', '#', class: "btn btn-outline-primary btn-sm" %>
+        </td>
+      </tr>
+      <% end %>
+  </table>
+</tbody>
