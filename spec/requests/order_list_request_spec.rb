@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'AdminOrdersList', type: :request do
   describe 'GET orders#index' do
+
     let!(:user) { create :user }
     let!(:admin) { create :admin }
     let!(:order) { Order.create(user_id: user.id) }
