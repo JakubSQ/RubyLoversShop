@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "products#dashboard"
     resources :products, except: :show
-    resources :orders, only: :index
+    resources :orders, only: [:index, :show]
   end 
 end
