@@ -15,6 +15,8 @@ gem 'ransack'
 gem 'devise'
 gem 'faker'
 gem 'pagy'
+gem 'aasm'
+gem 'after_commit_everywhere', '~> 1.0'
 
 group :development, :test do
   gem 'pry-rails'
