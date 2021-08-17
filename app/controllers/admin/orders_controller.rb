@@ -9,10 +9,6 @@ class Admin::OrdersController < Admin::BaseController
     @order = Order.find(params[:id])
   end
 
-  def edit
-    order = Order.find(params[:id])
-  end
-
   def order_status
     @order = Order.find(params[:id])
     @order.update(state: params[:state])

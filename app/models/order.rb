@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
-  belongs_to :user
-  belongs_to :payment, optional: true
+  belongs_to :user, dependent: :destroy
+  belongs_to :payment, optional: true, dependent: :destroy
   has_many :line_items, dependent: :destroy
   has_many :products, through: :line_items
   enum state: { new: 0, failed: 1, completed: 2 }, _prefix: true

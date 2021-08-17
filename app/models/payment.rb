@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Payment < ApplicationRecord
-  has_one :order
+  has_one :order, dependent: :restrict_with_exception
 
   include AASM
 

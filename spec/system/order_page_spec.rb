@@ -7,8 +7,9 @@ RSpec.describe 'AdminOrderPage', type: :system do
   let(:user) { create(:user) }
   let!(:cart) { Cart.create }
   let!(:product) { create(:product) }
+  let!(:payment) { Payment.create }
   let!(:line_item) { LineItem.create(cart_id: cart.id, product_id: product.id, order_id: order.id) }
-  let(:order) { Order.create(user_id: user.id) }
+  let(:order) { Order.create(user_id: user.id, payment_id: payment.id) }
 
   before do
     driven_by(:rack_test)
