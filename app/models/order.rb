@@ -32,10 +32,10 @@ class Order < ApplicationRecord
   end
 
   def transitions
-    self.aasm.permitted_transitions
+    aasm.permitted_transitions
   end
 
   def pay_transitions
-    self.payment.aasm.permitted_transitions
+    payment.aasm.permitted_transitions
   end
 end
