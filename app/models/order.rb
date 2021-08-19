@@ -23,10 +23,19 @@ class Order < ApplicationRecord
   end
 
   delegate :id, :email, to: :user, prefix: 'user', allow_nil: true
+  delegate :id, :aasm_state, to: :payment, prefix: 'payment', allow_nil: true
 
   def total_price
     @total_price ||= line_items.includes(:product).reduce(0) do |sum, item|
       sum + (item.quantity * item.product.prize)
     end
+  end
+
+  def transitions
+    self.aasm.permitted_transitions
+  end
+
+  def pay_transitions
+    self.payment.aasm.permitted_transitions
   end
 end
