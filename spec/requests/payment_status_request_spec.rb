@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminOrderPage', type: :request do
+RSpec.describe 'AdminOrderPaymentStatus', type: :request do
   describe 'GET orders#show' do
     let(:admin) { create(:admin) }
     let(:user) { create(:user) }
@@ -10,16 +10,31 @@ RSpec.describe 'AdminOrderPage', type: :request do
     let!(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
 
     context 'when logged in as admin' do
-      it "gets order's page" do
+      before do
         post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
+      end
+
+      it "gets order's page with order's payment status" do
         get "/admin/orders/#{Order.last.id}"
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include(order.id.to_s)
+        expect(response.body).to include(order.payment.aasm_state.to_s)
+      end
+
+      it "admin can change an order's payment status from 'pending' to 'failed'" do
+        patch payment_status_admin_order_path(order), params: { payment: { aasm_state: :failed } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('failed')
+      end
+
+      it "admin can change an order's payment status from 'pending' to 'completed'" do
+        patch payment_status_admin_order_path(order), params: { payment: { aasm_state: :completed } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('completed')
       end
     end
 
-    context 'when logged ii as user' do
-      it 'does not get list of orders on orders page' do
+    context 'when logged in as user' do
+      it 'user is not allowed to visit order page' do
         post user_session_path, params: { user: { email: user.email, password: user.password } }
         get '/admin/orders'
         expect(response).to have_http_status(:found)
@@ -28,7 +43,7 @@ RSpec.describe 'AdminOrderPage', type: :request do
     end
 
     context 'without logging in' do
-      it 'does not get list of orders on orders page' do
+      it 'visitor is not allowed to visit order page' do
         get "/admin/orders/#{Order.last.id}"
         expect(response).to have_http_status(:found)
         expect(response).to redirect_to '/'

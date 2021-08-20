@@ -1,10 +1,32 @@
-<%= render partial: 'flash_messages' %>
 
 <div class="card">
   <div class="card-header">
     Order id: <%= @order.id %> set by: <%= @order.user_email %> (user id: <%= @order.user_id %>) at <%= @order.created_at %> with current state: <%= @order.state %>
   </div>
   <div class="card-body">
+  <p class="card-text">Order Status: <%= @order.state %></p>
+      <% if @order.transitions.any? %>
+        <p class="card-text">Order transition: <% @order.transitions.each do |state| %>
+          <%= link_to order_status_admin_order_path(@order, state: state[:state].to_s), 
+              class: "btn btn-outline-primary btn-sm", method: :patch do %>
+            <%= state[:state].to_s %>
+          <% end %>  
+        <% end %></p>
+      <% else %>
+        <p class="card-text">Order transition: No more transitions available. Current order status: <%= @order.state %></p>
+      <% end %>
+      <p class="card-text">Payment status: <%= @order.payment_aasm_state %></p>
+      <% if @order.pay_transitions.any? %>
+        <p class="card-text">Payment transition: <% @order.pay_transitions.each do |state| %>
+          <%= link_to payment_status_admin_order_path(@order, aasm_state: state[:state].to_s),
+              class: "btn btn-outline-primary btn-sm", method: :patch do %>
+            <%= state[:state].to_s %>
+          <% end %>
+        <% end %></p>
+       <% else %>
+        <p class="card-text">Payment transition: No more transitions available. Current payment status: <%= @order.payment_aasm_state %></p>
+      <% end %>
+
     <% @order.line_items.each.with_index(1) do |item, index|%>
       <h5 class="card-title">#<%= index %> <%= item.product_name %> (Product id: <%= item.product_id %>)</h5>
       <p class="card-text">Category: <%= item.product.category_title %> | Brand: <%= item.product.brand_title %></p>
