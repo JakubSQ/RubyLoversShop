@@ -6,7 +6,7 @@
   <div class="card-body">
   <p class="card-text">Order Status: <%= @order.state %></p>
       <% if @order.transitions.any? %>
-        <p class="card-text">Order transition: <% @order.transitions.each do |state| %>
+        <p id="order" class="card-text">Order transition: <% @order.transitions.each do |state| %>
           <%= link_to order_status_admin_order_path(@order, state: state[:state].to_s), 
               class: "btn btn-outline-primary btn-sm", method: :patch do %>
             <%= state[:state].to_s %>
@@ -17,7 +17,7 @@
       <% end %>
       <p class="card-text">Payment status: <%= @order.payment_aasm_state %></p>
       <% if @order.pay_transitions.any? %>
-        <p class="card-text">Payment transition: <% @order.pay_transitions.each do |state| %>
+        <p id="payment" class="card-text">Payment transition: <% @order.pay_transitions.each do |state| %>
           <%= link_to payment_status_admin_order_path(@order, aasm_state: state[:state].to_s),
               class: "btn btn-outline-primary btn-sm", method: :patch do %>
             <%= state[:state].to_s %>
@@ -28,14 +28,14 @@
       <% end %>
       <p class="card-text">Shipment status: <%= @order.shipment_aasm_state %></p>
       <% if @order.ship_transitions.any? %>
-        <p class="card-text">Shipment transition: <% @order.ship_transitions.each do |state| %>
+        <p id="shipment" class="card-text">Shipment transition: <% @order.ship_transitions.each do |state| %>
           <%= link_to shipment_status_admin_order_path(@order, aasm_state: state[:state].to_s),
               class: "btn btn-outline-primary btn-sm", method: :patch do %>
             <%= state[:state].to_s %>
           <% end %>
         <% end %></p>
        <% else %>
-        <p class="card-text">Shipment transition: No more transitions available. Current payment status: <%= @order.shipment_aasm_state %></p>
+        <p class="card-text">Shipment transition: No more transitions available. Current shipment status: <%= @order.shipment_aasm_state %></p>
       <% end %>
 
     <% @order.line_items.each.with_index(1) do |item, index|%>
