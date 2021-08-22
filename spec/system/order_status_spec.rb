@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ShipmentStatus', type: :system do
+RSpec.describe 'OrderStatus', type: :system do
   let(:admin) { create(:admin) }
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
@@ -20,38 +20,37 @@ RSpec.describe 'ShipmentStatus', type: :system do
     end
 
     context 'you have permission to' do
-      it 'see pending shipment status on order page' do
-        expect(page).to have_content('Shipment status: pending')
+      it 'see new order status on order page' do
+        expect(page).to have_content('Order Status: new')
       end
 
-      it "change an order's shipment status from 'pending' to 'canceled'" do
-        find('#shipment').click_link('canceled')
-        expect(page).to have_content('Shipment status: canceled')
-      end
-
-      it "change an order's shipment status from 'pending' to 'ready'" do
-        find('#shipment').click_link('ready')
-        expect(page).to have_content('Shipment status: ready')
-      end
-
-      it "change an order's shipment status from 'ready' to 'failed'" do
-        find('#shipment').click_link('ready')
-        find('#shipment').click_link('failed')
-        expect(page).to have_content('Shipment status: failed')
+      it "change an order status from 'new' to 'failed'" do
+        find('#order').click_link('failed')
+        expect(page).to have_content('Order Status: failed')
       end
     end
 
-    it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
-      find('#payment').click_link('completed')
-      find('#shipment').click_link('ready')
-      find('#shipment').click_link('shipped')
-      expect(page).to have_content('Shipment status: shipped')
+    context "you have permission to change order status to 'completed' only if" do
+      it "shipment status is 'shipped' and payment status is 'completed'" do
+        find('#payment').click_link('completed')
+        find('#shipment').click_link('ready')
+        find('#shipment').click_link('shipped')
+        find('#order').click_link('completed')
+        expect(page).to have_content('Order Status: completed')
+      end
     end
 
-    context "you don't have permission to" do
-      it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
+    context "you don't have permission to change order status to 'completed' if" do
+      it "shipment status isn't 'shipped' and payment status isn't 'completed'" do
         find('#shipment').click_link('ready')
-        expect(page).not_to have_content('shipped')
+        expect(page).to have_content('Payment status: pending')
+        expect(page).to have_no_css('#order', text: 'completed')
+      end
+
+      it "shipment status isn't 'shipped' and payment status is 'completed'" do
+        find('#shipment').click_link('ready')
+        find('#payment').click_link('completed')
+        expect(page).to have_no_css('#order', text: 'completed')
       end
     end
   end

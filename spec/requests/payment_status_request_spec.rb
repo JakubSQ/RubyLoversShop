@@ -21,15 +21,15 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
       end
 
       it "admin can change an order's payment status from 'pending' to 'failed'" do
-        patch payment_status_admin_order_path(order), params: { payment: { aasm_state: :failed } }
+        patch "/admin/orders/#{Order.last.id}/payment_status?aasm_state=failed"
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('failed')
+        expect(Payment.last).to have_state(:failed)
       end
 
       it "admin can change an order's payment status from 'pending' to 'completed'" do
-        patch payment_status_admin_order_path(order), params: { payment: { aasm_state: :completed } }
+        patch "/admin/orders/#{Order.last.id}/payment_status?aasm_state=completed"
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('completed')
+        expect(Payment.last).to have_state(:completed)
       end
     end
 

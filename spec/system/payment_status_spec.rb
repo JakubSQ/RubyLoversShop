@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'PaymentStatus', type: :system do
-  let!(:admin) { create(:admin) }
-  let!(:user) { create(:user) }
-  let!(:payment) { create(:payment) }
-  let!(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
+  let(:admin) { create(:admin) }
+  let(:user) { create(:user) }
+  let(:payment) { create(:payment) }
+  let(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
 
   context 'when logged in as admin' do
     before do
