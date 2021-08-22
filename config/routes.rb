@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       member do
         patch :order_status
         patch :payment_status
+        patch :shipment_status
       end
     end
   end 

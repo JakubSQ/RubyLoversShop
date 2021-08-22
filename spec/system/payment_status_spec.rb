@@ -23,13 +23,13 @@ RSpec.describe 'PaymentStatus', type: :system do
     end
 
     it "admin can change an order's payment status from 'pending' to 'failed'" do
-      click_on('failed', match: :first)
-      expect(page).to have_content('failed')
+      find('#payment').click_link('failed')
+      expect(page).to have_content('Payment status: failed')
     end
 
     it "admin can change an order's payment status from 'pending' to 'completed'" do
-      click_on('completed', match: :first)
-      expect(page).to have_content('completed')
+      find('#payment').click_link('completed')
+      expect(page).to have_content('Payment status: completed')
     end
   end
 

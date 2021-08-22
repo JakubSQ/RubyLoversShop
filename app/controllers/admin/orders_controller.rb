@@ -23,6 +23,13 @@ class Admin::OrdersController < Admin::BaseController
     render 'show'
   end
 
+  def shipment_status
+    @order = order
+    @order.shipment.update(aasm_state: params[:aasm_state])
+    flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
+    render 'show'
+  end
+
   private
 
   def order

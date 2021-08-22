@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_135505) do
+ActiveRecord::Schema.define(version: 2021_08_20_094358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,7 +90,9 @@ ActiveRecord::Schema.define(version: 2021_07_13_135505) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "payment_id"
+    t.bigint "shipment_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
+    t.index ["shipment_id"], name: "index_orders_on_shipment_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -112,6 +114,12 @@ ActiveRecord::Schema.define(version: 2021_07_13_135505) do
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
+  create_table "shipments", force: :cascade do |t|
+    t.string "aasm_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -130,5 +138,6 @@ ActiveRecord::Schema.define(version: 2021_07_13_135505) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "payments"
+  add_foreign_key "orders", "shipments"
   add_foreign_key "orders", "users"
 end
