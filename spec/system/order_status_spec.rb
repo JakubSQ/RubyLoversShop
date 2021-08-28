@@ -10,6 +10,7 @@ RSpec.describe 'OrderStatus', type: :system do
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
+
     before do
       driven_by(:rack_test)
       visit new_admin_session_path
@@ -30,7 +31,7 @@ RSpec.describe 'OrderStatus', type: :system do
         expect(order).to have_state(:failed)
       end
     end
-  
+
     context "when shipment status is 'shipped' and payment status is 'completed'" do
       it "admin is allowed to change order status to 'completed'" do
         find('#payment').click_link('completed')
@@ -41,12 +42,12 @@ RSpec.describe 'OrderStatus', type: :system do
         expect(order).to have_state(:completed)
       end
     end
-  
+
     context "when shipment status isn't 'shipped' and payment status isn't 'completed'" do
       it "admin is not allowed to change order status to 'completed'" do
         find('#shipment').click_link('ready')
         shipment.reload
-        expect(order).to_not allow_event :done
+        expect(order).not_to allow_event :done
       end
     end
 
@@ -56,7 +57,7 @@ RSpec.describe 'OrderStatus', type: :system do
         find('#payment').click_link('completed')
         shipment.reload
         payment.reload
-        expect(order).to_not allow_event :done
+        expect(order).not_to allow_event :done
       end
     end
   end

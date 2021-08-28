@@ -9,6 +9,7 @@ RSpec.describe 'PaymentStatus', type: :system do
 
   context 'when logged in as admin' do
     let(:admin) { create(:admin) }
+
     before do
       driven_by(:rack_test)
       visit new_admin_session_path

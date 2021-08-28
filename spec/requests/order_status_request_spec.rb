@@ -10,6 +10,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
+
     before do
       post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
     end
@@ -24,27 +25,27 @@ RSpec.describe 'AdminOrderStatus', type: :request do
       it "change an order's status from 'new' to 'failed'" do
         patch "/admin/orders/#{order.id}/order_status?state=failed"
         expect(response).to have_http_status(:ok)
-        order.reload 
+        order.reload
         expect(order).to have_state(:failed)
       end
     end
-  
+
     context "when shipment status is 'shipped' and payment status is 'completed'" do
       it "admin is allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=shipped"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
         patch "/admin/orders/#{order.id}/order_status?state=completed"
-        order.reload 
+        order.reload
         expect(order).to have_state(:completed)
       end
     end
-  
+
     context "when shipment status isn't 'shipped' and payment status isn't 'completed'" do
       it "admin is not allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=pending"
-        order.reload 
+        order.reload
         expect(order).not_to allow_event :done
       end
     end
@@ -53,7 +54,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
       it "admin is not allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
-        order.reload 
+        order.reload
         expect(order).not_to allow_event :done
       end
     end
@@ -62,7 +63,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
       it "admin is not allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
-        order.reload 
+        order.reload
         expect(order).not_to allow_event :done
       end
     end

@@ -9,6 +9,7 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
 
   context 'when logged in as admin' do
     let(:admin) { create(:admin) }
+
     before do
       post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
     end

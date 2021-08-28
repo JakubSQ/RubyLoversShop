@@ -43,3 +43,6 @@ RSpec/ContextWording:
   Enabled: false
 Rails/LexicallyScopedActionFilter:
   Enabled: false
+RSpec/RepeatedExampleGroupBody:
+  Exclude: 
+    - 'spec/requests/order_status_request_spec.rb'

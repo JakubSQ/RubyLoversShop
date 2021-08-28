@@ -15,8 +15,8 @@ class Admin::OrdersController < Admin::BaseController
       flash[:notice] = "Status updated to #{@order.state}"
       render 'show'
     else
-      flash[:alert] = "Something went wrong."
-      render 'show'
+      flash[:alert] = 'Something went wrong.'
+      render 'index'
     end
   end
 
@@ -26,8 +26,8 @@ class Admin::OrdersController < Admin::BaseController
       flash[:notice] = "Status updated to #{@order.payment.aasm_state}"
       render 'show'
     else
-      flash[:alert] = "Something went wrong."
-      render 'show'
+      flash[:alert] = 'Something went wrong.'
+      render 'index'
     end
   end
 
@@ -37,8 +37,8 @@ class Admin::OrdersController < Admin::BaseController
       flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
       render 'show'
     else
-      flash[:alert] = "Something went wrong."
-      render 'show'
+      flash[:alert] = 'Something went wrong.'
+      render 'index'
     end
   end
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ShipmentStatus', type: :system do 
+RSpec.describe 'ShipmentStatus', type: :system do
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
@@ -10,6 +10,7 @@ RSpec.describe 'ShipmentStatus', type: :system do
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
+
     before do
       driven_by(:rack_test)
       visit new_admin_session_path
@@ -42,7 +43,7 @@ RSpec.describe 'ShipmentStatus', type: :system do
         shipment.reload
         expect(shipment).to have_state(:failed)
       end
-    
+
       it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
         find('#payment').click_link('completed')
         find('#shipment').click_link('ready')

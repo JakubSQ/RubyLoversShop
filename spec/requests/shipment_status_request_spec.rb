@@ -10,6 +10,7 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
+
     before do
       post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
     end
@@ -51,7 +52,6 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
         expect(shipment).to have_state(:shipped)
       end
     end
-  
 
     context 'admin is not allowed to' do
       it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
