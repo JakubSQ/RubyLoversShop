@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ShipmentStatus', type: :system do
-  let(:admin) { create(:admin) }
+RSpec.describe 'ShipmentStatus', type: :system do 
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
-  let(:order) { create(:order, user_id: user.id, payment_id: payment.id, shipment_id: shipment.id) }
+  let(:order) { create(:order, user: user, payment: payment, shipment: shipment) }
 
   describe 'when logged in as admin' do
+    let(:admin) { create(:admin) }
     before do
       driven_by(:rack_test)
       visit new_admin_session_path
@@ -21,37 +21,43 @@ RSpec.describe 'ShipmentStatus', type: :system do
 
     context 'you have permission to' do
       it 'see pending shipment status on order page' do
-        expect(page).to have_content('Shipment status: pending')
+        expect(shipment).to have_state(:pending)
       end
 
       it "change an order's shipment status from 'pending' to 'canceled'" do
         find('#shipment').click_link('canceled')
-        expect(page).to have_content('Shipment status: canceled')
+        shipment.reload
+        expect(shipment).to have_state(:canceled)
       end
 
       it "change an order's shipment status from 'pending' to 'ready'" do
         find('#shipment').click_link('ready')
-        expect(page).to have_content('Shipment status: ready')
+        shipment.reload
+        expect(shipment).to have_state(:ready)
       end
 
       it "change an order's shipment status from 'ready' to 'failed'" do
         find('#shipment').click_link('ready')
         find('#shipment').click_link('failed')
-        expect(page).to have_content('Shipment status: failed')
+        shipment.reload
+        expect(shipment).to have_state(:failed)
       end
-    end
-
-    it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
-      find('#payment').click_link('completed')
-      find('#shipment').click_link('ready')
-      find('#shipment').click_link('shipped')
-      expect(page).to have_content('Shipment status: shipped')
+    
+      it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
+        find('#payment').click_link('completed')
+        find('#shipment').click_link('ready')
+        find('#shipment').click_link('shipped')
+        payment.reload
+        shipment.reload
+        expect(shipment).to have_state(:shipped)
+      end
     end
 
     context "you don't have permission to" do
       it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
         find('#shipment').click_link('ready')
-        expect(page).not_to have_content('shipped')
+        shipment.reload
+        expect(shipment).not_to allow_event :delivered
       end
     end
   end
@@ -67,6 +73,17 @@ RSpec.describe 'ShipmentStatus', type: :system do
     end
 
     it 'user cannot visit order page' do
+      expect(page).to have_content('You are not authorized')
+    end
+  end
+
+  describe 'when guest visits app' do
+    before do
+      driven_by(:rack_test)
+      visit admin_order_path(order)
+    end
+
+    it 'guest is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end

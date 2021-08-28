@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'OrderStatus', type: :system do
-  let(:admin) { create(:admin) }
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
-  let(:order) { create(:order, user_id: user.id, payment_id: payment.id, shipment_id: shipment.id) }
+  let(:order) { create(:order, user: user, payment: payment, shipment: shipment) }
 
   describe 'when logged in as admin' do
+    let(:admin) { create(:admin) }
     before do
       driven_by(:rack_test)
       visit new_admin_session_path
@@ -21,36 +21,42 @@ RSpec.describe 'OrderStatus', type: :system do
 
     context 'you have permission to' do
       it 'see new order status on order page' do
-        expect(page).to have_content('Order Status: new')
+        expect(order).to have_state(:new)
       end
 
       it "change an order status from 'new' to 'failed'" do
         find('#order').click_link('failed')
-        expect(page).to have_content('Order Status: failed')
+        order.reload
+        expect(order).to have_state(:failed)
       end
     end
-
-    context "you have permission to change order status to 'completed' only if" do
-      it "shipment status is 'shipped' and payment status is 'completed'" do
+  
+    context "when shipment status is 'shipped' and payment status is 'completed'" do
+      it "admin is allowed to change order status to 'completed'" do
         find('#payment').click_link('completed')
         find('#shipment').click_link('ready')
         find('#shipment').click_link('shipped')
         find('#order').click_link('completed')
-        expect(page).to have_content('Order Status: completed')
+        order.reload
+        expect(order).to have_state(:completed)
+      end
+    end
+  
+    context "when shipment status isn't 'shipped' and payment status isn't 'completed'" do
+      it "admin is not allowed to change order status to 'completed'" do
+        find('#shipment').click_link('ready')
+        shipment.reload
+        expect(order).to_not allow_event :done
       end
     end
 
-    context "you don't have permission to change order status to 'completed' if" do
-      it "shipment status isn't 'shipped' and payment status isn't 'completed'" do
-        find('#shipment').click_link('ready')
-        expect(page).to have_content('Payment status: pending')
-        expect(page).to have_no_css('#order', text: 'completed')
-      end
-
-      it "shipment status isn't 'shipped' and payment status is 'completed'" do
+    context "when shipment status isn't 'shipped' and payment status is 'completed'" do
+      it "admin is not allowed to change order status to 'completed'" do
         find('#shipment').click_link('ready')
         find('#payment').click_link('completed')
-        expect(page).to have_no_css('#order', text: 'completed')
+        shipment.reload
+        payment.reload
+        expect(order).to_not allow_event :done
       end
     end
   end
@@ -66,6 +72,17 @@ RSpec.describe 'OrderStatus', type: :system do
     end
 
     it 'user cannot visit order page' do
+      expect(page).to have_content('You are not authorized')
+    end
+  end
+
+  describe 'when guest visits app' do
+    before do
+      driven_by(:rack_test)
+      visit admin_order_path(order)
+    end
+
+    it 'guest is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end

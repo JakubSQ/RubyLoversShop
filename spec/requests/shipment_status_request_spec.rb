@@ -3,56 +3,63 @@
 require 'rails_helper'
 
 RSpec.describe 'AdminOrderPaymentStatus', type: :request do
-  let(:admin) { create(:admin) }
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
-  let!(:order) { create(:order, user_id: user.id, payment_id: payment.id, shipment_id: shipment.id) }
+  let(:order) { create(:order, user: user, payment: payment, shipment: shipment) }
 
   describe 'when logged in as admin' do
+    let(:admin) { create(:admin) }
     before do
       post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
     end
 
-    context 'you are allowed to'
-    it "gets order's page with order's shipment status" do
-      get "/admin/orders/#{Order.last.id}"
-      expect(response).to have_http_status(:ok)
-      expect(shipment).to have_state(:pending)
-    end
+    context 'admin is allowed to' do
+      it "gets order's page with order's shipment status" do
+        get "/admin/orders/#{order.id}"
+        expect(response).to have_http_status(:ok)
+        expect(shipment).to have_state(:pending)
+      end
 
-    it "admin can change an order's shipment status from 'pending' to 'ready'" do
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=ready"
-      expect(response).to have_http_status(:ok)
-      expect(Shipment.last).to have_state(:ready)
-    end
+      it "change an order's shipment status from 'pending' to 'ready'" do
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
+        shipment.reload
+        expect(response).to have_http_status(:ok)
+        expect(shipment).to have_state(:ready)
+      end
 
-    it "admin can change an order's shipment status from 'pending' to 'canceled'" do
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=canceled"
-      expect(response).to have_http_status(:ok)
-      expect(Shipment.last).to have_state(:canceled)
-    end
+      it "change an order's shipment status from 'pending' to 'canceled'" do
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=canceled"
+        shipment.reload
+        expect(response).to have_http_status(:ok)
+        expect(shipment).to have_state(:canceled)
+      end
 
-    it "admin can change an order's shipment status from 'ready' to 'failed'" do
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=ready"
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=failed"
-      expect(response).to have_http_status(:ok)
-      expect(Shipment.last).to have_state(:failed)
-    end
+      it "change an order's shipment status from 'ready' to 'failed'" do
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=failed"
+        shipment.reload
+        expect(response).to have_http_status(:ok)
+        expect(shipment).to have_state(:failed)
+      end
 
-    it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=ready"
-      patch "/admin/orders/#{Order.last.id}/payment_status?aasm_state=completed"
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=shipped"
-      expect(Shipment.last).to have_state(:shipped)
+      it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
+        patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=shipped"
+        shipment.reload
+        expect(shipment).to have_state(:shipped)
+      end
     end
-  end
+  
 
-  context 'you are not allowed to' do
-    it "admin can't change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=ready"
-      patch "/admin/orders/#{Order.last.id}/shipment_status?aasm_state=shipped"
-      expect(Shipment.last).not_to allow_event :delivered
+    context 'admin is not allowed to' do
+      it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
+        patch "/admin/orders/#{order.id}/shipment_status?aasm_state=shipped"
+        shipment.reload
+        expect(shipment).not_to allow_event :delivered
+      end
     end
   end
 
@@ -65,9 +72,9 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
     end
   end
 
-  context 'without logging in' do
-    it 'visitor is not allowed to visit order page' do
-      get "/admin/orders/#{Order.last.id}"
+  context 'when guest visits app' do
+    it 'guest is not allowed to visit order page' do
+      get "/admin/orders/#{order.id}"
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to '/'
     end
