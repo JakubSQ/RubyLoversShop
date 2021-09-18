@@ -11,40 +11,44 @@ class Admin::OrdersController < Admin::BaseController
 
   def order_status
     @order = order
-    if @order.update!(state: params[:state])
+    if state_validation(@order, :state)
+      @order.update(state: params[:state])
       flash[:notice] = "Status updated to #{@order.state}"
-      render 'show'
     else
       flash[:alert] = 'Something went wrong.'
-      render 'index'
     end
+    render 'show'
   end
 
   def payment_status
     @order = order
-    if @order.payment.update!(aasm_state: params[:aasm_state])
+    if state_validation(@order.payment, :aasm_state)
+      @order.payment.update(aasm_state: params[:aasm_state])
       flash[:notice] = "Status updated to #{@order.payment.aasm_state}"
-      render 'show'
     else
       flash[:alert] = 'Something went wrong.'
-      render 'index'
     end
+    render 'show'
   end
 
   def shipment_status
     @order = order
-    if @order.shipment.update!(aasm_state: params[:aasm_state])
+    if state_validation(@order.shipment, :aasm_state)
+      @order.shipment.update(aasm_state: params[:aasm_state])
       flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
-      render 'show'
     else
       flash[:alert] = 'Something went wrong.'
-      render 'index'
     end
+    render 'show'
   end
 
   private
 
   def order
     Order.find(params[:id])
+  end
+
+  def state_validation(obj, state)
+    obj.aasm.states.map(&:name).include?(params[state].to_sym)
   end
 end

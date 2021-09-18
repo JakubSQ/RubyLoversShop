@@ -19,17 +19,17 @@ RSpec.describe 'PaymentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'admin sees pending payment status on order page' do
+    it 'is allowed to see pending payment status on order page' do
       expect(payment).to have_state(:pending)
     end
 
-    it "admin can change an order's payment status from 'pending' to 'failed'" do
+    it "is allowed to change an order's payment status from 'pending' to 'failed'" do
       find('#payment').click_link('failed')
       payment.reload
       expect(payment).to have_state(:failed)
     end
 
-    it "admin can change an order's payment status from 'pending' to 'completed'" do
+    it "is allowed to change an order's payment status from 'pending' to 'completed'" do
       find('#payment').click_link('completed')
       payment.reload
       expect(payment).to have_state(:completed)
@@ -46,7 +46,7 @@ RSpec.describe 'PaymentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'user cannot visit order page' do
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end
@@ -57,7 +57,7 @@ RSpec.describe 'PaymentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'guest is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end

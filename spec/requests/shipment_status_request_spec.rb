@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'AdminOrderPaymentStatus', type: :request do
+RSpec.describe 'AdminOrderShipmentStatus', type: :request do
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
@@ -15,7 +15,7 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
       post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
     end
 
-    context 'admin is allowed to' do
+    context 'is allowed to' do
       it "gets order's page with order's shipment status" do
         get "/admin/orders/#{order.id}"
         expect(response).to have_http_status(:ok)
@@ -53,7 +53,7 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
       end
     end
 
-    context 'admin is not allowed to' do
+    context 'is not allowed to' do
       it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=shipped"
@@ -64,7 +64,7 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
   end
 
   context 'when logged in as user' do
-    it 'user is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       post user_session_path, params: { user: { email: user.email, password: user.password } }
       get '/admin/orders'
       expect(response).to have_http_status(:found)
@@ -73,7 +73,7 @@ RSpec.describe 'AdminOrderPaymentStatus', type: :request do
   end
 
   context 'when guest visits app' do
-    it 'guest is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       get "/admin/orders/#{order.id}"
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to '/'

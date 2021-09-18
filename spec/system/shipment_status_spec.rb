@@ -20,7 +20,7 @@ RSpec.describe 'ShipmentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    context 'you have permission to' do
+    context 'it is allowed to' do
       it 'see pending shipment status on order page' do
         expect(shipment).to have_state(:pending)
       end
@@ -54,7 +54,7 @@ RSpec.describe 'ShipmentStatus', type: :system do
       end
     end
 
-    context "you don't have permission to" do
+    context 'it is not allowed to' do
       it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
         find('#shipment').click_link('ready')
         shipment.reload
@@ -73,7 +73,7 @@ RSpec.describe 'ShipmentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'user cannot visit order page' do
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end
@@ -84,7 +84,7 @@ RSpec.describe 'ShipmentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'guest is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end

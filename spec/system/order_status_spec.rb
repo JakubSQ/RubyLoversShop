@@ -20,7 +20,7 @@ RSpec.describe 'OrderStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    context 'you have permission to' do
+    context 'is allowed to' do
       it 'see new order status on order page' do
         expect(order).to have_state(:new)
       end
@@ -33,7 +33,7 @@ RSpec.describe 'OrderStatus', type: :system do
     end
 
     context "when shipment status is 'shipped' and payment status is 'completed'" do
-      it "admin is allowed to change order status to 'completed'" do
+      it "is allowed to change order status to 'completed'" do
         find('#payment').click_link('completed')
         find('#shipment').click_link('ready')
         find('#shipment').click_link('shipped')
@@ -44,7 +44,7 @@ RSpec.describe 'OrderStatus', type: :system do
     end
 
     context "when shipment status isn't 'shipped' and payment status isn't 'completed'" do
-      it "admin is not allowed to change order status to 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
         find('#shipment').click_link('ready')
         shipment.reload
         expect(order).not_to allow_event :done
@@ -52,7 +52,7 @@ RSpec.describe 'OrderStatus', type: :system do
     end
 
     context "when shipment status isn't 'shipped' and payment status is 'completed'" do
-      it "admin is not allowed to change order status to 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
         find('#shipment').click_link('ready')
         find('#payment').click_link('completed')
         shipment.reload
@@ -72,7 +72,7 @@ RSpec.describe 'OrderStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'user cannot visit order page' do
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe 'OrderStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'guest is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end

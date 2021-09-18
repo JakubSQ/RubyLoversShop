@@ -31,7 +31,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
     end
 
     context "when shipment status is 'shipped' and payment status is 'completed'" do
-      it "admin is allowed to change order status to 'completed'" do
+      it "is allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=shipped"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
@@ -42,7 +42,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
     end
 
     context "when shipment status isn't 'shipped' and payment status isn't 'completed'" do
-      it "admin is not allowed to change order status to 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=pending"
         order.reload
@@ -51,7 +51,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
     end
 
     context "when shipment status isn't 'shipped' and payment status is 'completed'" do
-      it "admin is not allowed to change order status to 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
         order.reload
@@ -60,7 +60,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
     end
 
     context "when shipment status is 'shipped' and payment status isn't 'completed'" do
-      it "admin is not allowed to change order status to 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
         patch "/admin/orders/#{order.id}/shipment_status?aasm_state=ready"
         patch "/admin/orders/#{order.id}/payment_status?aasm_state=completed"
         order.reload
@@ -70,7 +70,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
   end
 
   describe 'when logged in as user' do
-    it 'user is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       post user_session_path, params: { user: { email: user.email, password: user.password } }
       get '/admin/orders'
       expect(response).to have_http_status(:found)
@@ -79,7 +79,7 @@ RSpec.describe 'AdminOrderStatus', type: :request do
   end
 
   describe 'when guest visits app' do
-    it 'guest is not allowed to visit order page' do
+    it 'is not allowed to visit order page' do
       get "/admin/orders/#{order.id}"
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to '/'
