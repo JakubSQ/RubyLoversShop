@@ -11,8 +11,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def order_status
     @order = order
-    if state_validation(@order, :state)
-      @order.update(state: params[:state])
+    if @order.update(state: params[:state])
       flash[:notice] = "Status updated to #{@order.state}"
     else
       flash[:alert] = 'Something went wrong.'
@@ -22,8 +21,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def payment_status
     @order = order
-    if state_validation(@order.payment, :aasm_state)
-      @order.payment.update(aasm_state: params[:aasm_state])
+    if @order.payment.update(aasm_state: params[:aasm_state])
       flash[:notice] = "Status updated to #{@order.payment.aasm_state}"
     else
       flash[:alert] = 'Something went wrong.'
@@ -33,8 +31,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def shipment_status
     @order = order
-    if state_validation(@order.shipment, :aasm_state)
-      @order.shipment.update(aasm_state: params[:aasm_state])
+    if @order.shipment.update(aasm_state: params[:aasm_state])
       flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
     else
       flash[:alert] = 'Something went wrong.'
@@ -46,9 +43,5 @@ class Admin::OrdersController < Admin::BaseController
 
   def order
     Order.find(params[:id])
-  end
-
-  def state_validation(obj, state)
-    obj.aasm.states.map(&:name).include?(params[state].to_sym)
   end
 end
