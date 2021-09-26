@@ -15,7 +15,8 @@ module CheckoutServices
     def checkout(cart, user)
       ActiveRecord::Base.transaction do
         @payment = Payment.create!
-        @order = Order.create!(user_id: user.id, payment_id: @payment.id)
+        @shipment = Shipment.create!
+        @order = Order.create!(user_id: user.id, payment_id: @payment.id, shipment_id: @shipment.id)
         cart.line_items.each do |line_item|
           line_item.update!(cart_id: nil, order_id: @order.id)
         end

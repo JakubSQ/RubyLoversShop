@@ -31,8 +31,7 @@ RSpec.describe 'AdminUpdatingProducts', type: :system do
     fill_in 'product_prize', with: updated_product.prize
     click_button 'Update Product'
     expect(page).to have_content('Product has been successfully updated.')
-    expect(page).to have_content(updated_product.prize)
-    expect(page).to have_no_content(product.prize)
+    expect(page).to have_no_field('product_prize', with: product.prize)
   end
 
   it 'prevents admin to update product without name' do

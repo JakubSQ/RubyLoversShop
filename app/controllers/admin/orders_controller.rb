@@ -11,22 +11,31 @@ class Admin::OrdersController < Admin::BaseController
 
   def order_status
     @order = order
-    @order.update(state: params[:state])
-    flash[:notice] = "Status updated to #{@order.state}"
+    if @order.update(state: params[:state])
+      flash[:notice] = "Status updated to #{@order.state}"
+    else
+      flash[:alert] = 'Something went wrong.'
+    end
     render 'show'
   end
 
   def payment_status
     @order = order
-    @order.payment.update(aasm_state: params[:aasm_state])
-    flash[:notice] = "Status updated to #{@order.payment.aasm_state}"
+    if @order.payment.update(aasm_state: params[:aasm_state])
+      flash[:notice] = "Status updated to #{@order.payment.aasm_state}"
+    else
+      flash[:alert] = 'Something went wrong.'
+    end
     render 'show'
   end
 
   def shipment_status
     @order = order
-    @order.shipment.update(aasm_state: params[:aasm_state])
-    flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
+    if @order.shipment.update(aasm_state: params[:aasm_state])
+      flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
+    else
+      flash[:alert] = 'Something went wrong.'
+    end
     render 'show'
   end
 

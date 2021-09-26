@@ -3,12 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'PaymentStatus', type: :system do
-  let!(:admin) { create(:admin) }
-  let!(:user) { create(:user) }
-  let!(:payment) { create(:payment) }
-  let!(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
+  let(:user) { create(:user) }
+  let(:payment) { create(:payment) }
+  let(:order) { create(:order, user: user, payment: payment) }
 
   context 'when logged in as admin' do
+    let(:admin) { create(:admin) }
+
     before do
       driven_by(:rack_test)
       visit new_admin_session_path
@@ -18,18 +19,20 @@ RSpec.describe 'PaymentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'admin sees pending payment status on order page' do
-      expect(page).to have_content('pending')
+    it 'is allowed to see pending payment status on order page' do
+      expect(payment).to have_state(:pending)
     end
 
-    it "admin can change an order's payment status from 'pending' to 'failed'" do
+    it "is allowed to change an order's payment status from 'pending' to 'failed'" do
       find('#payment').click_link('failed')
-      expect(page).to have_content('Payment status: failed')
+      payment.reload
+      expect(payment).to have_state(:failed)
     end
 
-    it "admin can change an order's payment status from 'pending' to 'completed'" do
+    it "is allowed to change an order's payment status from 'pending' to 'completed'" do
       find('#payment').click_link('completed')
-      expect(page).to have_content('Payment status: completed')
+      payment.reload
+      expect(payment).to have_state(:completed)
     end
   end
 
@@ -43,7 +46,18 @@ RSpec.describe 'PaymentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    it 'user cannot visit order page' do
+    it 'is not allowed to visit order page' do
+      expect(page).to have_content('You are not authorized')
+    end
+  end
+
+  context 'when guest visits app' do
+    before do
+      driven_by(:rack_test)
+      visit admin_order_path(order)
+    end
+
+    it 'is not allowed to visit order page' do
       expect(page).to have_content('You are not authorized')
     end
   end

@@ -15,7 +15,7 @@ class Order < ApplicationRecord
     state :failed, :completed
 
     event :done do
-      transitions from: :new, to: :completed
+      transitions from: :new, to: :completed, guard: :paid_and_shipped?
     end
 
     event :undone do
@@ -43,5 +43,9 @@ class Order < ApplicationRecord
 
   def ship_transitions
     shipment.aasm.permitted_transitions
+  end
+
+  def paid_and_shipped?
+    payment.completed? && shipment.shipped?
   end
 end

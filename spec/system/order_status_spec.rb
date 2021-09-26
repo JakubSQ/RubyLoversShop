@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ShipmentStatus', type: :system do
+RSpec.describe 'OrderStatus', type: :system do
   let(:user) { create(:user) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
@@ -20,45 +20,44 @@ RSpec.describe 'ShipmentStatus', type: :system do
       visit admin_order_path(order)
     end
 
-    context 'it is allowed to' do
-      it 'see pending shipment status on order page' do
-        expect(shipment).to have_state(:pending)
+    context 'is allowed to' do
+      it 'see new order status on order page' do
+        expect(order).to have_state(:new)
       end
 
-      it "change an order's shipment status from 'pending' to 'canceled'" do
-        find('#shipment').click_link('canceled')
-        shipment.reload
-        expect(shipment).to have_state(:canceled)
-      end
-
-      it "change an order's shipment status from 'pending' to 'ready'" do
-        find('#shipment').click_link('ready')
-        shipment.reload
-        expect(shipment).to have_state(:ready)
-      end
-
-      it "change an order's shipment status from 'ready' to 'failed'" do
-        find('#shipment').click_link('ready')
-        find('#shipment').click_link('failed')
-        shipment.reload
-        expect(shipment).to have_state(:failed)
-      end
-
-      it "change an order's shipment status from 'ready' to 'shipped' if payment status is 'completed'" do
-        find('#payment').click_link('completed')
-        find('#shipment').click_link('ready')
-        find('#shipment').click_link('shipped')
-        payment.reload
-        shipment.reload
-        expect(shipment).to have_state(:shipped)
+      it "change an order status from 'new' to 'failed'" do
+        find('#order').click_link('failed')
+        order.reload
+        expect(order).to have_state(:failed)
       end
     end
 
-    context 'it is not allowed to' do
-      it "change an order's shipment status from 'ready' to 'shipped' if payment status is not 'completed'" do
+    context "when shipment status is 'shipped' and payment status is 'completed'" do
+      it "is allowed to change order status to 'completed'" do
+        find('#payment').click_link('completed')
+        find('#shipment').click_link('ready')
+        find('#shipment').click_link('shipped')
+        find('#order').click_link('completed')
+        order.reload
+        expect(order).to have_state(:completed)
+      end
+    end
+
+    context "when shipment status isn't 'shipped' and payment status isn't 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
         find('#shipment').click_link('ready')
         shipment.reload
-        expect(shipment).not_to allow_event :delivered
+        expect(order).not_to allow_event :done
+      end
+    end
+
+    context "when shipment status isn't 'shipped' and payment status is 'completed'" do
+      it "is not allowed to change order status to 'completed'" do
+        find('#shipment').click_link('ready')
+        find('#payment').click_link('completed')
+        shipment.reload
+        payment.reload
+        expect(order).not_to allow_event :done
       end
     end
   end

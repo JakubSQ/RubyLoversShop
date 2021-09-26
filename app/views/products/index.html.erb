@@ -6,7 +6,11 @@
   <% @products.each do |product| %>
   <div class="col-lg-4 col-md-6 mb-4">
     <div class="card h-100">
-      <%= image_tag product.cover_photo, :size => '250x260' %>
+       <% if product.cover_photo.attached? %>
+        <%= image_tag product.cover_photo, :size => '250x260' %>
+      <% else %>
+        <a href="#"><img class="card-img-top product-card-placeholder-img" src="https://via.placeholder.com/150" alt=""></a>
+      <% end %>
       <div class="card-body">
         <h4 class="card-title">
           <a href="#"><%= link_to product.name, product_path(product) %></a>
