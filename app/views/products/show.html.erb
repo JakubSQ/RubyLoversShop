@@ -1,7 +1,11 @@
 <%= render partial: 'flash_messages' %>
 
 <div class="card" style="width: 18rem;">
-  <%= image_tag @product.cover_photo, :size => '250x260', class: "card-img-top" %>
+  <% if @product.cover_photo.attached? %>
+    <%= image_tag @product.cover_photo, :size => '250x260', class: "card-img-top" %>
+  <% else %>
+    <img class="card-img-top product-card-placeholder-img" src="https://via.placeholder.com/150" alt="">
+  <% end %>
   <div class="card-body">
     <h4 class="card-title"><%= @product.name %></h4>
     <h5 class="card-title">Description:</h5>
@@ -15,3 +19,4 @@
     <%= button_to 'Add to cart', line_items_path(product_id: @product.id), class: "btn btn-primary"%>
   </div>
 </div>
+
