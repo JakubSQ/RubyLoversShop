@@ -4,9 +4,15 @@ class LineItemsController < ApplicationController
   before_action :authenticate_user!
 
   def create
+    
+    # binding.pry
+    
     product = Product.find(params[:product_id])
     add_product = CartServices::AddProduct.new.call(cart, product)
     if add_product.success?
+      
+      # binding.pry
+      
       redirect_to cart, notice: 'Item added to cart'
     else
       redirect_to root_path

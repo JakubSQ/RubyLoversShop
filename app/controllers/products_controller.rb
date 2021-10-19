@@ -15,6 +15,15 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
+  # def update
+  #   @product = Product.find(params[:id])
+  #   if @product.update(product_params)
+  #     redirect_to products_path(@product), notice: 'updated'
+  #   else
+  #     redirect_to root_path, notice: 'dupa'
+  #   end
+  # end
+
   private
 
   def cart
@@ -26,6 +35,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :cover_photo, :category_id, :brand_id)
+    params.require(:product).permit(:quantity)
   end
 end

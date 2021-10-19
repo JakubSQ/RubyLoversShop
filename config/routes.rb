@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: "pages#home"
   resources :orders, only: [:new, :create, :destroy]
-  resources :products, only: [:index, :show]
+  resources :products, only: [:index, :show, :update]
   resources :line_items, only: [:create, :destroy]
   resources :carts, only: [:show, :create, :destroy]
   devise_for :admins

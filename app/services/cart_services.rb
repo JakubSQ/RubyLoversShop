@@ -18,7 +18,7 @@ module CartServices
       if current_item
         current_item.increment(:quantity)
       else
-        current_item = cart.line_items.build(product_id: product.id)
+        current_item = cart.line_items.build(product_id: product.id, quantity: product.quantity)
       end
       current_item.save
     end
