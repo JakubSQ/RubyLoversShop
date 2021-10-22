@@ -2,8 +2,8 @@
 
 module CartServices
   class AddProduct
-    def call(cart, product)
-      if save_line_item(cart, product)
+    def call(cart, product, quantity)
+      if save_line_item(cart, product, quantity)
         current_item = cart.line_items.find_by(product_id: product.id)
         OpenStruct.new({ success?: true, payload: current_item })
       else
@@ -13,12 +13,12 @@ module CartServices
 
     private
 
-    def save_line_item(cart, product)
+    def save_line_item(cart, product, quantity)
       current_item = cart.line_items.find_by(product_id: product.id)
       if current_item
         current_item.increment(:quantity)
       else
-        current_item = cart.line_items.build(product_id: product.id)
+        current_item = cart.line_items.build(product_id: product.id, quantity: quantity)
       end
       current_item.save
     end

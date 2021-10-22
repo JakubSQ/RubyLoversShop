@@ -16,10 +16,12 @@
     <p class="card-text"><%= @product.category.title %></p>
     <h5 class="card-title">Brand:</h5>
     <p class="card-text"><%= @product.brand.title %></p>
-    <%= form_with url: line_items_path(product_id: @product.id), method: :post do |f| %>
+    <%= form_with url: line_items_path(product_id: @product.id), local: true do |f| %>
     <%= f.label :quantity, 'Quantity' %>
     <%= f.number_field :quantity %>
+  
     <%= f.submit %>
+   
     <% end %>
     <%= button_to 'Add to cart', line_items_path(product_id: @product.id), class: "btn btn-primary"%>
   </div>
