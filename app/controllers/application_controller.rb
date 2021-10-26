@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def authenticate_user!
+    unless admin_signed_in? || user_signed_in?
+      flash[:alert] = 'You are not authorized'
+      redirect_to root_path
+    end
+  end
+
   def layout_by_resource
     if devise_controller?
       'devise'

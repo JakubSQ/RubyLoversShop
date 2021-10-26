@@ -3,20 +3,34 @@
 module CartServices
   class AddProduct
     def call(cart, product, quantity)
-      if save_line_item(cart, product, quantity)
-        current_item = cart.line_items.find_by(product_id: product.id)
-        OpenStruct.new({ success?: true, payload: current_item })
+      if product_not_valid?(cart, product, quantity)
+        
+        binding.pry
+        
+        OpenStruct.new({ success?: false, payload: @error })
       else
-        OpenStruct.new({ success?: false, payload: { error: 'Something went wrong' } })
+        
+        binding.pry
+        
+        save_line_item(cart, product, quantity)
+        current_item = cart.line_items.find_by(product_id: product.id) 
+        OpenStruct.new({ success?: true, payload: current_item })
       end
     end
 
     private
 
+    def product_not_valid?(cart, product, quantity)
+      current_item = cart.line_items.build(product_id: product.id, quantity: quantity)
+      current_item.valid?
+      @error = current_item.errors.full_messages
+      @error.size > 0
+    end
+
     def save_line_item(cart, product, quantity)
       current_item = cart.line_items.find_by(product_id: product.id)
       if current_item
-        current_item.increment(:quantity)
+        current_item.increment(:quantity, quantity.to_i)
       else
         current_item = cart.line_items.build(product_id: product.id, quantity: quantity)
       end

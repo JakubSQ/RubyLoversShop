@@ -6,10 +6,13 @@ class LineItemsController < ApplicationController
   def create
     product = Product.find(params[:product_id])
     add_product = CartServices::AddProduct.new.call(cart, product, params[:quantity])
+    
+    binding.pry
+    
     if add_product.success?
       redirect_to cart, notice: 'Item added to cart'
-    else
-      redirect_to root_path
+    else   
+      redirect_to product_path(product), alert: add_product.payload
     end
   end
 
