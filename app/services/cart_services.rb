@@ -4,14 +4,8 @@ module CartServices
   class AddProduct
     def call(cart, product, quantity)
       if product_not_valid?(cart, product, quantity)
-        
-        binding.pry
-        
         OpenStruct.new({ success?: false, payload: @error })
       else
-        
-        binding.pry
-        
         save_line_item(cart, product, quantity)
         current_item = cart.line_items.find_by(product_id: product.id) 
         OpenStruct.new({ success?: true, payload: current_item })

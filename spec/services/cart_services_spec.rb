@@ -9,14 +9,14 @@ RSpec.describe CartServices, type: :model do
 
   context 'adding' do
     it 'one product to cart' do
-      CartServices::AddProduct.new.call(cart, product)
+      CartServices::AddProduct.new.call(cart, product, 1)
 
       expect(cart.line_items.count).to eq(1)
     end
 
     it 'twice the same product to cart' do
       2.times do
-        CartServices::AddProduct.new.call(cart, product)
+        CartServices::AddProduct.new.call(cart, product, 1)
       end
 
       expect(cart.line_items.count).to eq(1)
@@ -24,8 +24,8 @@ RSpec.describe CartServices, type: :model do
     end
 
     it 'two different products to cart' do
-      CartServices::AddProduct.new.call(cart, product)
-      CartServices::AddProduct.new.call(cart, product1)
+      CartServices::AddProduct.new.call(cart, product, 1)
+      CartServices::AddProduct.new.call(cart, product1, 1)
 
       expect(cart.line_items.count).to eq(2)
     end
