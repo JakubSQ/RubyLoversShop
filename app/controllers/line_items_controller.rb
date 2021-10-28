@@ -8,7 +8,7 @@ class LineItemsController < ApplicationController
     add_product = CartServices::AddProduct.new.call(cart, product, params[:quantity].to_i)
     if add_product.success?
       redirect_to cart, notice: 'Item added to cart'
-    else   
+    else
       redirect_to product_path(product), alert: add_product.payload
     end
   end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Admin::ProductsController < Admin::BaseController
-  
   def dashboard
     @q = Product.ransack(params[:q])
     @products = @q.result.includes(:category, :brand)
