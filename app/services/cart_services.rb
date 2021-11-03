@@ -10,9 +10,13 @@ module CartServices
 
     def call
       if product_valid? || quantity_valid?
-        OpenStruct.new({ success?: true, payload: save_line_item })
+        if @quantity == 0
+          OpenStruct.new({ success?: false, payload: "Please, type positive value." })
+        else
+          OpenStruct.new({ success?: true, payload: save_line_item })
+        end
       else
-        OpenStruct.new({ success?: false, payload: current_item_errors })
+        OpenStruct.new({ success?: false, payload: "Please, type positive value." })
       end
     end
 
@@ -32,10 +36,6 @@ module CartServices
 
     def quantity_valid?
       @quantity.positive?
-    end
-
-    def current_item_errors
-      current_item.errors.full_messages || exist_item.errors.full_messages
     end
 
     def save_line_item

@@ -13,6 +13,17 @@ class LineItemsController < ApplicationController
     end
   end
 
+  def update
+    @line_item = LineItem.find(params[:id])
+    if @line_item.update(line_item_params)
+      @line_item.destroy if @line_item.quantity == 0
+      redirect_to cart
+    else
+      flash[:alert] = 'Please, type positive value.'
+      redirect_to cart
+    end
+  end
+
   def destroy
     delete_line_item = LineItemServices::DeleteLineItem.new.call(cart, LineItem.find(params[:id]))
     if delete_line_item.success?
@@ -28,5 +39,9 @@ class LineItemsController < ApplicationController
     cart = Cart.where(id: session[:cart_id]).first_or_create
     session[:cart_id] = cart.id
     cart
+  end
+
+  def line_item_params
+    params.require(:line_item).permit(:quantity)
   end
 end
