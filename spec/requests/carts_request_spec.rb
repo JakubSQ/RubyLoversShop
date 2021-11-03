@@ -13,13 +13,12 @@ RSpec.describe 'Carts', type: :request do
 
     context 'POST new product' do
       it 'allows adding only one product on the list with the same name' do
-        2.times { post "/line_items?product_id=#{product.id}" }
-
-        expect(Product.count).to eq(1)
+        2.times { post line_items_path(product_id: product.id), params: { quantity: 1 } }
+        expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id]).quantity).to eq(2)
       end
 
       it 'displays product added to the cart' do
-        post "/line_items?product_id=#{product.id}"
+        post line_items_path(product_id: product.id), params: { quantity: 1 }
         get "/carts/#{Cart.last.id}"
 
         expect(response.body).to include product.name
@@ -28,7 +27,7 @@ RSpec.describe 'Carts', type: :request do
 
     context 'DELETE existing products' do
       it 'deletes all products from the cart' do
-        post "/line_items?product_id=#{product.id}"
+        post line_items_path(product_id: product.id), params: { quantity: 1 }
         delete "/carts/#{Cart.last.id}"
 
         expect(response.body).not_to include product.name
@@ -37,7 +36,7 @@ RSpec.describe 'Carts', type: :request do
 
     context 'Checking out' do
       it 'checks out the order' do
-        post "/line_items?product_id=#{product.id}"
+        post line_items_path(product_id: product.id), params: { quantity: 1 }
         post '/carts'
         post '/orders'
         follow_redirect!

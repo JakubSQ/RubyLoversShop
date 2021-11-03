@@ -1,6 +1,21 @@
-<% if flash.any? %>
+<% if flash[:alert].is_a?(Array) %>
   <div class="container">
     <div class="row">
+      <div class="col">
+        <% flash.each do |type, msgs| %>
+          <div class="alert <%= bootstrap_flash_class(type) %> alert-dismissable fade show">
+            <% msgs.each do |msg| %>
+              <%= msg %>
+            <button class="close" data-dismiss="alert">x</button>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="container">
+    <div class="row"> 
       <div class="col">
         <% flash.each do |type, msg| %>
           <div class="alert <%= bootstrap_flash_class(type) %> alert-dismissable fade show">
