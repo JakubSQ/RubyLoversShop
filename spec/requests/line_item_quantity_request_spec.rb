@@ -29,7 +29,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
         product.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Quantity must be greater than or equal to 1')
+        expect(response.body).to include('Please, type positive value')
         expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id])).not_to be_present
       end
 
@@ -67,7 +67,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
         product.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Quantity must be greater than or equal to 1')
+        expect(response.body).to include('Please, type positive value')
         expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id])).not_to be_present
       end
 

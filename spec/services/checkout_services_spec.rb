@@ -3,8 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutServices, type: :model do
-  let!(:cart) { Cart.create }
-  let!(:user) { create(:user) }
+  let(:cart) { create(:cart) }
+  let(:user) { create(:user) }
+  let(:product) { create(:product) }
+  let!(:line_item) { LineItem.create(cart_id: cart.id, product_id: product.id) }
 
   it 'user checkouts an order' do
     CheckoutServices::Checkout.new.call(cart, user)

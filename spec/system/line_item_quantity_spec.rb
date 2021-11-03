@@ -30,7 +30,7 @@ RSpec.describe 'LineItemQuantity', type: :system do
       it 'type negative value in quantity field' do
         fill_in 'quantity', with: -1
         click_on 'Add to cart'
-        expect(page).to have_content('Quantity must be greater than or equal to 1')
+        expect(page).to have_content('Please, type positive value')
         expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
 
@@ -67,7 +67,7 @@ RSpec.describe 'LineItemQuantity', type: :system do
       it 'type negative value in quantity field' do
         fill_in 'quantity', with: -1
         click_on 'Add to cart'
-        expect(page).to have_content('Quantity must be greater than or equal to 1')
+        expect(page).to have_content('Please, type positive value')
         expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
 
