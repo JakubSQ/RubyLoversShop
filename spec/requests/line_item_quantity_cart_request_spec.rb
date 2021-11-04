@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'LineItemQuantity', type: :request do
-  let!(:cart) { create(:cart) }
-  let!(:product) { create(:product) }
-  let!(:line_item) { LineItem.create(cart_id: cart.id, product_id: product.id, quantity: 10) }
+  let(:cart) { create(:cart) }
+  let(:product) { create(:product) }
+  let(:line_item) { LineItem.create(cart_id: cart.id, product_id: product.id, quantity: 10) }
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
