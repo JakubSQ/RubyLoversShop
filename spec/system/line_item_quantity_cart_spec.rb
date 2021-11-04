@@ -93,4 +93,19 @@ RSpec.describe 'LineItemQuantity', type: :system do
       end
     end
   end
+
+  describe 'when guest visits app' do
+    before do
+      driven_by(:rack_test)
+      visit product_path(product)
+    end
+
+    context 'is not allowed to' do
+      it 'visit cart path' do
+        fill_in 'quantity', with: 2
+        click_on 'Add to cart'
+        expect(page).to have_content('You are not authorized')
+      end
+    end
+  end
 end
