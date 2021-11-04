@@ -16,12 +16,11 @@ class LineItemsController < ApplicationController
   def update
     @line_item = LineItem.find(params[:id])
     if @line_item.update(line_item_params)
-      @line_item.destroy if @line_item.quantity == 0
-      redirect_to cart
+      @line_item.destroy if @line_item.quantity.zero?
     else
       flash[:alert] = 'Please, type positive value.'
-      redirect_to cart
     end
+    redirect_to cart
   end
 
   def destroy
