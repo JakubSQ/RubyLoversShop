@@ -39,7 +39,7 @@ module CartServices
     end
 
     def full_validation?
-      product_valid? && quantity_zero? || quantity_valid?
+      (product_valid? && quantity_zero?) || quantity_valid?
     end
 
     def save_line_item
