@@ -2,8 +2,13 @@
 
 module CheckoutServices
   class Checkout
-    def call(cart, user)
-      if checkout(cart, user)
+    def initialize(cart, user)
+      @cart = cart
+      @user = user
+    end
+
+    def call
+      if checkout
         OpenStruct.new({ success?: true, payload: @order })
       else
         OpenStruct.new({ success?: false, payload: { error: @error } })
@@ -12,15 +17,11 @@ module CheckoutServices
 
     private
 
-    def checkout(cart, user)
-      if cart.line_items.present?
+    def checkout
+      if @cart.line_items.present?
         ActiveRecord::Base.transaction do
-          @payment = Payment.create!
-          @shipment = Shipment.create!
-          @order = Order.create!(user_id: user.id, payment_id: @payment.id, shipment_id: @shipment.id)
-          cart.line_items.each do |line_item|
-            line_item.update!(cart_id: nil, order_id: @order.id)
-          end
+          order_assignment
+          line_item_update
         end
       else
         @error = 'Order has not been created. Cart was empty.'
@@ -30,6 +31,18 @@ module CheckoutServices
       @error = e.message
 
       nil if @error.present?
+    end
+
+    def order_assignment
+      @payment = Payment.create!
+      @shipment = Shipment.create!
+      @order = Order.create!(user_id: @user.id, payment_id: @payment.id, shipment_id: @shipment.id)
+    end
+
+    def line_item_update
+      @cart.line_items.each do |line_item|
+        line_item.update!(cart_id: nil, order_id: @order.id)
+      end
     end
   end
 end

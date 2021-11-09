@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    checkout = CheckoutServices::Checkout.new.call(cart, current_user)
+    checkout = CheckoutServices::Checkout.new(cart, current_user).call
     if checkout.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else

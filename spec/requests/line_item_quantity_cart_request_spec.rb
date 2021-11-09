@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'LineItemQuantity', type: :request do
   let(:cart) { create(:cart) }
   let(:product) { create(:product) }
-  let(:line_item) { LineItem.create(cart_id: cart.id, product_id: product.id, quantity: 10) }
+  let(:line_item) { create(:line_item) }
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
@@ -34,20 +34,16 @@ RSpec.describe 'LineItemQuantity', type: :request do
     context 'is not allowed to' do
       it 'type negative value in quantity field' do
         patch "/line_items/#{line_item.id}", params: { line_item: { quantity: -1 } }
-        line_item.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Please, type positive value.')
-        expect(line_item.quantity).to eq(10)
+        expect(cart.line_items).to eq([])
       end
 
       it 'type string in quantity field' do
         patch "/line_items/#{line_item.id}", params: { line_item: { quantity: 'xyz' } }
-        line_item.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Please, type positive value.')
-        expect(line_item.quantity).to eq(10)
+        expect(cart.line_items).to eq([])
       end
     end
   end
@@ -79,20 +75,16 @@ RSpec.describe 'LineItemQuantity', type: :request do
     context 'is not allowed to' do
       it 'type negative value in quantity field' do
         patch "/line_items/#{line_item.id}", params: { line_item: { quantity: -1 } }
-        line_item.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Please, type positive value.')
-        expect(line_item.quantity).to eq(10)
+        expect(cart.line_items).to eq([])
       end
 
       it 'type string in quantity field' do
         patch "/line_items/#{line_item.id}", params: { line_item: { quantity: 'xyz' } }
-        line_item.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('Please, type positive value.')
-        expect(line_item.quantity).to eq(10)
+        expect(cart.line_items).to eq([])
       end
     end
   end

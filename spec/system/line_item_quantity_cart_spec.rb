@@ -38,14 +38,13 @@ RSpec.describe 'LineItemQuantity', type: :system do
       it 'type negative value in quantity field' do
         fill_in 'line_item_quantity', with: -1
         find('#line_item_quantity').native.send_keys :enter
-        expect(page).to have_content('Please, type positive value.')
-        expect(LineItem.find_by(product_id: product.id).quantity).not_to eq(-1)
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
 
       it 'type string in quantity field' do
         fill_in 'line_item_quantity', with: 'xyz'
         find('#line_item_quantity').native.send_keys :enter
-        expect(LineItem.find_by(product_id: product.id).quantity).not_to eq('xyz')
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
     end
   end
@@ -82,14 +81,13 @@ RSpec.describe 'LineItemQuantity', type: :system do
       it 'type negative value in quantity field' do
         fill_in 'line_item_quantity', with: -1
         find('#line_item_quantity').native.send_keys :enter
-        expect(page).to have_content('Please, type positive value.')
-        expect(LineItem.find_by(product_id: product.id).quantity).not_to eq(-1)
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
 
       it 'type string in quantity field' do
         fill_in 'line_item_quantity', with: 'xyz'
         find('#line_item_quantity').native.send_keys :enter
-        expect(LineItem.find_by(product_id: product.id).quantity).not_to eq('xyz')
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
     end
   end

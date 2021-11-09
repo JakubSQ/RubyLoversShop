@@ -14,13 +14,13 @@ class LineItemsController < ApplicationController
   end
 
   def update
-    @line_item = LineItem.find(params[:id])
-    if @line_item.update(line_item_params)
-      @line_item.destroy if @line_item.quantity.zero?
+    update_line_item = UpdateLineItemServices::UpdateLineItem.new.call(params[:line_item][:quantity].to_i,
+                                                                       LineItem.find(params[:id]))
+    if update_line_item.success?
+      redirect_to cart
     else
-      flash[:alert] = 'Please, type positive value.'
+      redirect_to root_path
     end
-    redirect_to cart
   end
 
   def destroy

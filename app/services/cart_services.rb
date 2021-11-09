@@ -9,45 +9,36 @@ module CartServices
     end
 
     def call
-      if full_validation?
-        OpenStruct.new({ success?: true, payload: save_line_item })
+      return OpenStruct.new({ success?: false, payload: 'Please, type positive value' }) if quantity_invalid?
+
+      item = save_item
+      if item.save
+        OpenStruct.new({ success?: true, payload: item })
       else
-        OpenStruct.new({ success?: false, payload: 'Please, type positive value.' })
+        OpenStruct.new({ success?: false, payload: item.errors.full_messages })
       end
     end
 
     private
 
-    def exist_item
-      @exist_item = @cart.line_items.find_by(product_id: @product.id)
+    def quantity_invalid?
+      @quantity <= 0
+    end
+
+    def save_item
+      if exist_item
+        exist_item.increment(:quantity, @quantity)
+      else
+        current_item
+      end
     end
 
     def current_item
-      @current_item ||= @cart.line_items.where(product_id: @product.id, quantity: @quantity).first_or_initialize
+      @current_item = @cart.line_items.build(product_id: @product.id, quantity: @quantity)
     end
 
-    def product_valid?
-      current_item.valid?
-    end
-
-    def quantity_valid?
-      @quantity.positive?
-    end
-
-    def quantity_zero?
-      false if @quantity.zero?
-    end
-
-    def full_validation?
-      (product_valid? && quantity_zero?) || quantity_valid?
-    end
-
-    def save_line_item
-      if exist_item
-        exist_item.increment(:quantity, @quantity).save
-      else
-        current_item.save
-      end
+    def exist_item
+      @exist_item = @cart.line_items.find_by(product_id: @product.id)
     end
   end
 end

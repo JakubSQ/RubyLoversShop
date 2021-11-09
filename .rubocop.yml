@@ -13,8 +13,6 @@ AllCops:
     - node_modules/**/**
 Layout/LineLength:
   Max: 120
-Metrics/AbcSize:
-  Max: 19
 Metrics/ClassLength:
   Max: 200
 Metrics/MethodLength:
