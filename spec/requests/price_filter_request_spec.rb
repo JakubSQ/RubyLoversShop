@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Price Filter', type: :request do
+    let!(:product) { create :product }
+    let!(:product1) { create :product }
+    let!(:product2) { create :product }
+
+  describe 'Admin/User/Guest is allowed to' do
+    context 'choose specific price range' do
+      it 'gets all products within this range' do
+        get products_path( q: { prize_lteq: 2, prize_gteq: 1 })
+        expect(response.body).to include("<h5>#{product.prize.to_s}$</h5>")
+        expect(response.body).to include("<h5>#{product1.prize.to_s}$</h5>")
+        expect(response.body).not_to include("<h5>#{product2.prize.to_s}$</h5>")
+      end
+    end
+  end
+end
