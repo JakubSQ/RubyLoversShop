@@ -8,7 +8,6 @@ RSpec.describe 'Price filter', type: :system do
   let!(:product2) { create :product }
 
   describe 'Admin/User/Guest is allowed to' do
-
     before do
       driven_by(:rack_test)
       visit root_path
