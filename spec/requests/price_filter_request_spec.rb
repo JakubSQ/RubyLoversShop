@@ -10,7 +10,7 @@ RSpec.describe 'Price Filter', type: :request do
   describe 'Admin/User/Guest is allowed to' do
     context 'choose specific price range' do
       it 'gets all products within this range' do
-        get products_path( q: { prize_lteq: 2, prize_gteq: 1 })
+        get products_path( q: { prize_lteq: product1.prize, prize_gteq: product.prize })
         expect(response.body).to include("<h5>#{product.prize.to_s}$</h5>")
         expect(response.body).to include("<h5>#{product1.prize.to_s}$</h5>")
         expect(response.body).not_to include("<h5>#{product2.prize.to_s}$</h5>")
