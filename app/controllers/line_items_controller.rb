@@ -5,7 +5,7 @@ class LineItemsController < ApplicationController
 
   def create
     product = Product.find(params[:product_id])
-    add_product = CartServices::AddProduct.new(cart, product, params[:quantity].to_i).call
+    add_product = LineItemCreator::AddProduct.new.call(cart, product, params[:quantity].to_i)
     if add_product.success?
       redirect_to cart, notice: 'Item added to cart'
     else
@@ -14,8 +14,8 @@ class LineItemsController < ApplicationController
   end
 
   def update
-    update_line_item = UpdateLineItemServices::UpdateLineItem.new.call(params[:line_item][:quantity].to_i,
-                                                                       LineItem.find(params[:id]))
+    update_line_item = LineItemUpdater::UpdateLineItem.new.call(params[:line_item][:quantity].to_i,
+                                                                LineItem.find(params[:id]))
     if update_line_item.success?
       redirect_to cart
     else
@@ -24,11 +24,11 @@ class LineItemsController < ApplicationController
   end
 
   def destroy
-    delete_line_item = LineItemServices::DeleteLineItem.new.call(cart, LineItem.find(params[:id]))
-    if delete_line_item.success?
-      redirect_to root_path, notice: delete_line_item.payload
+    destroy_line_item = LineItemRemover::DeleteLineItem.new.call(cart, LineItem.find(params[:id]))
+    if destroy_line_item.success?
+      redirect_to root_path, notice: destroy_line_item.payload
     else
-      redirect_to cart_path(cart), notice: delete_line_item.payload
+      redirect_to cart_path(cart), notice: destroy_line_item.payload
     end
   end
 

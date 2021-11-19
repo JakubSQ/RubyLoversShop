@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe CheckoutServices, type: :model do
+RSpec.describe CheckoutCreator, type: :model do
   let(:cart) { create(:cart) }
   let(:user) { create(:user) }
   let(:product) { create(:product) }
   let!(:line_item) { create(:line_item) }
 
   it 'user checkouts an order' do
-    CheckoutServices::Checkout.new(cart, user).call
+    CheckoutCreator::SetOrder.new.call(cart, user)
     order = Order.last
     user = User.first
     expect(order.state).to eq('new')

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UpdateLineItemServices
+module LineItemUpdater
   class UpdateLineItem
     def call(quantity, line_item)
       if update_line_item(quantity, line_item)

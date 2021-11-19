@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'ProductsQuantity', type: :request do
+  subject(:create_path) { line_items_path(product_id: product.id) }
+
   let(:product) { create(:product) }
 
   describe 'when logged in as admin' do
@@ -14,7 +16,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
 
     context 'is allowed to' do
       it 'choose quantity of products to buy' do
-        post line_items_path(product_id: product.id), params: { quantity: 10 }
+        post create_path, params: { quantity: 10 }
         product.reload
         follow_redirect!
         expect(response.body).to include('Item added to cart')
@@ -25,7 +27,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
 
     context 'is not allowed to' do
       it 'type negative value in quantity field' do
-        post line_items_path(product_id: product.id), params: { quantity: -1 }
+        post create_path, params: { quantity: -1 }
         product.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -34,7 +36,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
       end
 
       it 'type string in quantity field' do
-        post line_items_path(product_id: product.id), params: { quantity: 'xyz' }
+        post create_path, params: { quantity: 'xyz' }
         product.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -52,7 +54,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
 
     context 'is allowed to' do
       it 'choose quantity of products to buy' do
-        post line_items_path(product_id: product.id), params: { quantity: 10 }
+        post create_path, params: { quantity: 10 }
         product.reload
         follow_redirect!
         expect(response.body).to include('Item added to cart')
@@ -63,7 +65,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
 
     context 'is not allowed to' do
       it 'type negative value in quantity field' do
-        post line_items_path(product_id: product.id), params: { quantity: -1 }
+        post create_path, params: { quantity: -1 }
         product.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -72,7 +74,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
       end
 
       it 'type string in quantity field' do
-        post line_items_path(product_id: product.id), params: { quantity: 'xyz' }
+        post create_path, params: { quantity: 'xyz' }
         product.reload
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -83,7 +85,7 @@ RSpec.describe 'ProductsQuantity', type: :request do
 
   describe 'when guest visits app' do
     it 'is not allowed to choose quantity of products' do
-      post line_items_path(product_id: product.id), params: { quantity: 10 }
+      post create_path, params: { quantity: 10 }
       product.reload
       follow_redirect!
       expect(response).to have_http_status(:ok)

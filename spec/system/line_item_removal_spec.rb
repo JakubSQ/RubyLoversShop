@@ -11,10 +11,7 @@ RSpec.describe 'LineItemQuantity', type: :system do
 
     before do
       driven_by(:rack_test)
-      visit new_admin_session_path
-      fill_in 'admin_email', with: admin.email
-      fill_in 'admin_password', with: admin.password
-      click_on 'Log in'
+      sign_in admin
       visit product_path(product)
       fill_in 'quantity', with: 10
       click_on 'Add to cart'
@@ -34,10 +31,7 @@ RSpec.describe 'LineItemQuantity', type: :system do
 
     before do
       driven_by(:rack_test)
-      visit new_user_session_path
-      fill_in 'user_email', with: user.email
-      fill_in 'user_password', with: user.password
-      click_on 'Log in'
+      sign_in user
       visit product_path(product)
       fill_in 'quantity', with: 10
       click_on 'Add to cart'
