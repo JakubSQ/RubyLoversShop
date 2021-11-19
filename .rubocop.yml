@@ -17,8 +17,6 @@ Metrics/ClassLength:
   Max: 200
 Metrics/MethodLength:
   Enabled: false
-Performance/OpenStruct:
-  Enabled: false
 Style/BlockComments:
   Enabled: false
 Style/ClassAndModuleChildren:
@@ -28,6 +26,8 @@ Bundler/OrderedGems:
 Style/Documentation:
   Enabled: false
 Style/GuardClause:
+  Enabled: false
+Style/OpenStructUse:
   Enabled: false
 RSpec/LetSetup:
   Enabled: false
