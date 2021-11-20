@@ -28,7 +28,10 @@
               </div>
             </td>
             <td class="col-sm-1 col-md-1" style="text-align: center">
-              <%= line_item.quantity %>
+              <%= form_with model: line_item, local: true do |f| %>
+                <%= f.label :quantity, 'Quantity' %>
+                <%= f.number_field :quantity, { value: line_item.quantity, onchange: 'this.form.submit();' } %>
+              <% end %>
             </td>
             <td class="col-sm-1 col-md-1 text-center"><strong><%= number_to_currency(line_item.product.prize) %></strong></td>
             <td class="col-sm-1 col-md-1 text-center"><strong><%= number_to_currency(line_item.total_price) %></strong></td>

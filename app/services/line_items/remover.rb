@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module LineItemServices
-  class DeleteLineItem
+module LineItems
+  class Remover
     def call(cart, line_item)
-      if delete_line_item(cart, line_item)
+      if destroy_line_item(cart, line_item)
         if cart_empty?(cart)
           OpenStruct.new({ success?: true, payload: 'Your shopping cart is empty' })
         else
@@ -16,7 +16,7 @@ module LineItemServices
 
     private
 
-    def delete_line_item(cart, line_item)
+    def destroy_line_item(cart, line_item)
       line_item.destroy if line_item.cart.id == cart.id
     end
 

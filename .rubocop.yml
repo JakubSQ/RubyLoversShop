@@ -27,6 +27,8 @@ Style/Documentation:
   Enabled: false
 Style/GuardClause:
   Enabled: false
+Style/OpenStructUse:
+  Enabled: false
 RSpec/LetSetup:
   Enabled: false
 RSpec/DescribeClass:
