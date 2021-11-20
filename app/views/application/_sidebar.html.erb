@@ -3,7 +3,14 @@
   <%= f.label :category_title_eq, "Category" %>
   <%= f.select :category_title_eq, @categories_list_presenter, prompt: "Select category", include_blank: 'None', class: "list-group-item" %>
   <%= f.label :brand_title_eq, "Brand", class: "mt-1"  %>
-  <%= f.select :brand_title_eq, @brands_list_presenter, prompt: "Select brand", include_blank: 'None', class: "list-group-item" %>
+  <%= f.select :brand_title_eq, @brands_list_presenter, prompt: "Select brand", include_blank: 'None', class: "list-group-item mb-2" %>
+  <%= f.label :prize_gteq, 'Price range', class: "mt-2" %>
+  <table>
+    <tr>
+      <td><%= f.number_field :prize_gteq, style: "width: 100px", class: "list-group-item" %></td>
+      <td><%= f.number_field :prize_lteq, style: "width: 100px", class: "list-group-item" %></td>
+    </tr>
+  </table>
 </div>
   <%= f.submit class: "mt-2" %>
 <% end %>
