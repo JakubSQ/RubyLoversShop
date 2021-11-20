@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module LineItemRemover
-  class DeleteLineItem
+module LineItems
+  class Remover
     def call(cart, line_item)
       if destroy_line_item(cart, line_item)
         if cart_empty?(cart)

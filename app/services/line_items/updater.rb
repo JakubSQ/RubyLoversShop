@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module LineItemUpdater
-  class UpdateLineItem
+module LineItems
+  class Updater
     def call(quantity, line_item)
       if update_line_item(quantity, line_item)
         OpenStruct.new({ success?: true, payload: 'Your shopping cart is empty' })

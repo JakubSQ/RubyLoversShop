@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module LineItemCreator
-  class AddProduct
+module LineItems
+  class Creator
     def call(cart, product, quantity)
       return OpenStruct.new({ success?: false, payload: 'Please, type positive value' }) if quantity_invalid?(quantity)
 

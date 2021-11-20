@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module CheckoutCreator
-  class SetOrder
+module Checkout
+  class Creator
     def call(cart, user)
-      if create_order(cart, user)
+      if order_assignment(cart, user)
         OpenStruct.new({ success?: true, payload: @order })
       else
         OpenStruct.new({ success?: false, payload: { error: @error } })
@@ -12,10 +12,10 @@ module CheckoutCreator
 
     private
 
-    def create_order(cart, user)
+    def order_assignment(cart, user)
       if cart.line_items.present?
         ActiveRecord::Base.transaction do
-          order_assignment(user)
+          create_order(user)
           update_line_item(cart)
         end
       else
@@ -28,7 +28,7 @@ module CheckoutCreator
       nil if @error.present?
     end
 
-    def order_assignment(user)
+    def create_order(user)
       @payment = Payment.create!
       @shipment = Shipment.create!
       @order = Order.create!(user_id: user.id, payment_id: @payment.id, shipment_id: @shipment.id)
