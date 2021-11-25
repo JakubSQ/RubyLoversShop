@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
-  belongs_to :user, dependent: :destroy
+  belongs_to :user, optional: true, dependent: :destroy
+  belongs_to :admin, optional: true, dependent: :destroy
   belongs_to :payment, optional: true, dependent: :destroy
   belongs_to :shipment, optional: true, dependent: :destroy
-  belongs_to :billing_address, class_name: "Address", optional: true
+  belongs_to :billing_address, class_name: 'Address', optional: true
   has_many :line_items, dependent: :destroy
   has_many :products, through: :line_items
   enum state: { new: 0, failed: 1, completed: 2 }, _prefix: true
@@ -25,6 +26,7 @@ class Order < ApplicationRecord
   end
 
   delegate :id, :email, to: :user, prefix: 'user', allow_nil: true
+  delegate :id, :email, to: :admin, prefix: 'admin', allow_nil: true
   delegate :id, :aasm_state, to: :payment, prefix: 'payment', allow_nil: true
   delegate :id, :aasm_state, to: :shipment, prefix: 'shipment', allow_nil: true
 

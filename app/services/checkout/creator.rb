@@ -29,14 +29,31 @@ module Checkout
     end
 
     def create_order(user, params)
-      @address = Address.create!(name: params[:name], street_name_1: params[:street_name_1],
-                                 street_name_2: params[:street_name_2], city: params[:city],
-                                 country: params[:country], state: params[:state], zip: params[:zip],
-                                 phone: params[:phone])  
+      @address = Address.create!(name: params[:name],
+                                 street_name1: params[:street_name1],
+                                 street_name2: params[:street_name2],
+                                 city: params[:city],
+                                 country: params[:country],
+                                 state: params[:state],
+                                 zip: params[:zip],
+                                 phone: params[:phone])
+      order_affiliation(user)
+    end
+
+    def order_affiliation(user)
       @payment = Payment.create!
       @shipment = Shipment.create!
-      @order = Order.create!(user_id: user.id, payment_id: @payment.id, shipment_id: @shipment.id, billing_address_id: @address.id)
-      @address.update!(billing_address_id: @order.billing_address.id)
+      @order = if user.instance_of?(User)
+                 Order.create!(user_id: user.id,
+                               payment_id: @payment.id,
+                               shipment_id: @shipment.id,
+                               billing_address_id: @address.id)
+               else
+                 Order.create!(admin_id: user.id,
+                               payment_id: @payment.id,
+                               shipment_id: @shipment.id,
+                               billing_address_id: @address.id)
+               end
     end
 
     def update_line_item(cart)

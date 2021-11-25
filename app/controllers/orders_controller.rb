@@ -9,11 +9,11 @@ class OrdersController < ApplicationController
   end
 
   def create
-    create_order = Checkout::Creator.new.call(cart, current_user, params[:order][:address])
-    if create_order.success?
+    order = Checkout::Creator.new.call(cart, (current_user || current_admin), params[:order][:address])
+    if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else
-      redirect_to root_path, alert: create_order.payload[:error]
+      redirect_to new_order_path, alert: order.payload[:error]
     end
   end
 

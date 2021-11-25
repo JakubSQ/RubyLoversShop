@@ -9,7 +9,6 @@ class CreateAddresses < ActiveRecord::Migration[6.1]
       t.string :state
       t.string :zip
       t.string :phone
-      t.integer :billing_address_id
       t.timestamps
     end
   end

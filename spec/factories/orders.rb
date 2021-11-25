@@ -9,5 +9,6 @@ FactoryBot.define do
     payment
     shipment
     user
+    admin
   end
 end
