@@ -15,7 +15,7 @@
       <% @orders.each do |order| %>
       <tr>
         <td><%= order.id %></td>
-        <td><%= @user_admin_presenter.new(order).current_email %></td>
+        <td><%= order.user_email %></td>
         <td><%= order.products.count %></td>
         <td><%= order.state %></td>
         <td><%= order.created_at %></td>

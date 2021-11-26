@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Shipment < ApplicationRecord
-  has_one :order, dependent: :restrict_with_exception
+  has_one :order, dependent: :nullify
   has_one :payment, through: :order
 
   include AASM

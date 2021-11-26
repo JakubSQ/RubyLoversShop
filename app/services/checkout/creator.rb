@@ -37,23 +37,12 @@ module Checkout
                                  state: params[:state],
                                  zip: params[:zip],
                                  phone: params[:phone])
-      order_affiliation(user)
-    end
-
-    def order_affiliation(user)
       @payment = Payment.create!
       @shipment = Shipment.create!
-      @order = if user.instance_of?(User)
-                 Order.create!(user_id: user.id,
-                               payment_id: @payment.id,
-                               shipment_id: @shipment.id,
-                               billing_address_id: @address.id)
-               else
-                 Order.create!(admin_id: user.id,
-                               payment_id: @payment.id,
-                               shipment_id: @shipment.id,
-                               billing_address_id: @address.id)
-               end
+      @order = Order.create!(user_id: user.id,
+                             payment_id: @payment.id,
+                             shipment_id: @shipment.id,
+                             billing_address_id: @address.id)
     end
 
     def update_line_item(cart)

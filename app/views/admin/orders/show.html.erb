@@ -1,7 +1,7 @@
 
 <div class="card">
   <div class="card-header">
-    Order id: <%= @order.id %> set by: <%= @user_admin_presenter.current_email %> (user id: <%= @user_admin_presenter.current_id %>) at <%= @order.created_at %> with current state: <%= @order.state %>
+    Order id: <%= @order.id %> set by: <%= @order.user_email %> (user id: <%= @order.user_id %>) at <%= @order.created_at %> with current state: <%= @order.state %>
   </div>
   <div class="card-body">
   <p class="card-text">Order Status: <%= @order.state %></p>

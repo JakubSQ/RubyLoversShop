@@ -2,18 +2,18 @@
 
 class Admin::OrdersController < Admin::BaseController
   def index
-    @user_admin_presenter = UserAdminPresenter
+    # @user_admin_presenter = UserAdminPresenter
     @pagy, @orders = pagy(Order.order(created_at: :desc))
   end
 
   def show
     @order = order
-    @user_admin_presenter = UserAdminPresenter.new(@order)
+    # @user_admin_presenter = UserAdminPresenter.new(@order)
   end
 
   def order_status
     @order = order
-    @user_admin_presenter = UserAdminPresenter.new(@order)
+    # @user_admin_presenter = UserAdminPresenter.new(@order)
     if @order.update(state: params[:state])
       flash[:notice] = "Status updated to #{@order.state}"
     else
@@ -24,7 +24,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def payment_status
     @order = order
-    @user_admin_presenter = UserAdminPresenter.new(@order)
+    # @user_admin_presenter = UserAdminPresenter.new(@order)
     if @order.payment.update(aasm_state: params[:aasm_state])
       flash[:notice] = "Status updated to #{@order.payment.aasm_state}"
     else
@@ -35,7 +35,7 @@ class Admin::OrdersController < Admin::BaseController
 
   def shipment_status
     @order = order
-    @user_admin_presenter = UserAdminPresenter.new(@order)
+    # @user_admin_presenter = UserAdminPresenter.new(@order)
     if @order.shipment.update(aasm_state: params[:aasm_state])
       flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
     else

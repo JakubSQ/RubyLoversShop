@@ -2,6 +2,7 @@
 
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :checkout_admin!
 
   def new
     @order = Order.new
@@ -9,7 +10,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    order = Checkout::Creator.new.call(cart, (current_user || current_admin), params[:order][:address])
+    order = Checkout::Creator.new.call(cart, current_user, params[:order][:address])
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else
