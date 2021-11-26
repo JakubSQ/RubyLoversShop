@@ -6,5 +6,8 @@ class Address < ApplicationRecord
 
   validates :name, :street_name1, :city, :country, :state, :zip, :phone, presence: true
   validates :zip, format: { with: /\A\d{2}-\d{3}\z/, message: 'only allows this format 12-123' }
-  validates :phone, format: { with: /\A\d{9}\z/, message: 'only allows 9 digits format' }
+  validates :phone, format: { with: /\+\(?([0-9]{2})\)?([ .-]?)([0-9]{4})\2([0-9]{5})/, message: 'only allows 11 digits format with country direction' }
 end
+
+
+# /\A+\d{11}\z/
