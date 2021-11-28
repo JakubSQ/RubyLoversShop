@@ -18,6 +18,6 @@ FactoryBot.define do
       "state#{n}"
     end
     zip { "12-12#{(rand * 10).to_i}" }
-    phone { "12345678#{(rand * 10).to_i}" }
+    phone { "+4812345678#{(rand * 10).to_i}" }
   end
 end

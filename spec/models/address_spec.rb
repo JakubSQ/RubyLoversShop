@@ -48,6 +48,11 @@ RSpec.describe Address, type: :model do
   end
 
   context 'zip attribute' do
+    it 'is present' do
+      address.state = nil
+      expect(address).not_to be_valid
+    end
+
     it 'is present and have correct format (two dogits - three digits)' do
       address.state = '12-123'
       expect(address).to be_valid
@@ -55,8 +60,13 @@ RSpec.describe Address, type: :model do
   end
 
   context 'phone attribute' do
-    it 'is present and have correct format (nine digits)' do
-      address.phone = '123456789'
+    it 'is present' do
+      address.phone = nil
+      expect(address).not_to be_valid
+    end
+
+    it 'has correct format (+48 and 9 digits)' do
+      address.phone = '+48123456789'
       expect(address).to be_valid
     end
   end
