@@ -12,7 +12,6 @@ RSpec.describe Checkout, type: :model do
   it 'user checkouts an order' do
     Checkout::Creator.new.call(cart, user, address)
     order = Order.last
-    user = User.last
     expect(order.state).to eq('new')
     expect(order.user_id).to eq(user.id)
   end
