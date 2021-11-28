@@ -76,6 +76,7 @@ RSpec.describe 'LineItemQuantity', type: :request do
 
     context 'is not allowed to' do
       it 'type negative value in quantity field' do
+        allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
         patch update_path, params: { line_item: { quantity: -1 } }
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -83,6 +84,7 @@ RSpec.describe 'LineItemQuantity', type: :request do
       end
 
       it 'type string in quantity field' do
+        allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
         patch update_path, params: { line_item: { quantity: 'xyz' } }
         follow_redirect!
         expect(response).to have_http_status(:ok)
