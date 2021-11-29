@@ -10,9 +10,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    # binding.pry
-
-    order = Checkout::Creator.new.call(cart, current_user, params[:order][:billing_address])
+    order = Checkout::Creator.new.call(cart, current_user, order_params[:billing_address])
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else
@@ -36,8 +34,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit({ billing_address: [] })
+    params.require(:order).permit(billing_address: %i[name street_name1 street_name2 city country state zip
+                                                      phone])
   end
 end
-
-# params[:order][:address]
