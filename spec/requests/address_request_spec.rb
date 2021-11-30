@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'OrderAddress', type: :request do
   let(:cart) { create(:cart) }
-  let!(:address) { create(:address) }
+  let(:address) { create(:address) }
   let!(:line_item) { create(:line_item, cart_id: cart.id) }
 
   describe 'when logged in as user' do
@@ -24,6 +24,8 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone } } }
+        Payment.first.destroy
+        Shipment.first.destroy
         follow_redirect!
         expect(response).to have_http_status(:ok)
         expect(Order.last.billing_address_id).to be_present
@@ -48,13 +50,15 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone } } }
+        Payment.first.destroy
+        Shipment.first.destroy
         follow_redirect!
         expect(Order.last.billing_address_id).to eq(nil)
       end
     end
   end
 
-  describe 'without loggin in' do
+  describe 'without logging in' do
     let!(:admin) { create(:admin) }
 
     context 'guest is not allowed to create order' do
@@ -67,6 +71,8 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone } } }
+        Payment.first.destroy
+        Shipment.first.destroy
         follow_redirect!
         expect(Order.last.billing_address_id).to eq(nil)
       end
