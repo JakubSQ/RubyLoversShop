@@ -16,6 +16,8 @@ RSpec.describe 'OrderAddress', type: :request do
 
     context 'is allowed to create order' do
       it 'with correct address data' do
+        # binding.pry
+
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
         post orders_path, params: { order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
@@ -24,8 +26,6 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone } } }
-        Payment.first.destroy
-        Shipment.first.destroy
         follow_redirect!
         expect(response).to have_http_status(:ok)
         expect(Order.last.billing_address_id).to be_present
@@ -50,10 +50,8 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone } } }
-        Payment.first.destroy
-        Shipment.first.destroy
         follow_redirect!
-        expect(Order.last.billing_address_id).to eq(nil)
+        expect(Order.count).to eq(0)
       end
     end
   end
@@ -71,10 +69,8 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone } } }
-        Payment.first.destroy
-        Shipment.first.destroy
         follow_redirect!
-        expect(Order.last.billing_address_id).to eq(nil)
+        expect(Order.count).to eq(0)
       end
     end
   end

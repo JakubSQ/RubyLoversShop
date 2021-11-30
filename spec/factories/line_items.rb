@@ -8,6 +8,5 @@ FactoryBot.define do
     quantity { 10 }
     cart
     product
-    order
   end
 end
