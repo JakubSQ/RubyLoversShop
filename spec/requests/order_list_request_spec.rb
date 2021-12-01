@@ -4,9 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'AdminOrdersList', type: :request do
   describe 'GET orders#index' do
-    let!(:user) { create :user }
-    let!(:admin) { create :admin }
-    let!(:order) { create(:order, user_id: user.id) }
+    let!(:user) { create(:user) }
+    let!(:payment) { create(:payment) }
+    let!(:admin) { create(:admin) }
+    let!(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
 
     context 'when logged in as admin' do
       it 'gets list of orderes on orders page' do

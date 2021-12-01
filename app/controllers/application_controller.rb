@@ -13,6 +13,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def checkout_admin!
+    if admin_signed_in?
+      flash[:alert] = 'Admin cannot checkout order'
+      redirect_to root_path
+    end
+  end
+
   def layout_by_resource
     if devise_controller?
       'devise'

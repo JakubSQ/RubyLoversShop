@@ -2,17 +2,19 @@
 
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :checkout_admin!
 
   def new
+    @order = Order.new
     @cart = Cart.find(session[:cart_id])
   end
 
   def create
-    create_order = Checkout::Creator.new.call(cart, current_user)
-    if create_order.success?
+    order = Checkout::Creator.new.call(cart, current_user, order_params[:billing_address])
+    if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else
-      redirect_to root_path, notice: checkout.payload[:error]
+      redirect_to new_order_path, alert: order.payload[:error]
     end
   end
 
@@ -29,5 +31,10 @@ class OrdersController < ApplicationController
     cart = Cart.where(id: session[:cart_id]).first_or_create
     session[:cart_id] = cart.id
     cart
+  end
+
+  def order_params
+    params.require(:order).permit(billing_address: %i[name street_name1 street_name2 city country state zip
+                                                      phone])
   end
 end

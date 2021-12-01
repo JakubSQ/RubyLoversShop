@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe 'AdminOrdersList', type: :system do
   let!(:admin) { create(:admin) }
   let!(:user) { create(:user) }
-  let!(:order) { create(:order, user_id: user.id) }
+  let!(:payment) { create(:payment) }
+  let!(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
 
   before do
     driven_by(:rack_test)

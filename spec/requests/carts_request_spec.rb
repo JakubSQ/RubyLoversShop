@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Carts', type: :request do
   let!(:user) { create :user }
   let!(:product) { create :product }
+  let(:address) { create :address }
 
   describe 'Actions on products' do
     before do
@@ -38,7 +39,13 @@ RSpec.describe 'Carts', type: :request do
       it 'checks out the order' do
         post line_items_path(product_id: product.id), params: { quantity: 1 }
         post '/carts'
-        post '/orders'
+        post orders_path, params: { order: { billing_address: { name: address.name,
+                                                                street_name1: address.street_name1,
+                                                                city: address.city,
+                                                                country: address.country,
+                                                                state: address.state,
+                                                                zip: address.zip,
+                                                                phone: address.phone } } }
         follow_redirect!
 
         expect(response.body).to include 'Order successfully created'

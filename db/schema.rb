@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_28_172101) do
+ActiveRecord::Schema.define(version: 2021_11_26_171643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,19 @@ ActiveRecord::Schema.define(version: 2021_10_28_172101) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "street_name1", null: false
+    t.string "street_name2"
+    t.string "city", null: false
+    t.string "country", null: false
+    t.string "state", null: false
+    t.string "zip", null: false
+    t.string "phone", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "admins", force: :cascade do |t|
@@ -91,8 +104,8 @@ ActiveRecord::Schema.define(version: 2021_10_28_172101) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "payment_id"
     t.bigint "shipment_id"
-    t.bigint "admin_id"
-    t.index ["admin_id"], name: "index_orders_on_admin_id"
+    t.bigint "billing_address_id"
+    t.index ["billing_address_id"], name: "index_orders_on_billing_address_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
     t.index ["shipment_id"], name: "index_orders_on_shipment_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -139,7 +152,6 @@ ActiveRecord::Schema.define(version: 2021_10_28_172101) do
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
-  add_foreign_key "orders", "admins"
   add_foreign_key "orders", "payments"
   add_foreign_key "orders", "shipments"
   add_foreign_key "orders", "users"

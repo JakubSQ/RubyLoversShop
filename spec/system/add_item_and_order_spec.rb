@@ -4,8 +4,9 @@ require 'rails_helper'
 require 'selenium-webdriver'
 
 RSpec.describe 'Adding Item/Order', type: :system do
-  let!(:user) { create(:user) }
+  let(:user) { create(:user) }
   let!(:product) { create(:product) }
+  let(:address) { create(:address) }
 
   describe 'Item/Orders actions' do
     before do
@@ -40,6 +41,13 @@ RSpec.describe 'Adding Item/Order', type: :system do
         click_on product.name
         click_button 'Add to cart'
         click_on 'Checkout'
+        fill_in 'order_billing_address_name', with: address.name
+        fill_in 'order_billing_address_street_name1', with: address.street_name1
+        fill_in 'order_billing_address_city', with: address.city
+        fill_in 'order_billing_address_country', with: address.country
+        fill_in 'order_billing_address_state', with: address.state
+        fill_in 'order_billing_address_zip', with: address.zip
+        fill_in 'order_billing_address_phone', with: address.phone
         click_on 'Confirm checkout'
         expect(page).to have_content('Order successfully created')
       end
