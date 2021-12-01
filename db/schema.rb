@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_26_171643) do
+ActiveRecord::Schema.define(version: 2021_12_01_152505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_11_26_171643) do
     t.string "phone", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "ship_to_bill", default: false
   end
 
   create_table "admins", force: :cascade do |t|
@@ -105,9 +106,11 @@ ActiveRecord::Schema.define(version: 2021_11_26_171643) do
     t.bigint "payment_id"
     t.bigint "shipment_id"
     t.bigint "billing_address_id"
+    t.bigint "shipping_address_id"
     t.index ["billing_address_id"], name: "index_orders_on_billing_address_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
     t.index ["shipment_id"], name: "index_orders_on_shipment_id"
+    t.index ["shipping_address_id"], name: "index_orders_on_shipping_address_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
