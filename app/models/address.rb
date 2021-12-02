@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Address < ApplicationRecord
-  has_many  :billing_address, inverse_of: :address, class_name: 'Order', foreign_key: 'billing_address_id',
+  has_many  :billing_address, class_name: 'Order', foreign_key: 'billing_address_id',
                               dependent: :nullify
-  has_many  :shipping_address, inverse_of: :address, class_name: 'Order', foreign_key: 'billing_address_id',
+  has_many  :shipping_address, class_name: 'Order', foreign_key: 'billing_address_id',
                               dependent: :nullify
 
   validates :name, :street_name1, :city, :country, :state, :zip, :phone, presence: true
