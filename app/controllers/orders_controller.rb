@@ -10,7 +10,10 @@ class OrdersController < ApplicationController
   end
 
   def create
-    order = Checkout::Creator.new.call(cart, current_user, order_param)
+    
+    binding.pry
+    
+    order = Checkout::Creator.new.call(cart, current_user, order_params)
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
     else

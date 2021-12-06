@@ -29,6 +29,7 @@ module Checkout
     end
 
     def create_order(user, params)
+      return @error = "Invalid address" if params[:billing_address][:ship_to_bill] == '0' && params[:shipping_address].nil?
       if params[:billing_address][:ship_to_bill] == '0'
         billing_address = create_billing_address(params)
         shipping_address = create_shipping_address(params)
@@ -38,6 +39,9 @@ module Checkout
       end
       payment = create_payment
       shipment = create_shipment
+      
+      binding.pry
+      
       @order = Order.create!(user_id: user.id,
                             payment_id: payment.id,
                             shipment_id: shipment.id,
@@ -75,8 +79,8 @@ module Checkout
                       phone: params[:shipping_address][:phone])
     end
 
-
     def update_line_item(cart)
+      return @error = "Invalid address" if @order.nil?
       cart.line_items.each do |line_item|
         line_item.update!(cart_id: nil, order_id: @order.id)
       end
