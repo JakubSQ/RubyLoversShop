@@ -50,9 +50,6 @@ RSpec.describe 'OrderAddress', type: :request do
 
       it 'with two seperate addresses' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        
-        binding.pry
-        
         post orders_path, params: { order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
@@ -69,9 +66,6 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 zip: address1.zip,
                                                                 phone: address1.phone } } }
         follow_redirect!
-        
-        binding.pry
-        
         expect(response).to have_http_status(:ok)
         expect(Order.count).to eq(1)
       end
