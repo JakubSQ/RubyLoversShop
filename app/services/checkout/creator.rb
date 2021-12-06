@@ -39,9 +39,6 @@ module Checkout
       end
       payment = create_payment
       shipment = create_shipment
-      
-      binding.pry
-      
       @order = Order.create!(user_id: user.id,
                             payment_id: payment.id,
                             shipment_id: shipment.id,
