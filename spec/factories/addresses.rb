@@ -19,6 +19,5 @@ FactoryBot.define do
     end
     zip { "12-12#{(rand * 10).to_i}" }
     phone { "+4812345678#{(rand * 10).to_i}" }
-    ship_to_bill { 1 }
   end
 end

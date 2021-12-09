@@ -37,6 +37,6 @@ class OrdersController < ApplicationController
     params.require(:order).permit(billing_address: %i[name street_name1 street_name2 city country state zip
                                                       phone ship_to_bill],
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
-                                                        phone])
+                                                       phone])
   end
 end

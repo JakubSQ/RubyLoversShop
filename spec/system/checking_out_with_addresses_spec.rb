@@ -20,7 +20,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
     end
 
     context 'is allowed to checkout' do
-      it "with two seperate addresses" do
+      it 'with two seperate addresses' do
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -39,7 +39,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
         expect(page).to have_content('Order successfully created')
       end
 
-      it "with billing_address and checked checkbox" do
+      it 'with billing_address and checked checkbox' do
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -54,7 +54,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
     end
 
     context 'is not allowed to checkout' do
-      it "with only one address and unchecked checkbox" do
+      it 'with only one address and unchecked checkbox' do
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -70,7 +70,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
 
   describe 'When logged in as admin' do
     let(:admin) { create(:admin) }
-    
+
     before do
       driven_by(:rack_test)
       sign_in admin
@@ -80,7 +80,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
     end
 
     context 'is not allowed to checkout' do
-      it "with two seperate addresses" do
+      it 'with two seperate addresses' do
         click_on 'Checkout'
         expect(page).to have_content('Admin cannot checkout order')
       end
@@ -88,7 +88,6 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
   end
 
   describe 'Without logging in' do
-    
     before do
       driven_by(:rack_test)
       visit root_path
@@ -96,7 +95,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
     end
 
     context 'guest is not allowed to checkout' do
-      it "with two seperate addresses" do
+      it 'with two seperate addresses' do
         click_button 'Add to cart'
         expect(page).to have_content('You are not authorized')
       end

@@ -29,29 +29,33 @@ module Checkout
     end
 
     def create_order(user, params)
-      return @error = "Invalid address" if params[:billing_address][:ship_to_bill] == '0' && params[:shipping_address].nil?
-      if params[:billing_address][:ship_to_bill] == '0'
-        billing_address = create_billing_address(params)
-        shipping_address = create_shipping_address(params)
-      else
-        billing_address = create_billing_address(params)
-        shipping_address = billing_address
-      end
-      payment = create_payment
-      shipment = create_shipment
+      return @error = 'Invalid address' if address_form_valid?(params)
+
+      billing_address = create_billing_address(params)
+      shipping_address = if params[:billing_address][:ship_to_bill] == '0'
+                           create_shipping_address(params)
+                         else
+                           billing_address
+                         end
+      payment
+      shipment
       @order = Order.create!(user_id: user.id,
-                            payment_id: payment.id,
-                            shipment_id: shipment.id,
-                            billing_address_id: billing_address.id,
-                            shipping_address_id: shipping_address.id)
+                             payment_id: payment.id,
+                             shipment_id: shipment.id,
+                             billing_address_id: billing_address.id,
+                             shipping_address_id: shipping_address.id)
     end
 
-    def create_payment
+    def payment
       Payment.create!
     end
 
-    def create_shipment
+    def shipment
       Shipment.create!
+    end
+
+    def address_form_valid?(params)
+      params[:billing_address][:ship_to_bill] == '0' && params[:shipping_address].nil?
     end
 
     def create_billing_address(params)
@@ -77,7 +81,8 @@ module Checkout
     end
 
     def update_line_item(cart)
-      return @error = "Invalid address" if @order.nil?
+      return @error = 'Invalid address' if @order.nil?
+
       cart.line_items.each do |line_item|
         line_item.update!(cart_id: nil, order_id: @order.id)
       end

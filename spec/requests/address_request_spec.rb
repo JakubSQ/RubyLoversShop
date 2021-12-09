@@ -25,7 +25,7 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 state: address.state,
                                                                 zip: address.zip,
                                                                 phone: address.phone,
-                                                                ship_to_bill: 0 } } }                                                    
+                                                                ship_to_bill: 0 } } }
         follow_redirect!
         expect(response).to have_http_status(:ok)
         expect(Order.count).to eq(0)
@@ -58,13 +58,13 @@ RSpec.describe 'OrderAddress', type: :request do
                                                                 zip: address.zip,
                                                                 phone: address.phone,
                                                                 ship_to_bill: 0 },
-                                            shipping_address: { name: address1.name,
-                                                                street_name1: address1.street_name1,
-                                                                city: address1.city,
-                                                                country: address1.country,
-                                                                state: address1.state,
-                                                                zip: address1.zip,
-                                                                phone: address1.phone } } }
+                                             shipping_address: { name: address1.name,
+                                                                 street_name1: address1.street_name1,
+                                                                 city: address1.city,
+                                                                 country: address1.country,
+                                                                 state: address1.state,
+                                                                 zip: address1.zip,
+                                                                 phone: address1.phone } } }
         follow_redirect!
         expect(response).to have_http_status(:ok)
         expect(Order.count).to eq(1)
