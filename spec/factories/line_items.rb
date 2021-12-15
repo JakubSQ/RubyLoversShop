@@ -6,7 +6,6 @@ FactoryBot.define do
       n
     end
     quantity { 10 }
-    cart
     product
   end
 end

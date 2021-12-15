@@ -7,7 +7,7 @@ RSpec.describe 'LineItemQuantity', type: :request do
 
   let(:cart) { create(:cart) }
   let(:product) { create(:product) }
-  let(:line_item) { create(:line_item) }
+  let(:line_item) { create(:line_item, cart_id: cart.id) }
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
