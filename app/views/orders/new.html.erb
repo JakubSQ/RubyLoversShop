@@ -3,9 +3,11 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
-    Please, type your billing address 
+    Please, type your billing address or choose from the list below
     <br></br>
     <%= form_for @order do |a| %>
+    <%= collection_select(:user, :address_b, Address.where(user_id: current_user.id), :id, :name,
+                          { prompt: "None" }, { size: 1, class: "custom-select shadow rounded mb-2 mt-0" }) %>
       <%= a.fields_for :billing_address do |f| %>
         <div class="mb-3">
           <%= f.label :name, class: "form-label" %>
@@ -46,7 +48,9 @@
           <% end %>
       <% end %>
         <br></br>
-        Please, type your shipping address 
+        Please, type your shipping address or choose from the list below
+        <%= collection_select(:user, :address_s, Address.where(user_id: current_user.id), :id, :name,
+                              { prompt: "None" }, { size: 1, class: "custom-select shadow rounded" }) %>
         <br></br>
         <%= a.fields_for :shipping_address do |f| %>
         <div class="mb-3">
@@ -81,6 +85,11 @@
           <%= f.label :phone, class: "form-label" %>, remember to type your country code (e.g +48/your phone number/ - Poland)
           <%= f.text_field :phone, class: "form-control", pattern: "[+][0-9]{11}" %>
         </div>
+        <%= f.label :saved do %>
+        <div class="mb-3">
+          <%= f.check_box :saved %>  Check to save your address
+        </div>
+          <% end %>
         <div class="btn-group col mb-4" role="group" aria-label="Basic mixed styles example">
           <%= link_to 'Go back', @cart, class: "btn btn-danger" %>
           <%= f.submit 'Confirm checkout', class: "btn btn-success" %>
