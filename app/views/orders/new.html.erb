@@ -3,11 +3,13 @@
 	<div class="row">
 		<div class="col">
     Please, type your billing address or choose from the list below
-    <br></br>
-    <%= collection_select(:user, :address_b, current_user.addresses, :id, :name,
+    
+    <%= form_with url: orders_path, scope: :order, local: true do |order| %> 
+<%= collection_select(:user, :address_b, current_user.addresses.uniq, :id, :name,
                           { prompt: "None" }, { size: 1, class: "custom-select shadow rounded" }) %>
+                          <br></br>
       <div id="billing_address_hide">
-    <%= form_with url: orders_path, scope: :order, local: true do |order| %>                       
+                          
       <%= order.fields_for :billing_address do |f| %>
         <div class="mb-3">
           <%= f.label :name, class: "form-label" %>
@@ -89,13 +91,12 @@
           <%= f.label :phone, class: "form-label" %>, remember to type your country code (e.g +48/your phone number/ - Poland)
           <%= f.text_field :phone, class: "form-control", pattern: "[+][0-9]{11}" %>
         </div>
-        
+        </div>
         <div class="btn-group col mb-4" role="group" aria-label="Basic mixed styles example">
           <%= link_to 'Go back', @cart, class: "btn btn-danger" %>
           <%= f.submit 'Confirm checkout', class: "btn btn-success" %>
         </div>
       <% end %>
-      </div>
     <% end %>		
 	</div>
 
