@@ -2,8 +2,8 @@
 
 module Checkout
   class Creator
-    def call(cart, user, params)
-      if order_assignment(cart, user, params)
+    def call(cart, user, params, save_address)
+      if order_assignment(cart, user, params, save_address)
         OpenStruct.new({ success?: true, payload: @order })
       else
         OpenStruct.new({ success?: false, payload: { error: @error } })
@@ -12,10 +12,10 @@ module Checkout
 
     private
 
-    def order_assignment(cart, user, params)
+    def order_assignment(cart, user, params, save_address)
       if cart.line_items.present?
         ActiveRecord::Base.transaction do
-          create_order(user, params)
+          create_order(user, params, save_address)
           update_line_item(cart)
         end
       else
@@ -28,10 +28,10 @@ module Checkout
       nil if @error.present?
     end
 
-    def create_order(user, params)
+    def create_order(user, params, save_address)
       return @error = 'Invalid address' if address_form_valid?(params)
 
-      billing_address = create_billing_address(params)
+      billing_address = create_billing_address(user, params, save_address)
       shipping_address = if params[:billing_address][:ship_to_bill] == '0'
                            create_shipping_address(params)
                          else
@@ -50,7 +50,7 @@ module Checkout
       params[:billing_address][:ship_to_bill] == '0' && params[:shipping_address].nil?
     end
 
-    def create_billing_address(params)
+    def create_billing_address(user, params, save_address)
       Address.create!(name: params[:billing_address][:name],
                       street_name1: params[:billing_address][:street_name1],
                       street_name2: params[:billing_address][:street_name2],
@@ -58,7 +58,8 @@ module Checkout
                       country: params[:billing_address][:country],
                       state: params[:billing_address][:state],
                       zip: params[:billing_address][:zip],
-                      phone: params[:billing_address][:phone])
+                      phone: params[:billing_address][:phone],
+                      user_id: (user.id if save_address == '1'))
     end
 
     def create_shipping_address(params)

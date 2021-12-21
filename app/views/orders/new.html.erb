@@ -1,14 +1,14 @@
 <%= render(@cart.line_items) %>
-
 <div class="container">
 	<div class="row">
 		<div class="col">
     Please, type your billing address or choose from the list below
     <br></br>
-    <%= form_for @order do |a| %>
-    <%= collection_select(:user, :address_b, Address.where(user_id: current_user.id), :id, :name,
-                          { prompt: "None" }, { size: 1, class: "custom-select shadow rounded mb-2 mt-0" }) %>
-      <%= a.fields_for :billing_address do |f| %>
+    <%= collection_select(:user, :address_b, current_user.addresses, :id, :name,
+                          { prompt: "None" }, { size: 1, class: "custom-select shadow rounded" }) %>
+      <div id="billing_address_hide">
+    <%= form_with url: orders_path, scope: :order, local: true do |order| %>                       
+      <%= order.fields_for :billing_address do |f| %>
         <div class="mb-3">
           <%= f.label :name, class: "form-label" %>
           <%= f.text_field :name, class: "form-control" %>
@@ -40,19 +40,23 @@
         <div class="mb-3">
           <%= f.label :phone, class: "form-label" %>, remember to type your country code (e.g +48/your phone number/ - Poland)
           <%= f.text_field :phone, class: "form-control", pattern: "[+][0-9]{11}" %>
+        </div>
+        <div class="mb-3">
+          <%= check_box_tag 'save_address' %>  Check to save your address
+        </div> 
         </div>
           <%= f.label :ship_to_bill do %>
         <div class="mb-3">
           <%= f.check_box :ship_to_bill %>  Check if billing address is the same as shipping address
         </div>
-          <% end %>
+          <% end %> 
       <% end %>
+      
+      <div id="shipping_address_hide">
         <br></br>
         Please, type your shipping address or choose from the list below
-        <%= collection_select(:user, :address_s, Address.where(user_id: current_user.id), :id, :name,
-                              { prompt: "None" }, { size: 1, class: "custom-select shadow rounded" }) %>
         <br></br>
-        <%= a.fields_for :shipping_address do |f| %>
+        <%= order.fields_for :shipping_address do |f| %>
         <div class="mb-3">
           <%= f.label :name, class: "form-label" %>
           <%= f.text_field :name, class: "form-control" %>
@@ -85,16 +89,38 @@
           <%= f.label :phone, class: "form-label" %>, remember to type your country code (e.g +48/your phone number/ - Poland)
           <%= f.text_field :phone, class: "form-control", pattern: "[+][0-9]{11}" %>
         </div>
-        <%= f.label :saved do %>
-        <div class="mb-3">
-          <%= f.check_box :saved %>  Check to save your address
-        </div>
-          <% end %>
+        
         <div class="btn-group col mb-4" role="group" aria-label="Basic mixed styles example">
           <%= link_to 'Go back', @cart, class: "btn btn-danger" %>
           <%= f.submit 'Confirm checkout', class: "btn btn-success" %>
         </div>
-      <% end %>	
+      <% end %>
+      </div>
     <% end %>		
 	</div>
-</div>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#order_billing_address_ship_to_bill').click(function(){
+            if($(this).prop("checked") == true){
+                $("#shipping_address_hide").hide();
+            }
+            else if($(this).prop("checked") == false){
+                $("#shipping_address_hide").show();
+            }
+        });
+    $("#user_address_b").change(function(){
+        $(this).find("option:selected").each(function(){
+            var optionValue = $(this).attr("value");
+            if(optionValue){
+                $("#billing_address_hide").hide();
+            } else{
+                $("#billing_address_hide").show();
+            }
+        });
+    }).change();
+    });
+</script>
+
+
