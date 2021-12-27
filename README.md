@@ -4,7 +4,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Features](#features)
-* [Setup](#setup)
+* [Getting started](#getting-started)
 
 ## General info
 This project is simple Lorem ipsum dolor generator.
@@ -15,9 +15,6 @@ Project is created with:
 * Ipsum version: 2.33
 * Ament library version: 999
 	
-## Setup
-To run this project, install it locally using npm:
-
 ## Features
 - **App**
   - User Authentication using  (BCrypt gem)
@@ -37,3 +34,30 @@ To run this project, install it locally using npm:
   - - Use more Ajax requests
   - - Implementing tickets
   - - Implementing shipping
+
+## Getting started
+
+To get started with the app, clone the repo and then install the needed gems:
+
+```
+$ bundle install --without production
+```
+
+Next, migrate the database:
+
+```
+$ rails db:migrate
+```
+
+Finally, run the test suite to verify that everything is working correctly: THE TESTS FAIL (Because i didn't corrected them all loool! )
+
+```
+$ rails test
+```
+
+If the test suite passes, you'll be ready to run the app in a local server:
+
+```
+$ rails server
+```
+
