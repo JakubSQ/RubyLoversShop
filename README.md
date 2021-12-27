@@ -53,14 +53,14 @@ $ rails server
   - Admin and User roles
   - Pagination (Pagy gem)
   - Search engine (Ransack gem)
-  - Proceed products to cart (remove and edit products quantity on cart)
+  - Adding products to cart (remove and edit products quantity on cart)
   - Add/edit/delete products
-  - Checkout Orders
+  - Checkout orders
   - Billing and shipping address
   - Edit/destroy orders (Admin)
   - State machine for orders (aasm gem)
   - whole app tested by rspec gem
-- _**Working on it**_
+- _**Work in progress**_
   - - Implementing loyalty programs
   - - Implementing membership options
   - - Implementing payment methods
