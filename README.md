@@ -7,7 +7,7 @@
 * [Features](#features)
 
 ## General info
-This project is simple Lorem ipsum dolor generator.
+This project is an ecommerce app 
 	
 ## Technologies
 Project is created with:
@@ -21,7 +21,7 @@ Project is created with:
 To get started with the app, clone the repo and then install the needed gems:
 
 ```
-$ bundle install --without production
+$ bundle install
 ```
 
 Next, migrate the database:
@@ -30,9 +30,15 @@ Next, migrate the database:
 $ rails db:migrate
 ```
 
+run prepared seeds:
+
+```
+$ rails db:seed
+```
+
 Finally, run the test suite to verify that everything is working correctly
 ```
-$ rails test
+$ rails rspec
 ```
 
 If the test suite passes, you'll be ready to run the app in a local server:
@@ -43,22 +49,21 @@ $ rails server
 	
 ## Features
 - **App**
-  - User Authentication using  (BCrypt gem)
-  - ADMIN and User roles 
-  - Products icons saved on Google Cloud or Amazon Cloud
-  - Email Account Activation
-  - Users can follow other users
-  - Twitter like feed mechenism for followers
-  - Beautiful Search Bars
-  - Beautiful Paginations
-  - Users can post articles
-  - Proceed products to cart
-  - Make Orders
-  - Edit , destroy orders (Admin)
+  - User/Admin authentication (Devise gem)
+  - Admin and User roles
+  - Pagination (Pagy gem)
+  - Search engine (Ransack gem)
+  - Proceed products to cart (remove and edit products quantity on cart)
+  - Add/edit/delete products
+  - Checkout Orders
+  - Billing and shipping address
+  - Edit/destroy orders (Admin)
+  - State machine for orders (aasm gem)
+  - whole app tested by rspec gem
 - _**Working on it**_
-  - - Implement State Machine
-  - - Use more Ajax requests
-  - - Implementing tickets
-  - - Implementing shipping
+  - - Implementing loyalty programs
+  - - Implementing membership options
+  - - Implementing payment methods
+  - - guest to be able to checkout an order
 
 
