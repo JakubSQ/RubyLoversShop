@@ -7,7 +7,7 @@
 * [Features](#features)
 
 ## General info
-This project is an ecommerce app 
+This repository contains the E-Commerce app, which relies on Ruby On Rails as backend framework and Bootstrap as frontend CSS library. It handles whole process of sorting or filtering products by its attributes, buying and managing them within shopping cart and finally creating orders with specific billing/shipping information. Admin's seperate layer handles functionality of adding/editing new products and managing newly created orders.
 	
 ## Technologies
 Project is created with:
@@ -46,6 +46,13 @@ If the test suite passes, you'll be ready to run the app in a local server:
 ```
 $ rails server
 ```
+
+Open your browser 
+
+```
+$ http://127.0.0.1:8000/ 
+```
+
 	
 ## Features
 - **App**
