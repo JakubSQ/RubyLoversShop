@@ -5,7 +5,7 @@
     Please, type your billing address or choose from the list below
     
     <%= form_with url: orders_path, scope: :order, local: true do |order| %> 
-<%= collection_select(:user, :address_b, current_user.addresses.uniq, :id, :name,
+    <%= collection_select(:user, :address_b, current_user.addresses, :id, :name,
                           { prompt: "None" }, { size: 1, class: "custom-select shadow rounded" }) %>
                           <br></br>
       <div id="billing_address_hide">

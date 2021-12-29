@@ -11,7 +11,7 @@ RSpec.describe Checkout, type: :model do
   let!(:line_item) { create(:line_item, cart_id: cart.id) }
 
   it 'user checkouts an order' do
-    params = { billing_address: address.as_json.symbolize_keys, shipping_address: address1.as_json.symbolize_keys }
+    params = { billing_address: address.as_json.symbolize_keys, shipping_address: address1.as_json.symbolize_keys, user_address: '' }
     a = Checkout::Creator.new.call(cart, user, params)
     expect(a.payload.state).to eq('new')
     expect(a.payload.user_id).to eq(user.id)

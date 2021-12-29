@@ -2,8 +2,8 @@
 
 module Checkout
   class Creator
-    def call(cart, params)
-      if order_assignment(cart, params)
+    def call(cart, user, params)
+      if order_assignment(cart, user, params)
         OpenStruct.new({ success?: true, payload: @order })
       else
         OpenStruct.new({ success?: false, payload: { error: @error } })
@@ -12,10 +12,10 @@ module Checkout
 
     private
 
-    def order_assignment(cart, params)
+    def order_assignment(cart, user, params)
       if cart.line_items.present?
         ActiveRecord::Base.transaction do
-          create_order(params)
+          create_order(user, params)
           update_line_item(cart)
         end
       else
@@ -28,10 +28,10 @@ module Checkout
       nil if @error.present?
     end
 
-    def create_order(params)
+    def create_order(user, params)
       return @error = 'Invalid address' if address_form_valid?(params)
 
-      billing_address = create_billing_address(params)
+      billing_address = create_billing_address(user, params)
       shipping_address = if params[:billing_address][:ship_to_bill] == '0'
                            create_shipping_address(params)
                          else
@@ -39,7 +39,7 @@ module Checkout
                          end
       payment ||= Payment.create!
       shipment ||= Shipment.create!
-      @order = Order.create!(user_id: params[:user_id],
+      @order = Order.create!(user_id: user.id,
                              payment_id: payment.id,
                              shipment_id: shipment.id,
                              billing_address_id: billing_address.id,
@@ -50,15 +50,18 @@ module Checkout
       params[:billing_address][:ship_to_bill] == '0' && params[:shipping_address].nil?
     end
 
-    def create_billing_address(params)
+    def create_billing_address(user, params)
       if params[:user_address].empty?
-        new_billing_address(params)
+        new_billing_address(user, params)
       else
         duplicate_address(params)
       end
     end
 
-    def new_billing_address(params)
+    def new_billing_address(user, params)
+      
+      # binding.pry
+      
       Address.create!(name: params[:billing_address][:name],
                       street_name1: params[:billing_address][:street_name1],
                       street_name2: params[:billing_address][:street_name2],
@@ -67,7 +70,11 @@ module Checkout
                       state: params[:billing_address][:state],
                       zip: params[:billing_address][:zip],
                       phone: params[:billing_address][:phone],
-                      user_id: (params[:user_id] if params[:save_address] == '1'))
+                      user_id: name_valid(user, params))
+    end
+
+    def name_valid(user, params)
+      user.id if params[:save_address] == '1' && user.addresses.map(&:name).exclude?(params[:billing_address][:name])
     end
 
     def duplicate_address(params)
