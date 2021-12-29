@@ -17,14 +17,16 @@ RSpec.describe 'OrderSaveAddress', type: :request do
     context 'is allowed to' do
       it 'save address during checkout' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { save_address: 1, user: { address_b: '' }, order: { billing_address: { name: address.name,
-                                                                                                          street_name1: address.street_name1,
-                                                                                                          city: address.city,
-                                                                                                          country: address.country,
-                                                                                                          state: address.state,
-                                                                                                          zip: address.zip,
-                                                                                                          phone: address.phone,
-                                                                                                          ship_to_bill: 1 } } }
+        post orders_path, params: { save_address: 1,
+                                    user: { address_b: '' },
+                                    order: { billing_address: { name: address.name,
+                                                                street_name1: address.street_name1,
+                                                                city: address.city,
+                                                                country: address.country,
+                                                                state: address.state,
+                                                                zip: address.zip,
+                                                                phone: address.phone,
+                                                                ship_to_bill: 1 } } }
 
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -44,14 +46,16 @@ RSpec.describe 'OrderSaveAddress', type: :request do
     context 'is not allowed to' do
       it 'save address during checkout' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { save_address: 1, user: { address_b: '' }, order: { billing_address: { name: address.name,
-                                                                                                          street_name1: address.street_name1,
-                                                                                                          city: address.city,
-                                                                                                          country: address.country,
-                                                                                                          state: address.state,
-                                                                                                          zip: address.zip,
-                                                                                                          phone: address.phone,
-                                                                                                          ship_to_bill: 1 } } }
+        post orders_path, params: { save_address: 1,
+                                    user: { address_b: '' },
+                                    order: { billing_address: { name: address.name,
+                                                                street_name1: address.street_name1,
+                                                                city: address.city,
+                                                                country: address.country,
+                                                                state: address.state,
+                                                                zip: address.zip,
+                                                                phone: address.phone,
+                                                                ship_to_bill: 1 } } }
 
         follow_redirect!
         expect(response).to have_http_status(:ok)
@@ -68,16 +72,18 @@ RSpec.describe 'OrderSaveAddress', type: :request do
     end
 
     context 'is not allowed to' do
-      it 'save address during checkout' do
+      it 'a save address during checkout' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { save_address: 1, user: { address_b: '' }, order: { billing_address: { name: address.name,
-                                                                                                          street_name1: address.street_name1,
-                                                                                                          city: address.city,
-                                                                                                          country: address.country,
-                                                                                                          state: address.state,
-                                                                                                          zip: address.zip,
-                                                                                                          phone: address.phone,
-                                                                                                          ship_to_bill: 1 } } }
+        post orders_path, params: { save_address: 1,
+                                    user: { address_b: '' },
+                                    order: { billing_address: { name: address.name,
+                                                                street_name1: address.street_name1,
+                                                                city: address.city,
+                                                                country: address.country,
+                                                                state: address.state,
+                                                                zip: address.zip,
+                                                                phone: address.phone,
+                                                                ship_to_bill: 1 } } }
 
         follow_redirect!
         expect(response).to have_http_status(:ok)

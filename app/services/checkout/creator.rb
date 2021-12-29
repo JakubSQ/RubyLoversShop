@@ -59,17 +59,15 @@ module Checkout
     end
 
     def new_billing_address(user, params)
-      
-      # binding.pry
-      
-      Address.create!(name: params[:billing_address][:name],
-                      street_name1: params[:billing_address][:street_name1],
-                      street_name2: params[:billing_address][:street_name2],
-                      city: params[:billing_address][:city],
-                      country: params[:billing_address][:country],
-                      state: params[:billing_address][:state],
-                      zip: params[:billing_address][:zip],
-                      phone: params[:billing_address][:phone],
+      bill_address_param = params[:billing_address]
+      Address.create!(name: bill_address_param[:name],
+                      street_name1: bill_address_param[:street_name1],
+                      street_name2: bill_address_param[:street_name2],
+                      city: bill_address_param[:city],
+                      country: bill_address_param[:country],
+                      state: bill_address_param[:state],
+                      zip: bill_address_param[:zip],
+                      phone: bill_address_param[:phone],
                       user_id: name_valid(user, params))
     end
 
