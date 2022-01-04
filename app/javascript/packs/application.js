@@ -6,7 +6,6 @@ import '../stylesheets/application';
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("jquery")
 require("@rails/ujs").start()
 require("@rails/activestorage").start()
 

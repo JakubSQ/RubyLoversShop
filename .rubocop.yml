@@ -13,6 +13,9 @@ AllCops:
     - node_modules/**/**
 Layout/LineLength:
   Max: 120
+Lint/DeprecatedConstants:
+  Exclude:
+    - app/services/checkout/creator.rb
 Metrics/ClassLength:
   Max: 200
 Metrics/MethodLength:

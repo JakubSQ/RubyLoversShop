@@ -67,13 +67,15 @@ module Checkout
     end
 
     def user_id(user, params)
-      if params[:save_address] == TRUE && user.addresses.map(&:name).exclude?(params[:billing_address][:name])
-        user.id
-      elsif params[:save_address] == nil && user.addresses.map(&:name).include?(params[:billing_address][:name])
-        user.id
-      else
-        nil
-      end
+      user.id if user_conditions_valid?(user, params)
+    end
+
+    def user_conditions_valid?(user, params)
+      bill_address_name_param = params[:billing_address][:name]
+      save_address = params[:save_address]
+      (save_address == TRUE && user.addresses.map(&:name).exclude?(bill_address_name_param)) ||
+        ((save_address.nil? || save_address == TRUE) &&
+        user.addresses.map(&:name).include?(bill_address_name_param))
     end
 
     def create_shipping_address(params)
