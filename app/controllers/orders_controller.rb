@@ -9,7 +9,17 @@ class OrdersController < ApplicationController
     @cart = Cart.find(session[:cart_id])
   end
 
+  def set_address
+    @address = Address.where(id: params[:address_id]).first
+    respond_to do |format|
+      format.json { render json: @address }
+    end
+  end
+
   def create
+    
+    binding.pry
+    
     order = Checkout::Creator.new.call(cart, current_user, order_params)
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'

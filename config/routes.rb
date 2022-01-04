@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: "pages#home"
+  get 'orders/set_address', to: 'orders#set_address', as: 'set_address'
   resources :orders, only: [:new, :create, :destroy]
   resources :products, only: [:index, :show]
   resources :line_items, only: [:create, :destroy, :update]

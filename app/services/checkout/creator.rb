@@ -51,36 +51,50 @@ module Checkout
     end
 
     def create_billing_address(user, params)
-      if params[:user_address].empty?
-        new_billing_address(user, params)
-      else
-        duplicate_address(params)
-      end
-    end
-
-    def new_billing_address(user, params)
       bill_address_param = params[:billing_address]
-      Address.create!(name: bill_address_param[:name],
-                      street_name1: bill_address_param[:street_name1],
-                      street_name2: bill_address_param[:street_name2],
-                      city: bill_address_param[:city],
-                      country: bill_address_param[:country],
-                      state: bill_address_param[:state],
-                      zip: bill_address_param[:zip],
-                      phone: bill_address_param[:phone],
-                      user_id: name_valid(user, params))
+      Address.where(id: params[:user_address],
+                    name: bill_address_param[:name],
+                    street_name1: bill_address_param[:street_name1],
+                    street_name2: bill_address_param[:street_name2],
+                    city: bill_address_param[:city],
+                    country: bill_address_param[:country],
+                    state: bill_address_param[:state],
+                    zip: bill_address_param[:zip],
+                    phone: bill_address_param[:phone],
+                    user_id: user_id(user, params)).first_or_create!
     end
 
-    def name_valid(user, params)
+    # def create_billing_address(user, params)
+    #   if params[:user_address].empty?
+    #     new_billing_address(user, params)
+    #   else
+    #     duplicate_address(params)
+    #   end
+    # end
+
+    # def new_billing_address(user, params)
+    #   bill_address_param = params[:billing_address]
+    #   Address.create!(name: bill_address_param[:name],
+    #                   street_name1: bill_address_param[:street_name1],
+    #                   street_name2: bill_address_param[:street_name2],
+    #                   city: bill_address_param[:city],
+    #                   country: bill_address_param[:country],
+    #                   state: bill_address_param[:state],
+    #                   zip: bill_address_param[:zip],
+    #                   phone: bill_address_param[:phone],
+    #                   user_id: user_id(user, params))
+    # end
+
+    def user_id(user, params)
       user.id if params[:save_address] == '1' && user.addresses.map(&:name).exclude?(params[:billing_address][:name])
     end
 
-    def duplicate_address(params)
-      new_record = Address.find(params[:user_address]).dup
-      new_record[:user_id] = nil
-      new_record.save!
-      new_record
-    end
+    # def duplicate_address(params)
+    #   new_record = Address.find(params[:user_address]).dup
+    #   new_record[:user_id] = nil
+    #   new_record.save!
+    #   new_record
+    # end
 
     def create_shipping_address(params)
       Address.create!(name: params[:shipping_address][:name],

@@ -6,6 +6,7 @@ import '../stylesheets/application';
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
+require("jquery")
 require("@rails/ujs").start()
 require("@rails/activestorage").start()
 
@@ -15,6 +16,11 @@ require("@rails/activestorage").start()
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+var jQuery = require('jquery')
+
+global.$ = global.jQuery = jQuery;
+window.$ = window.jQuery = jQuery;
 
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
