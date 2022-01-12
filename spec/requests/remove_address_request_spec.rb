@@ -31,7 +31,7 @@ RSpec.describe 'UserRemoveAddress', type: :request do
     end
 
     it 'is not able to get to checkout page' do
-      get "/orders/new"
+      get '/orders/new'
 
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to '/'
@@ -40,7 +40,7 @@ RSpec.describe 'UserRemoveAddress', type: :request do
 
   context 'without logging in' do
     it 'guest is not able to get to checkout page' do
-      get "/orders/new"
+      get '/orders/new'
 
       expect(response).to have_http_status(:found)
       expect(response).to redirect_to '/'
