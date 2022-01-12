@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require "selenium-webdriver" 
+require 'selenium-webdriver'
 
 RSpec.describe 'LineItemQuantity', type: :system do
   let(:cart) { create(:cart) }

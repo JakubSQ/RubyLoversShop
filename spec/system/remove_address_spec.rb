@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require "selenium-webdriver" 
+require 'selenium-webdriver'
 
 RSpec.describe 'Remove address during checkout', type: :system, js: true do
   let!(:product) { create(:product) }
@@ -16,19 +16,17 @@ RSpec.describe 'Remove address during checkout', type: :system, js: true do
     let!(:address) { create(:address, user_id: user.id) }
     let!(:address1) { create(:address, user_id: user.id) }
 
-    before do
-      
-    end
-
     it 'is allowed to remove address during checkout' do
       sign_in user
       visit root_path
       click_on product.name
       click_button 'Add to cart'
       click_on 'Checkout'
-      select("#{address.name}", from: 'user_address_b', match: :first)
-      click_on 'remove_address'
+      select(address.name.to_s, from: 'user_address_b', match: :first)
+      click_on 'Remove address'
+      user.reload
 
+      expect(page).to have_content('Address has been removed')
       expect(user.addresses.count).to eq(1)
     end
   end
