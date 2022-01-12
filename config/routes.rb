@@ -8,9 +8,6 @@ Rails.application.routes.draw do
   resources :carts, only: [:show, :create, :destroy]
   devise_for :admins
   devise_for :users, controllers: { sessions: 'users/sessions' } do
-    member do 
-      patch :remove_address
-    end
   end
 
   namespace :admin do
