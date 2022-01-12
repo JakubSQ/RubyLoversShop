@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
   end
 
   def remove_address
-    @address = Address.where(id: params[:address_id]).first   
+    @address = Address.where(id: params[:address_id]).first
     if @address.nil?
       flash[:alert] = "Please, select saved address"
     else
