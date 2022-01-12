@@ -9,6 +9,16 @@ class OrdersController < ApplicationController
     @cart = Cart.find(session[:cart_id])
   end
 
+  def remove_address
+    @address = Address.where(id: params[:address_id]).first   
+    if @address.nil?
+      flash[:alert] = "Please, select saved address"
+    else
+      @address.update(user_id: nil)
+      flash[:notice] = "Address has been removed"
+    end
+  end
+
   def set_address
     @address = Address.where(id: params[:address_id]).first
     respond_to do |format|

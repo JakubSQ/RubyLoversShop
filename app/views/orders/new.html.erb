@@ -6,6 +6,7 @@
         <%= form_with url: orders_path, scope: :order, local: true do |order| %>
         <%= collection_select(:user, :address_b, current_user.addresses, :id, :name,
                               { prompt: "None" }, { size: 1, class: "custom-select shadow rounded" }) %>
+                              <%= button_tag 'Remove  address', type: 'button', id: "remove_address", class: "btn btn-warning mt-2" %>
                               <br></br>
           <div id="billing_address_hide">                
           <%= order.fields_for :billing_address do |f| %>
@@ -140,6 +141,18 @@ $(document).ready(function(){
     else if($(this).prop("checked") == false){
         $("#shipping_address_hide").show();
     }
+  });
+  $('#remove_address').click(function(){
+    $.ajax({
+      type: "PATCH",
+      url: "<%= remove_address_path %>",
+      data: {
+      address_id: $("#user_address_b option:selected").val()
+      },
+      dataType: "json"
+    }).done(function refreshPage() {
+        location.reload();
+    })
   });
 });
 </script>
