@@ -5,8 +5,25 @@ class OrdersController < ApplicationController
   before_action :checkout_admin!
 
   def new
+    # @order = Order.new
+    @cart = Cart.find(session[:cart_id])
+  end
+
+  def confirm
+    @order_params = order_params
     @order = Order.new
     @cart = Cart.find(session[:cart_id])
+    
+    binding.pry
+    
+    if addresses_errors.any?
+      
+      binding.pry
+      
+      redirect_to new_order_path, alert: addresses_errors
+    else
+      render :confirm 
+    end
   end
 
   def remove_address
@@ -27,6 +44,9 @@ class OrdersController < ApplicationController
   end
 
   def create
+    
+    binding.pry
+    
     order = Checkout::Creator.new.call(cart, current_user, order_params)
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
@@ -56,5 +76,20 @@ class OrdersController < ApplicationController
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
                                                        phone saved]).merge(user_address: params[:user][:address_b],
                                                                            save_address: params[:save_address])
+  end
+
+  def addresses_errors
+    order = Order.new
+    if order_params[:billing_address][:ship_to_bill] == '0'
+      address = order.build_billing_address(order_params[:billing_address])
+      address.valid?
+      address1 = order.build_shipping_address(order_params[:shipping_address])
+      address1.valid?
+      address.errors.full_messages + address1.errors.full_messages
+    else
+      address = order.build_billing_address(order_params[:billing_address])
+      address.valid?
+      address.errors.full_messages
+    end
   end
 end

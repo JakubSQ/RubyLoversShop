@@ -1,0 +1,95 @@
+<%= render(@cart.line_items) %>
+
+<%= @order_params %>
+
+
+
+<%= form_with url: orders_path, scope: :order, local: true do |order| %>
+<%= hidden_field :user, :address, value: @order_params[:user_address] %> 
+          <div id="billing_address_hide">                
+          <%= order.fields_for :billing_address do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, readonly: true, class: "form-control", value: @order_params[:billing_address][:name] %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :street_name1, class: "form-label" %>
+              <%= f.text_field :street_name1, readonly: true, class: "form-control", value: @order_params[:billing_address][:street_name1]  %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :street_name2, class: "form-label"  %>
+              <%= f.text_field :street_name2, readonly: true, class: "form-control", value: @order_params[:billing_address][:street_name2] %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :city, class: "form-label"  %>
+              <%= f.text_field :city, readonly: true, class: "form-control", value: @order_params[:billing_address][:city] %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :country, class: "form-label"  %>
+              <%= f.text_field :country, readonly: true, class: "form-control", value: @order_params[:billing_address][:country] %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :state, class: "form-label" %>
+              <%= f.text_field :state, readonly: true, class: "form-control", value: @order_params[:billing_address][:state] %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :zip, class: "form-label" %>
+              <%= f.text_field :zip, readonly: true, class: "form-control", value: @order_params[:billing_address][:zip], pattern: "[0-9]{2}[-][0-9]{3}" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :phone, class: "form-label" %>, remember to type your country code (e.g +48/your phone number/ - Poland)
+              <%= f.text_field :phone, readonly: true, class: "form-control", value: @order_params[:billing_address][:phone], pattern: "[+][0-9]{11}" %>
+            </div>
+            <div class="mb-3">
+              <%= check_box_tag 'save_address' %>  Check to save your address
+            </div> 
+            </div>
+
+            <div class="mb-3">
+              <%= f.hidden_field :ship_to_bill, value: @order_params[:billing_address][:ship_to_bill] %> 
+
+          <% end %>
+          <div id="shipping_address_hide">
+            <br></br>
+            Please, type your shipping address
+            <br></br>
+            <%= order.fields_for :shipping_address do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :street_name1, class: "form-label" %>
+              <%= f.text_field :street_name1, class: "form-control"  %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :street_name2, class: "form-label"  %>
+              <%= f.text_field :street_name2, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :city, class: "form-label"  %>
+              <%= f.text_field :city, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :country, class: "form-label"  %>
+              <%= f.text_field :country, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :state, class: "form-label" %>
+              <%= f.text_field :state, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :zip, class: "form-label" %>
+              <%= f.text_field :zip, class: "form-control", pattern: "[0-9]{2}[-][0-9]{3}" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :phone, class: "form-label" %>, remember to type your country code (e.g +48/your phone number/ - Poland)
+              <%= f.text_field :phone, class: "form-control", pattern: "[+][0-9]{11}" %>
+            </div>
+            </div>
+            <div class="btn-group col mb-4" role="group" aria-label="Basic mixed styles example">
+              <%= link_to 'Go back', :back, class: "btn btn-danger" %>
+              <%= f.submit 'Confirm checkout', class: "btn btn-success" %>
+            </div>
+          <% end %>
+        <% end %>		
