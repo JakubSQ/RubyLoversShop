@@ -36,7 +36,7 @@ RSpec.describe 'OrderAddress', type: :request do
     context 'is allowed to create order' do
       it 'with only one address and checked checkbox' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { user: { address_b: '' },
+        post orders_path, params: { save_address: 'value ', user: { address_b: '' },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
@@ -52,7 +52,7 @@ RSpec.describe 'OrderAddress', type: :request do
 
       it 'with two seperate addresses' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { user: { address_b: '' },
+        post orders_path, params: { save_address: 'value ', user: { address_b: '' },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,

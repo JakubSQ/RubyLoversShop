@@ -30,6 +30,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
         check 'order_billing_address_ship_to_bill'
         check 'save_address'
         click_on 'Confirm checkout'
+        click_on 'Confirm checkout'
         expect(user.addresses.count).to eq(1)
       end
     end

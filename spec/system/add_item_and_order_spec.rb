@@ -50,6 +50,7 @@ RSpec.describe 'Adding Item/Order', type: :system do
         fill_in 'order_billing_address_phone', with: address.phone
         check 'order_billing_address_ship_to_bill'
         click_on 'Confirm checkout'
+        click_on 'Confirm checkout'
         expect(page).to have_content('Order successfully created')
       end
     end
