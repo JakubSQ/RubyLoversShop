@@ -72,9 +72,9 @@ module Checkout
 
     def user_conditions_valid?(user, params)
       bill_address_name_param = params[:billing_address][:name]
-      save_address = params[:save_address]
+      save_address = params[:save_address].gsub('value ', '')
       (save_address == TRUE && user.addresses.map(&:name).exclude?(bill_address_name_param)) ||
-        ((save_address.nil? || save_address == TRUE) &&
+        ((save_address.empty? || save_address == TRUE) &&
         user.addresses.map(&:name).include?(bill_address_name_param))
     end
 

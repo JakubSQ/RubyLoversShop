@@ -5,21 +5,13 @@ class OrdersController < ApplicationController
   before_action :checkout_admin!
 
   def new
-    # @order = Order.new
     @cart = Cart.find(session[:cart_id])
   end
 
   def confirm
-    @order_params = order_params
     @order = Order.new
     @cart = Cart.find(session[:cart_id])
-    
-    binding.pry
-    
     if addresses_errors.any?
-      
-      binding.pry
-      
       redirect_to new_order_path, alert: addresses_errors
     else
       render :confirm 
@@ -44,9 +36,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    
-    binding.pry
-    
     order = Checkout::Creator.new.call(cart, current_user, order_params)
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
@@ -74,7 +63,7 @@ class OrdersController < ApplicationController
     params.require(:order).permit(billing_address: %i[name street_name1 street_name2 city country state zip
                                                       phone ship_to_bill],
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
-                                                       phone saved]).merge(user_address: params[:user][:address_b],
+                                                       phone]).merge(user_address: params[:user][:address_b],
                                                                            save_address: params[:save_address])
   end
 
