@@ -11,6 +11,7 @@ class OrdersController < ApplicationController
   def confirm
     @order = Order.new
     @cart = Cart.find(session[:cart_id])
+    @address_presenter = AddressPresenter.new(params)
     if addresses_errors.any?
       redirect_to new_order_path, alert: addresses_errors
     else
