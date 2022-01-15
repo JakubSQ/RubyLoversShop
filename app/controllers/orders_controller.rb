@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
     if addresses_errors.any?
       redirect_to new_order_path, alert: addresses_errors
     else
-      render :confirm 
+      render :confirm
     end
   end
 
@@ -65,21 +65,30 @@ class OrdersController < ApplicationController
                                                       phone ship_to_bill],
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
                                                        phone]).merge(user_address: params[:user][:address_b],
-                                                                           save_address: params[:save_address])
+                                                                     save_address: params[:save_address])
   end
 
   def addresses_errors
-    order = Order.new
+    billing_address_errors
     if order_params[:billing_address][:ship_to_bill] == '0'
-      address = order.build_billing_address(order_params[:billing_address])
-      address.valid?
-      address1 = order.build_shipping_address(order_params[:shipping_address])
-      address1.valid?
-      address.errors.full_messages + address1.errors.full_messages
+      shipping_address_errors
+      billing_address_errors + shipping_address_errors
     else
-      address = order.build_billing_address(order_params[:billing_address])
-      address.valid?
-      address.errors.full_messages
+      billing_address_errors
     end
+  end
+
+  def billing_address_errors
+    order = Order.new
+    billing_address = order.build_billing_address(order_params[:billing_address])
+    billing_address.valid?
+    billing_address.errors.full_messages
+  end
+
+  def shipping_address_errors
+    order = Order.new
+    shipping_address = order.build_shipping_address(order_params[:shipping_address])
+    shipping_address.valid?
+    shipping_address.errors.full_messages
   end
 end

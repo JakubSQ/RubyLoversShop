@@ -7,7 +7,6 @@ RSpec.describe 'Remove address during checkout', type: :system, js: true do
   let!(:product) { create(:product) }
 
   before do
-    # driven_by(:rack_test)
     driven_by(:selenium_chrome_headless)
   end
 
