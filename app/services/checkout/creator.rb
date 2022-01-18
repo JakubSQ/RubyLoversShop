@@ -2,8 +2,8 @@
 
 module Checkout
   class Creator
-    TRUE = '1'
-    FALSE = '0'
+    include BooleanValue
+
     def call(cart, user, params)
       if order_assignment(cart, user, params)
         OpenStruct.new({ success?: true, payload: @order })
@@ -34,7 +34,7 @@ module Checkout
       return @error = 'Invalid address' if address_form_valid?(params)
 
       billing_address = create_billing_address(user, params)
-      shipping_address = if params[:billing_address][:ship_to_bill] == FALSE
+      shipping_address = if boolean(params[:billing_address][:ship_to_bill]) == false
                            create_shipping_address(params)
                          else
                            billing_address
@@ -49,7 +49,7 @@ module Checkout
     end
 
     def address_form_valid?(params)
-      params[:billing_address][:ship_to_bill] == FALSE && params[:shipping_address].nil?
+      boolean(params[:billing_address][:ship_to_bill]) == false && params[:shipping_address].nil?
     end
 
     def create_billing_address(user, params)
@@ -73,9 +73,13 @@ module Checkout
     def user_conditions_valid?(user, params)
       bill_address_name_param = params[:billing_address][:name]
       save_address = params[:save_address].gsub('value ', '')
-      (save_address == TRUE && user.addresses.map(&:name).exclude?(bill_address_name_param)) ||
-        ((save_address.empty? || save_address == TRUE) &&
-        user.addresses.map(&:name).include?(bill_address_name_param))
+      (boolean(save_address) == true && !address_exist?(user, params)) ||
+        ((save_address.empty? || boolean(save_address) == true &&
+        address_exist?(user, params))
+    end
+
+    def address_exist?(user, params)
+      user.addresses.map(&:name).include?(params[:billing_address][:name])
     end
 
     def create_shipping_address(params)

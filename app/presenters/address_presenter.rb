@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AddressPresenter
+  include BooleanValue
+
   def initialize(params)
     @params = params
   end
@@ -10,7 +12,8 @@ class AddressPresenter
   end
 
   def shipping_params
-    if @params[:order][:billing_address][:ship_to_bill] == '1'
+    param = @params[:order][:billing_address][:ship_to_bill]
+    if boolean(param) == true
       @params[:order][:billing_address]
     else
       @params[:order][:shipping_address]

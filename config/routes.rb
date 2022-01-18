@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   root to: "pages#home"
-  patch 'orders/remove_address', to: 'orders#remove_address', as: 'remove_address'
-  get 'orders/set_address', to: 'orders#set_address', as: 'set_address'
   resources :orders, only: [:new, :create, :destroy] do
     collection do
+      get 'set_address'
+      patch 'remove_address'
       post 'confirm'
     end
   end
+
   resources :products, only: [:index, :show]
   resources :line_items, only: [:create, :destroy, :update]
   resources :carts, only: [:show, :create, :destroy]

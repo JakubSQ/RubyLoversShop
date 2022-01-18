@@ -115,7 +115,7 @@ $(document).ready(function(){
     }
     else {
       $.ajax({
-      url: "<%= set_address_url %>",
+      url: "<%= set_address_orders_url %>",
       data: {
         address_id: $("#user_address_b option:selected").val()
       },
@@ -144,7 +144,7 @@ $(document).ready(function(){
   $('#remove_address').click(function(){
     $.ajax({
       type: "PATCH",
-      url: "<%= remove_address_path %>",
+      url: "<%= remove_address_orders_path %>",
       data: {
       address_id: $("#user_address_b option:selected").val()
       },
