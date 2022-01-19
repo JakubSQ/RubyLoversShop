@@ -15,25 +15,17 @@ module Checkout
     private
 
     def addresses_errors(params)
-      @errors = if boolean(params[:billing_address][:ship_to_bill]) == false
-                  billing_address_errors(params) + shipping_address_errors(params)
-                else
-                  billing_address_errors(params)
-                end
+      @errors = errors(params[:billing_address], :build_billing_address)
+      return @errors if boolean(params[:billing_address][:ship_to_bill]) == true
+
+      @errors += errors(params[:shipping_address], :build_shipping_address)
     end
 
-    def billing_address_errors(params)
+    def errors(params, method_name)
       order = Order.new
-      billing_address = order.build_billing_address(params[:billing_address])
-      billing_address.valid?
-      billing_address.errors.full_messages
-    end
-
-    def shipping_address_errors(params)
-      order = Order.new
-      shipping_address = order.build_shipping_address(params[:shipping_address])
-      shipping_address.valid?
-      shipping_address.errors.full_messages
+      arg_address = order.send(method_name, params)
+      arg_address.valid?
+      arg_address.errors.full_messages
     end
   end
 end
