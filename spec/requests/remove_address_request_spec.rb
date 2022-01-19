@@ -17,7 +17,7 @@ RSpec.describe 'UserRemoveAddress', type: :request do
 
     it 'is allowed to remove address during checkout' do
       allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-      patch remove_address_path, params: { address_id: address.id }
+      patch remove_address_orders_path, params: { address_id: address.id }
 
       expect(user.addresses.count).to eq(1)
     end

@@ -39,13 +39,21 @@ module Checkout
                          else
                            billing_address
                          end
-      payment ||= Payment.create!
-      shipment ||= Shipment.create!
+      payment
+      shipment
       @order = Order.create!(user_id: user.id,
                              payment_id: payment.id,
                              shipment_id: shipment.id,
                              billing_address_id: billing_address.id,
                              shipping_address_id: shipping_address.id)
+    end
+
+    def payment
+      Payment.create!
+    end
+
+    def shipment
+      Shipment.create!
     end
 
     def address_form_valid?(params)
@@ -71,10 +79,9 @@ module Checkout
     end
 
     def user_conditions_valid?(user, params)
-      bill_address_name_param = params[:billing_address][:name]
       save_address = params[:save_address].gsub('value ', '')
       (boolean(save_address) == true && !address_exist?(user, params)) ||
-        ((save_address.empty? || boolean(save_address) == true &&
+        ((save_address.empty? || boolean(save_address)) == true &&
         address_exist?(user, params))
     end
 
