@@ -34,7 +34,7 @@ module Checkout
       return @error = 'Invalid address' if address_form_valid?(params)
 
       billing_address = create_billing_address(user, params)
-      shipping_address = if boolean(params[:billing_address][:ship_to_bill]) == false
+      shipping_address = if false?(params[:billing_address][:ship_to_bill])
                            create_shipping_address(params)
                          else
                            billing_address
@@ -57,7 +57,7 @@ module Checkout
     end
 
     def address_form_valid?(params)
-      boolean(params[:billing_address][:ship_to_bill]) == false && params[:shipping_address].nil?
+      false?(params[:billing_address][:ship_to_bill]) && params[:shipping_address].nil?
     end
 
     def create_billing_address(user, params)
@@ -75,13 +75,13 @@ module Checkout
     end
 
     def user_id(user, params)
-      user.id if user_conditions_valid?(user, params)
+      user.id if save_address?(user, params)
     end
 
-    def user_conditions_valid?(user, params)
+    def save_address?(user, params)
       save_address = params[:save_address].gsub('value ', '')
-      (boolean(save_address) == true && !address_exist?(user, params)) ||
-        ((save_address.empty? || boolean(save_address)) == true &&
+      (true?(save_address) && !address_exist?(user, params)) ||
+        ((save_address.empty? || true?(save_address)) &&
         address_exist?(user, params))
     end
 

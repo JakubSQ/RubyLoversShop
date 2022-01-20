@@ -16,7 +16,7 @@ module Checkout
 
     def addresses_errors(params)
       @errors = errors(params[:billing_address], :build_billing_address)
-      return @errors if boolean(params[:billing_address][:ship_to_bill]) == true
+      return @errors if true?(params[:billing_address][:ship_to_bill])
 
       @errors += errors(params[:shipping_address], :build_shipping_address)
     end

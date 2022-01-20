@@ -12,8 +12,8 @@ class AddressPresenter
   end
 
   def shipping_params
-    param = @params[:order][:billing_address][:ship_to_bill]
-    if boolean(param) == true
+    ship_to_bill = @params[:order][:billing_address][:ship_to_bill]
+    if true?(ship_to_bill)
       @params[:order][:billing_address]
     else
       @params[:order][:shipping_address]

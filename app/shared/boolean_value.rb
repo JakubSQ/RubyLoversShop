@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 module BooleanValue
-  def boolean(value)
-    ActiveModel::Type::Boolean.new.cast(value)
+  def true?(value)
+    ActiveModel::Type::Boolean.new.cast(value) == true
+  end
+
+  def false?(value)
+    !true?(value)
   end
 end
