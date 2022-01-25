@@ -18,9 +18,10 @@ RSpec.describe 'Price filter', type: :system do
         fill_in 'q_prize_gteq', with: product.prize
         fill_in 'q_prize_lteq', with: product1.prize
         click_on 'Search'
-        expect(page).to have_content(product.prize.to_s)
-        expect(page).to have_content(product1.prize.to_s)
-        expect(page).not_to have_content(product2.prize.to_s)
+
+        expect(page).to have_content(product.prize)
+        expect(page).to have_content(product1.prize)
+        expect(page).not_to have_content(product2.prize)
       end
     end
   end

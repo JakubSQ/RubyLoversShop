@@ -25,6 +25,5 @@ RSpec.describe 'AdminOrderPage', type: :system do
     expect(page).to have_content(order.user_email)
     expect(page).to have_content(order.user_id)
     expect(page).to have_content(order.line_items.first.product.name)
-    expect(page).to have_content(order.line_items.first.product.prize)
   end
 end

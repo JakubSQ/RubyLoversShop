@@ -2,6 +2,8 @@
 
 FactoryBot.define do
   factory :category do
-    title { 'women' }
+    sequence(:title) do |n|
+      "category#{n}"
+    end
   end
 end
