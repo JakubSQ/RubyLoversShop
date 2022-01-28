@@ -15,6 +15,7 @@ Project is created with:
 * Rails 6.1.3
 * Bootstrap 5.1
 * PostgreSQL 2.0
+* jQuery
 
 ## Getting started
 
@@ -66,7 +67,7 @@ $ http://localhost:3000/
   - Billing and shipping address
   - Edit/destroy orders (Admin)
   - State machine for orders (aasm gem)
-  - whole app tested by rspec gem
+  - whole app tested by rspec
 - _**Work in progress**_
   - - Implementing loyalty programs
   - - Implementing membership options
