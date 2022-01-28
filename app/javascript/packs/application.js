@@ -16,6 +16,11 @@ require("@rails/activestorage").start()
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+var jQuery = require('jquery')
+
+global.$ = global.jQuery = jQuery;
+window.$ = window.jQuery = jQuery;
+
 $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip();
 });

@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :product do
-    name { 'Coat' }
+    name { 'coat' }
     description { 'cotton coat' }
     sequence(:prize) do |n|
-      n
+      "99#{n}"
     end
     cover_photo { Rack::Test::UploadedFile.new(Pathname.new(Rails.root.join('spec/fixtures/coat.jpg'))) }
 

@@ -2,6 +2,8 @@
 
 module Checkout
   class Creator
+    include BooleanValue
+
     def call(cart, user, params)
       if order_assignment(cart, user, params)
         OpenStruct.new({ success?: true, payload: @order })
@@ -31,14 +33,12 @@ module Checkout
     def create_order(user, params)
       return @error = 'Invalid address' if address_form_valid?(params)
 
-      billing_address = create_billing_address(params)
-      shipping_address = if params[:billing_address][:ship_to_bill] == '0'
+      billing_address = create_billing_address(user, params)
+      shipping_address = if false?(params[:billing_address][:ship_to_bill])
                            create_shipping_address(params)
                          else
                            billing_address
                          end
-      payment ||= Payment.create!
-      shipment ||= Shipment.create!
       @order = Order.create!(user_id: user.id,
                              payment_id: payment.id,
                              shipment_id: shipment.id,
@@ -46,19 +46,44 @@ module Checkout
                              shipping_address_id: shipping_address.id)
     end
 
-    def address_form_valid?(params)
-      params[:billing_address][:ship_to_bill] == '0' && params[:shipping_address].nil?
+    def payment
+      Payment.create!
     end
 
-    def create_billing_address(params)
-      Address.create!(name: params[:billing_address][:name],
-                      street_name1: params[:billing_address][:street_name1],
-                      street_name2: params[:billing_address][:street_name2],
-                      city: params[:billing_address][:city],
-                      country: params[:billing_address][:country],
-                      state: params[:billing_address][:state],
-                      zip: params[:billing_address][:zip],
-                      phone: params[:billing_address][:phone])
+    def shipment
+      Shipment.create!
+    end
+
+    def address_form_valid?(params)
+      false?(params[:billing_address][:ship_to_bill]) && params[:shipping_address].nil?
+    end
+
+    def create_billing_address(user, params)
+      bill_address_param = params[:billing_address]
+      Address.where(name: bill_address_param[:name],
+                    street_name1: bill_address_param[:street_name1],
+                    street_name2: bill_address_param[:street_name2],
+                    city: bill_address_param[:city],
+                    country: bill_address_param[:country],
+                    state: bill_address_param[:state],
+                    zip: bill_address_param[:zip],
+                    phone: bill_address_param[:phone],
+                    user_id: user_id(user, params)).first_or_create!
+    end
+
+    def user_id(user, params)
+      user.id if save_address?(user, params) || address_exist?(user, params)
+    end
+
+    def save_address?(user, params)
+      save_address = params[:save_address]
+      return false if false?(save_address) || address_exist?(user, params)
+
+      true
+    end
+
+    def address_exist?(user, params)
+      user.addresses.map(&:name).include?(params[:billing_address][:name])
     end
 
     def create_shipping_address(params)

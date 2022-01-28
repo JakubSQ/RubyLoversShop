@@ -1,11 +1,19 @@
 Rails.application.routes.draw do
   root to: "pages#home"
-  resources :orders, only: [:new, :create, :destroy]
+  resources :orders, only: [:new, :create, :destroy] do
+    collection do
+      get 'set_address'
+      patch 'remove_address'
+      post 'confirm'
+    end
+  end
+
   resources :products, only: [:index, :show]
   resources :line_items, only: [:create, :destroy, :update]
   resources :carts, only: [:show, :create, :destroy]
   devise_for :admins
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users, controllers: { sessions: 'users/sessions' } do
+  end
 
   namespace :admin do
     root to: "products#dashboard"

@@ -2,6 +2,8 @@
 
 FactoryBot.define do
   factory :brand do
-    title { 'nike' }
+    sequence(:title) do |n|
+      "brand#{n}"
+    end
   end
 end

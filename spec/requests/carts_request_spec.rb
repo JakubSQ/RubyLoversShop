@@ -39,15 +39,16 @@ RSpec.describe 'Carts', type: :request do
       it 'checks out the order' do
         post line_items_path(product_id: product.id), params: { quantity: 1 }
         post '/carts'
-        post orders_path, params: { order: { billing_address: { name: address.name,
+        post orders_path, params: { save_address: 'value ', user: { address_b: '' },
+                                    order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
                                                                 country: address.country,
                                                                 state: address.state,
                                                                 zip: address.zip,
-                                                                phone: address.phone } } }
+                                                                phone: address.phone,
+                                                                ship_to_bill: 1 } } }
         follow_redirect!
-
         expect(response.body).to include 'Order successfully created'
       end
     end

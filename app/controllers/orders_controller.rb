@@ -5,8 +5,35 @@ class OrdersController < ApplicationController
   before_action :checkout_admin!
 
   def new
-    @order = Order.new
-    @cart = Cart.find(session[:cart_id])
+    @cart = cart
+  end
+
+  def confirm
+    @cart = cart
+    @address_presenter = AddressPresenter.new(params)
+    confirm = Checkout::Confirm.new.call(order_params)
+    if confirm.success?
+      render :confirm
+    else
+      redirect_to new_order_path, alert: confirm.payload[:error]
+    end
+  end
+
+  def remove_address
+    @address = Address.find(params[:address_id])
+    if @address.nil?
+      flash[:alert] = 'Please, select saved address'
+    else
+      @address.update(user_id: nil)
+      flash[:notice] = 'Address has been removed'
+    end
+  end
+
+  def set_address
+    @address = Address.find(params[:address_id])
+    respond_to do |format|
+      format.json { render json: @address }
+    end
   end
 
   def create
@@ -37,6 +64,7 @@ class OrdersController < ApplicationController
     params.require(:order).permit(billing_address: %i[name street_name1 street_name2 city country state zip
                                                       phone ship_to_bill],
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
-                                                       phone])
+                                                       phone]).merge(user_address: params[:user][:address_b],
+                                                                     save_address: params[:save_address])
   end
 end
