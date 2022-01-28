@@ -39,8 +39,6 @@ module Checkout
                          else
                            billing_address
                          end
-      payment
-      shipment
       @order = Order.create!(user_id: user.id,
                              payment_id: payment.id,
                              shipment_id: shipment.id,
@@ -74,12 +72,13 @@ module Checkout
     end
 
     def user_id(user, params)
-      user.id if save_address?(user, params)
+      user.id if save_address?(user, params) || address_exist?(user, params)
     end
 
     def save_address?(user, params)
       save_address = params[:save_address]
       return false if false?(save_address) || address_exist?(user, params)
+
       true
     end
 

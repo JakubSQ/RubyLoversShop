@@ -16,7 +16,7 @@ RSpec.describe Checkout, type: :model do
   describe 'When logged in as user' do
     context 'user types two addresses' do
       let(:user_address) { '' }
-      let(:save_address) { 'value ' }
+      let(:save_address) { '' }
 
       it 'and order is successfully created' do
         order = Checkout::Creator.new.call(cart, user, params)
@@ -31,7 +31,7 @@ RSpec.describe Checkout, type: :model do
     context 'user types only one address' do
       let(:address) { create(:address, ship_to_bill: '1') }
       let(:user_address) { '' }
-      let(:save_address) { 'value ' }
+      let(:save_address) { '' }
 
       it 'and order is successfully created' do
         order = Checkout::Creator.new.call(cart, user, params)
@@ -42,7 +42,8 @@ RSpec.describe Checkout, type: :model do
         expect(order.payload.billing_address_id).to be_present
         expect(order.payload.shipping_address_id).to be_present
         expect(order.payload.shipping_address_id).to eq(order.payload.billing_address_id)
-        expect(Address.last.user_id).not_to eq(user.id)
+        expect(order.payload.billing_address.user_id).to eq(nil)
+        expect(order.payload.shipping_address.user_id).to eq(nil)
         expect(user.addresses).not_to be_present
       end
     end
@@ -50,7 +51,7 @@ RSpec.describe Checkout, type: :model do
     context 'user types one address and check it to save' do
       let(:address) { create(:address, ship_to_bill: '1') }
       let(:user_address) { '' }
-      let(:save_address) { 'value 1' }
+      let(:save_address) { 1 }
 
       it 'and order is successfully created' do
         order = Checkout::Creator.new.call(cart, user, params)
@@ -61,8 +62,8 @@ RSpec.describe Checkout, type: :model do
         expect(order.payload.billing_address_id).to be_present
         expect(order.payload.shipping_address_id).to be_present
         expect(order.payload.shipping_address_id).to eq(order.payload.billing_address_id)
-        expect(Order.last.billing_address.user_id).to eq(user.id)
-        expect(Order.last.shipping_address.user_id).to eq(user.id)
+        expect(order.payload.billing_address.user_id).to eq(user.id)
+        expect(order.payload.shipping_address.user_id).to eq(user.id)
         expect(user.addresses).to be_present
       end
     end
@@ -70,7 +71,7 @@ RSpec.describe Checkout, type: :model do
     context 'user select address from address list' do
       let(:address) { create(:address, ship_to_bill: '1', user_id: user.id) }
       let(:user_address) { address.id }
-      let(:save_address) { 'value ' }
+      let(:save_address) { '' }
 
       it 'and order is successfully created' do
         order = Checkout::Creator.new.call(cart, user, params)
@@ -80,8 +81,8 @@ RSpec.describe Checkout, type: :model do
         expect(order.payload.billing_address_id).to be_present
         expect(order.payload.shipping_address_id).to be_present
         expect(order.payload.shipping_address_id).to eq(order.payload.billing_address_id)
-        expect(Order.last.billing_address.user_id).to eq(user.id)
-        expect(Order.last.shipping_address.user_id).to eq(user.id)
+        expect(order.payload.billing_address.user_id).to eq(user.id)
+        expect(order.payload.shipping_address.user_id).to eq(user.id)
         expect(user.addresses).to be_present
       end
     end
