@@ -2,7 +2,7 @@
 
 <%= form_with url: orders_path, scope: :order, local: true do |order| %>
   <%= hidden_field :user, :address_b, value: params[:user][:address_b] %>
-  <%= hidden_field_tag :save_address, value: params[:save_address] %> 
+  <%= hidden_field_tag :save_address, params[:save_address] %> 
 <div id="billing_address_hide">
   <br></br>
   Your billing address

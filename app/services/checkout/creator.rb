@@ -62,8 +62,7 @@ module Checkout
 
     def create_billing_address(user, params)
       bill_address_param = params[:billing_address]
-      Address.where(id: params[:user_address],
-                    name: bill_address_param[:name],
+      Address.where(name: bill_address_param[:name],
                     street_name1: bill_address_param[:street_name1],
                     street_name2: bill_address_param[:street_name2],
                     city: bill_address_param[:city],
@@ -79,10 +78,9 @@ module Checkout
     end
 
     def save_address?(user, params)
-      save_address = params[:save_address].gsub('value ', '')
-      (true?(save_address) && !address_exist?(user, params)) ||
-        ((save_address.empty? || true?(save_address)) &&
-        address_exist?(user, params))
+      save_address = params[:save_address]
+      return false if false?(save_address) || address_exist?(user, params)
+      true
     end
 
     def address_exist?(user, params)
