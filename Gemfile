@@ -17,6 +17,12 @@ gem 'faker'
 gem 'pagy'
 gem 'aasm'
 gem 'after_commit_everywhere', '~> 1.0'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
+gem 'activerecord-session_store'
+gem 'omniauth-rails_csrf_protection'
 
 group :development, :test do
   gem 'pry-rails'

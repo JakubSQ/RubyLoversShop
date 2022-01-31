@@ -12,8 +12,8 @@ Rails.application.routes.draw do
   resources :line_items, only: [:create, :destroy, :update]
   resources :carts, only: [:show, :create, :destroy]
   devise_for :admins
-  devise_for :users, controllers: { sessions: 'users/sessions' } do
-  end
+  devise_for :users, controllers: { sessions: 'users/sessions',
+                                    omniauth_callbacks: 'omniauth' }
 
   namespace :admin do
     root to: "products#dashboard"
