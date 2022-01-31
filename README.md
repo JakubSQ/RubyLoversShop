@@ -58,6 +58,7 @@ $ http://localhost:3000/
 ## Features
 - **App**
   - User/Admin authentication (Devise gem)
+  - Oauth authentication protocol
   - Admin and User roles
   - Pagination (Pagy gem)
   - Search engine (Ransack gem)
