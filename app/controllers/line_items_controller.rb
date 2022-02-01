@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class LineItemsController < ApplicationController
-  before_action :authenticate_user!
-
   def create
     product = Product.find(params[:product_id])
     add_product = LineItems::Creator.new.call(cart, product, params[:quantity].to_i)

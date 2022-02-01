@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class CartsController < ApplicationController
-  before_action :authenticate_user!
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
 
   def show

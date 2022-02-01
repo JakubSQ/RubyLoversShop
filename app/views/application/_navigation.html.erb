@@ -14,6 +14,13 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <% if !user_signed_in? %>
+          <% if total_cart_items %>
+          <li class="nav-item <%= 'active' if request.path == cart_path(@cart) %>">
+            <%= link_to cart_path(@cart), class: "nav-link btn btn-outline-secondary btn-inverse" do %>
+              Cart <span class="badge badge-light"><%= cart_count_over_one %></span>
+            <% end %>
+          </li>
+          <% end %>
           <li class="nav-item active">
             <%= link_to "Log in", new_user_session_path, class: "nav-link btn btn-outline-secondary btn-inverse" %>
           </li>
