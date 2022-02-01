@@ -13,7 +13,7 @@ RSpec.describe 'LineItemQuantity', type: :system do
 
     before do
       driven_by(:selenium_chrome_headless)
-      Capybara.current_session.driver.header 'Referer', 'http://example.com'
+      visit root_path
       sign_in admin
       visit product_path(product)
       fill_in 'quantity', with: 1
@@ -54,7 +54,7 @@ RSpec.describe 'LineItemQuantity', type: :system do
 
     before do
       driven_by(:selenium_chrome_headless)
-      Capybara.current_session.driver.header 'Referer', 'http://example.com'
+      visit root_path
       sign_in user
       visit product_path(product)
       fill_in 'quantity', with: 1
