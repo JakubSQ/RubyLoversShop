@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Checkout, type: :model do
-
   context 'When user is logged in' do
     let(:user) { create(:user) }
     let(:params) do
