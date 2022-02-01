@@ -75,6 +75,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
 
     before do
       driven_by(:rack_test)
+      Capybara.current_session.driver.header 'Referer', 'http://example.com'
       sign_in admin
       visit root_path
       click_on product.name
@@ -90,6 +91,8 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
   end
 
   describe 'Without logging in' do
+    let(:email) { 'email@example.com' }
+
     before do
       driven_by(:rack_test)
       visit root_path
@@ -100,7 +103,8 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
     end
 
     context 'is allowed to checkout' do
-      it 'with two seperate addresses' do
+      it 'with email and two seperate addresses' do
+        fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -120,7 +124,8 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
         expect(page).to have_content('Order successfully created')
       end
 
-      it 'with billing_address and checked checkbox' do
+      it 'with email and billing_address and checked checkbox' do
+        fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -136,7 +141,20 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
     end
 
     context 'is not allowed to checkout' do
-      it 'with only one address and unchecked checkbox' do
+      it 'with email and only one address and unchecked checkbox' do
+        fill_in 'user_email', with: email
+        fill_in 'order_billing_address_name', with: address.name
+        fill_in 'order_billing_address_street_name1', with: address.street_name1
+        fill_in 'order_billing_address_city', with: address.city
+        fill_in 'order_billing_address_country', with: address.country
+        fill_in 'order_billing_address_state', with: address.state
+        fill_in 'order_billing_address_zip', with: address.zip
+        fill_in 'order_billing_address_phone', with: address.phone
+        click_on 'Confirm checkout'
+        expect(page).not_to have_content('Order successfully created')
+      end
+
+      it 'without email address' do
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city

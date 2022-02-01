@@ -13,6 +13,7 @@ RSpec.describe 'AdminOrderPage', type: :system do
 
   before do
     driven_by(:rack_test)
+    Capybara.current_session.driver.header 'Referer', 'http://example.com'
     visit new_admin_session_path
     fill_in 'admin_email', with: admin.email
     fill_in 'admin_password', with: admin.password

@@ -8,6 +8,7 @@ RSpec.describe 'AdminDeletingProducts', type: :system do
 
   before do
     driven_by(:rack_test)
+    Capybara.current_session.driver.header 'Referer', 'http://example.com'
   end
 
   it 'allows admin to delete a product' do

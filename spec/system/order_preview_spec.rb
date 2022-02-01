@@ -70,6 +70,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
 
     before do
       driven_by(:rack_test)
+      Capybara.current_session.driver.header 'Referer', 'http://example.com'
       sign_in admin
       visit root_path
       click_on product.name
@@ -85,6 +86,8 @@ RSpec.describe 'Saving address during checkout', type: :system do
   end
 
   describe 'Without logging in' do
+    let(:email) { 'email@example.com' }
+
     before do
       driven_by(:rack_test)
       visit root_path
@@ -125,6 +128,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
       end
 
       it 'confirm checkout' do
+        fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city

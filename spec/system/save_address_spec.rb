@@ -11,6 +11,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
 
     before do
       driven_by(:rack_test)
+      Capybara.current_session.driver.header 'Referer', 'http://example.com'
       sign_in user
       visit root_path
       click_on product.name
@@ -41,6 +42,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
 
     before do
       driven_by(:rack_test)
+      Capybara.current_session.driver.header 'Referer', 'http://example.com'
       sign_in admin
       visit root_path
       click_on product.name
