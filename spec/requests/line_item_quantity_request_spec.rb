@@ -84,12 +84,34 @@ RSpec.describe 'ProductsQuantity', type: :request do
   end
 
   describe 'when guest visits app' do
-    it 'is not allowed to choose quantity of products' do
-      post create_path, params: { quantity: 10 }
-      product.reload
-      follow_redirect!
-      expect(response).to have_http_status(:ok)
-      expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id])).not_to be_present
+    context 'is allowed to' do
+      it 'choose quantity of products to buy' do
+        post create_path, params: { quantity: 10 }
+        product.reload
+        follow_redirect!
+        expect(response.body).to include('Item added to cart')
+        expect(response).to have_http_status(:ok)
+        expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id]).quantity).to eq(10)
+      end
+    end
+
+    context 'is not allowed to' do
+      it 'type negative value in quantity field' do
+        post create_path, params: { quantity: -1 }
+        product.reload
+        follow_redirect!
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Please, type positive value')
+        expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id])).not_to be_present
+      end
+
+      it 'type string in quantity field' do
+        post create_path, params: { quantity: 'xyz' }
+        product.reload
+        follow_redirect!
+        expect(response).to have_http_status(:ok)
+        expect(LineItem.find_by(product_id: product.id, cart_id: session[:cart_id])).not_to be_present
+      end
     end
   end
 end

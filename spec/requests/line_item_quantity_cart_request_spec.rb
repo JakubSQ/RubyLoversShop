@@ -94,11 +94,39 @@ RSpec.describe 'LineItemQuantity', type: :request do
   end
 
   describe 'when guest visits app' do
-    it 'shopping cart is not available' do
-      get "/carts/#{cart.id}"
-      follow_redirect!
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include('You are not authorized')
+    context 'is allowed to' do
+      it 'change quantity of products to buy' do
+        patch update_path, params: { line_item: { quantity: 20 } }
+        line_item.reload
+        follow_redirect!
+        expect(response).to have_http_status(:ok)
+        expect(line_item.quantity).to eq(20)
+      end
+
+      it 'remove line item from cart by typing zero in quantity field' do
+        patch update_path, params: { line_item: { quantity: 0 } }
+        follow_redirect!
+        expect(response).to have_http_status(:ok)
+        expect(cart.line_items).to eq([])
+      end
+    end
+
+    context 'is not allowed to' do
+      it 'type negative value in quantity field' do
+        allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
+        patch update_path, params: { line_item: { quantity: -1 } }
+        follow_redirect!
+        expect(response).to have_http_status(:ok)
+        expect(cart.line_items).to eq([])
+      end
+
+      it 'type string in quantity field' do
+        allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
+        patch update_path, params: { line_item: { quantity: 'xyz' } }
+        follow_redirect!
+        expect(response).to have_http_status(:ok)
+        expect(cart.line_items).to eq([])
+      end
     end
   end
 end

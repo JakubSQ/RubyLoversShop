@@ -23,6 +23,6 @@
     <%= link_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), method: :post %><br />
   <% end %>
 <% end %>
-<% if request.referrer == "http://localhost:3000/carts/#{session[:cart_id]}"%>
+<% if request.referrer.include?("/carts/#{session[:cart_id]}")%>
 <%= link_to "Skip", new_order_path %><br />
 <% end %>

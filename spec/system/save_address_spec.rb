@@ -50,7 +50,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
     context 'is not allowed to checkout' do
       it 'with two seperate addresses' do
         click_on 'Checkout'
-        expect(page).to have_content('Admin cannot checkout order')
+        expect(page).to have_current_path('/users/sign_in')
       end
     end
   end
@@ -60,12 +60,14 @@ RSpec.describe 'Saving address during checkout', type: :system do
       driven_by(:rack_test)
       visit root_path
       click_on product.name
+      click_button 'Add to cart'
+      click_on 'Checkout'
+      visit new_order_path
     end
 
-    context 'guest is not allowed to checkout' do
-      it 'with two seperate addresses' do
-        click_button 'Add to cart'
-        expect(page).to have_content('You are not authorized')
+    context 'guest is not allowed to' do
+      it 'save address during checkout' do
+        expect(page).not_to have_content('Check to save your address')
       end
     end
   end

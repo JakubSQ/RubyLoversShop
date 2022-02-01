@@ -79,11 +79,27 @@ RSpec.describe 'LineItemQuantity', type: :system do
       visit product_path(product)
     end
 
-    context 'is not allowed to' do
+    context 'is allowed to' do
       it 'choose quantity of products to buy' do
+        fill_in 'quantity', with: 1
+        click_on 'Add to cart'
+        expect(page).to have_content('Item added to cart')
+        expect(LineItem.find_by(product_id: product.id)).not_to eq(nil)
+      end
+    end
+
+    context 'is not allowed to' do
+      it 'type negative value in quantity field' do
         fill_in 'quantity', with: -1
         click_on 'Add to cart'
-        expect(page).to have_content('You are not authorized')
+        expect(page).to have_content('Please, type positive value')
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
+      end
+
+      it 'type string in quantity field' do
+        fill_in 'quantity', with: 'xyz'
+        click_on 'Add to cart'
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
     end
   end

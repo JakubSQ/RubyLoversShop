@@ -39,16 +39,18 @@ RSpec.describe 'Remove address during checkout', type: :system, js: true do
       click_on product.name
       click_button 'Add to cart'
       click_on 'Checkout'
-      expect(page).to have_content('Admin cannot checkout order')
+      expect(page).to have_current_path('/users/sign_in')
     end
   end
 
   context 'Without logging in' do
-    it 'guest is not able to get to checkout page' do
+    it 'guest is not able to remove address' do
       visit root_path
       click_on product.name
       click_button 'Add to cart'
-      expect(page).to have_content('You are not authorized')
+      click_on 'Checkout'
+      visit new_order_path
+      expect(page).not_to have_content('Remove address')
     end
   end
 end
