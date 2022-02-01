@@ -19,6 +19,8 @@ class User < ApplicationRecord
     end
   end
 
+  protected
+
   def password_required?
     return false if skip_password_validation
 
