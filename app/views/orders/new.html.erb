@@ -13,7 +13,7 @@
         <% else %>
         Type your email: <br />
         <div class="mb-3">
-          <%= email_field :user, :email, class: "form-control" %>
+          <%= email_field :user, :email, required: true, class: "form-control" %>
         </div>
         <%= hidden_field :user, :address_b, value: '' %>
         <% end %>

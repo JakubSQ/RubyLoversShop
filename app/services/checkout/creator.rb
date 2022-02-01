@@ -6,6 +6,8 @@ module Checkout
 
     def call(cart, user, params)
       user = Checkout::CurrentUser.new.call(user, params).payload
+      return OpenStruct.new({ success?: false, payload: { error: user[:error] } }) if user[:error].present?
+
       if order_assignment(cart, user, params)
         OpenStruct.new({ success?: true, payload: @order })
       else
@@ -16,6 +18,7 @@ module Checkout
     private
 
     def order_assignment(cart, user, params)
+      # return @error = user[:error] if user[:error].present?
       if cart.line_items.present?
         ActiveRecord::Base.transaction do
           create_order(user, params)

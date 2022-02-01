@@ -6,7 +6,7 @@ module Checkout
       if set_user(user, params)
         OpenStruct.new({ success?: true, payload: @user })
       else
-        OpenStruct.new({ success?: false, payload: { error: 'Something went wrong' } })
+        OpenStruct.new({ success?: false, payload: { error: @error } })
       end
     end
 
@@ -20,8 +20,12 @@ module Checkout
       return @user if @user.id.present?
 
       @user.skip_password_validation = true
-      @user.save
-      @user
+      if @user.save
+        @user
+      else
+        @error = @user.errors.full_messages
+        nil if @error.present?
+      end
     end
   end
 end
