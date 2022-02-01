@@ -9,7 +9,7 @@ RSpec.describe Checkout, type: :model do
       { user_email: user.email }
     end
 
-    it 'current user is set as logged in user ' do
+    it 'current user is set as logged in user' do
       current_user = Checkout::CurrentUser.new.call(user, params)
 
       expect(current_user.payload.id).to eq(user.id)
