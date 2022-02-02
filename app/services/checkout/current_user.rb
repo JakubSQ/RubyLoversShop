@@ -16,7 +16,7 @@ module Checkout
       @user = user
       return @user if @user.present?
 
-      @user = User.where(email: params[:user_email], registered: false).first_or_initialize
+      @user = User.where(email: params[:user_email]).first_or_initialize
       return @user if @user.id.present?
 
       @user.skip_password_validation = true
