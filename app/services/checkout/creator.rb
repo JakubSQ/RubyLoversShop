@@ -18,7 +18,6 @@ module Checkout
     private
 
     def order_assignment(cart, user, params)
-      # return @error = user[:error] if user[:error].present?
       if cart.line_items.present?
         ActiveRecord::Base.transaction do
           create_order(user, params)

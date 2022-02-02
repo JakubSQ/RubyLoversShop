@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  before_action :path_presenter
   include Pagy::Backend
   layout :layout_by_resource
 
@@ -21,5 +22,11 @@ class ApplicationController < ActionController::Base
     else
       'application'
     end
+  end
+
+  private
+
+  def path_presenter
+    @path_presenter = PathPresenter.new(request.path, session, request.referer, user_signed_in?)
   end
 end
