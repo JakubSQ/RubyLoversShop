@@ -20,7 +20,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
     end
 
     context 'is allowed to' do
-      it 'save address during checkout' do
+      it 'checkout an order' do
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -29,10 +29,11 @@ RSpec.describe 'Saving address during checkout', type: :system do
         fill_in 'order_billing_address_zip', with: address.zip
         fill_in 'order_billing_address_phone', with: address.phone
         check 'order_billing_address_ship_to_bill'
-        check 'save_address'
         click_on 'Confirm checkout'
         click_on 'Confirm checkout'
-        expect(user.addresses.count).to eq(1)
+
+        expect(page).to have_content('Order successfully created.')
+        expect(Order.count).to eq(1)
       end
     end
   end
@@ -49,9 +50,10 @@ RSpec.describe 'Saving address during checkout', type: :system do
       click_button 'Add to cart'
     end
 
-    context 'is not allowed to checkout' do
-      it 'with two seperate addresses' do
+    context 'is not allowed' do
+      it 'to checkout an order' do
         click_on 'Checkout'
+
         expect(page).to have_current_path('/users/sign_in')
       end
     end
@@ -67,9 +69,24 @@ RSpec.describe 'Saving address during checkout', type: :system do
       visit new_order_path
     end
 
-    context 'guest is not allowed to' do
-      it 'save address during checkout' do
-        expect(page).not_to have_content('Check to save your address')
+    context 'guest is allowed to' do
+      let(:email) { 'email@example.com' }
+
+      it 'checkout an order' do
+        fill_in 'user_email', with: email
+        fill_in 'order_billing_address_name', with: address.name
+        fill_in 'order_billing_address_street_name1', with: address.street_name1
+        fill_in 'order_billing_address_city', with: address.city
+        fill_in 'order_billing_address_country', with: address.country
+        fill_in 'order_billing_address_state', with: address.state
+        fill_in 'order_billing_address_zip', with: address.zip
+        fill_in 'order_billing_address_phone', with: address.phone
+        check 'order_billing_address_ship_to_bill'
+        click_on 'Confirm checkout'
+        click_on 'Confirm checkout'
+
+        expect(page).to have_content('Order successfully created.')
+        expect(Order.count).to eq(1)
       end
     end
   end

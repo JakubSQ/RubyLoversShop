@@ -39,11 +39,10 @@ RSpec.describe 'UserRemoveAddress', type: :request do
   end
 
   context 'without logging in' do
-    it 'guest is not able to get to checkout page' do
+    it 'guest is not able to see address collection' do
       get '/orders/new'
 
-      expect(response).to have_http_status(:found)
-      expect(response).to redirect_to '/'
+      expect(response.body).not_to include('Please, type your billing address or choose from the list below')
     end
   end
 end

@@ -50,13 +50,15 @@ RSpec.describe 'LineItemQuantity', type: :system do
     before do
       driven_by(:rack_test)
       visit product_path(product)
+      fill_in 'quantity', with: 10
+      click_on 'Add to cart'
     end
 
-    context 'is not allowed to' do
-      it 'visit cart path' do
-        fill_in 'quantity', with: 2
-        click_on 'Add to cart'
-        expect(page).to have_content('You are not authorized')
+    context 'is allowed to' do
+      it 'remove product from cart regardless of items of this product' do
+        click_on 'Remove'
+        expect(page).to have_content('Your shopping cart is empty')
+        expect(LineItem.find_by(product_id: product.id)).to eq(nil)
       end
     end
   end

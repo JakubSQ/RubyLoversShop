@@ -16,6 +16,7 @@ RSpec.describe 'Remove address during checkout', type: :system, js: true do
     let!(:address1) { create(:address, user_id: user.id) }
 
     it 'is allowed to remove address during checkout' do
+      visit root_path
       sign_in user
       visit root_path
       click_on product.name
@@ -34,21 +35,24 @@ RSpec.describe 'Remove address during checkout', type: :system, js: true do
     let(:admin) { create(:admin) }
 
     it 'is not able to get to checkout page' do
+      visit root_path
       sign_in admin
       visit root_path
       click_on product.name
       click_button 'Add to cart'
       click_on 'Checkout'
-      expect(page).to have_content('Admin cannot checkout order')
+      expect(page).to have_current_path('/users/sign_in')
     end
   end
 
   context 'Without logging in' do
-    it 'guest is not able to get to checkout page' do
+    it 'guest is not able to remove address' do
       visit root_path
       click_on product.name
       click_button 'Add to cart'
-      expect(page).to have_content('You are not authorized')
+      click_on 'Checkout'
+      visit new_order_path
+      expect(page).not_to have_content('Remove address')
     end
   end
 end

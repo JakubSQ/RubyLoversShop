@@ -11,6 +11,7 @@ RSpec.describe 'Adding Item/Order', type: :system do
   describe 'Item/Orders actions' do
     before do
       driven_by(:rack_test)
+      Capybara.current_session.driver.header 'Referer', 'http://example.com'
       visit new_user_session_path
       fill_in 'user_email', with: user.email
       fill_in 'user_password', with: user.password

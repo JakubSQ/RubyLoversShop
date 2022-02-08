@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
   before_action :checkout_admin!
 
   def new
@@ -65,6 +64,7 @@ class OrdersController < ApplicationController
                                                       phone ship_to_bill],
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
                                                        phone]).merge(user_address: params[:user][:address_b],
+                                                                     user_email: params[:user][:email],
                                                                      save_address: params[:save_address])
   end
 end

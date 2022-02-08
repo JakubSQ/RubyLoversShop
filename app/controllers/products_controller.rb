@@ -18,11 +18,9 @@ class ProductsController < ApplicationController
   private
 
   def cart
-    if user_signed_in?
-      @cart = Cart.where(id: session[:cart_id]).first_or_create
-      session[:cart_id] = @cart.id
-      @cart
-    end
+    @cart = Cart.where(id: session[:cart_id]).first_or_create
+    session[:cart_id] = @cart.id
+    @cart
   end
 
   def product_params

@@ -5,6 +5,9 @@ module Checkout
     include BooleanValue
 
     def call(cart, user, params)
+      user = Checkout::CurrentUser.new.call(user, params).payload
+      return OpenStruct.new({ success?: false, payload: { error: user[:error] } }) if user[:error].present?
+
       if order_assignment(cart, user, params)
         OpenStruct.new({ success?: true, payload: @order })
       else
