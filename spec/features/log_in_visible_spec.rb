@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Log in form on navbar', type: :view do
-
   describe 'application/navigation' do
     it 'displays the log in form' do
       render partial: 'application/navigation'
