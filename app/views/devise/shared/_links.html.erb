@@ -23,6 +23,6 @@
     <%= link_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), method: :post %><br />
   <% end %>
 <% end %>
-<% if @path_presenter.skip? %>
+<% if skip_button?(request.referer) %>
 <%= link_to "Skip", new_order_path %><br />
 <% end %>
