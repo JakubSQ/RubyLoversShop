@@ -9,29 +9,12 @@ class OrdersController < ApplicationController
 
   def confirm
     @cart = cart
-    @address_presenter = AddressPresenter.new(params)
+    @order_presenter = OrderPresenter.new(params)
     confirm = Checkout::Confirm.new.call(order_params)
     if confirm.success?
       render :confirm
     else
       redirect_to new_order_path, alert: confirm.payload[:error]
-    end
-  end
-
-  def remove_address
-    @address = Address.find(params[:address_id])
-    if @address.nil?
-      flash[:alert] = 'Please, select saved address'
-    else
-      @address.update(user_id: nil)
-      flash[:notice] = 'Address has been removed'
-    end
-  end
-
-  def set_address
-    @address = Address.find(params[:address_id])
-    respond_to do |format|
-      format.json { render json: @address }
     end
   end
 
@@ -51,6 +34,23 @@ class OrdersController < ApplicationController
     redirect_to root_path, notice: 'Order was successfully destroyed.'
   end
 
+  def remove_address
+    @address = Address.find(params[:address_id])
+    if @address.nil?
+      flash[:alert] = 'Please, select saved address'
+    else
+      @address.update(user_id: nil)
+      flash[:notice] = 'Address has been removed'
+    end
+  end
+
+  def set_address
+    @address = Address.find(params[:address_id])
+    respond_to do |format|
+      format.json { render json: @address }
+    end
+  end
+
   private
 
   def cart
@@ -65,6 +65,7 @@ class OrdersController < ApplicationController
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
                                                        phone]).merge(user_address: params[:user][:address_b],
                                                                      user_email: params[:user][:email],
-                                                                     save_address: params[:save_address])
+                                                                     save_address: params[:save_address],
+                                                                     ship_method: params[:shipment][:shipment_id])
   end
 end

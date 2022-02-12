@@ -30,6 +30,10 @@ class Shipment < ApplicationRecord
     end
   end
 
+  def shipment_info
+    "#{name} - price: #{price} - avg. delivery time: #{delivery_time}"
+  end
+
   def paid?
     payment.completed?
   end
