@@ -1,5 +1,4 @@
 <%= content_for :sidebar unless @disable_sidebar %>
-<%= render partial: 'admin/error_messages' %>
 <h3>Create new product</h3>
 <%= form_for [:admin, @product] do |f| %>
 <div class="mb-3">

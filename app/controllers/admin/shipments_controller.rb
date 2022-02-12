@@ -14,7 +14,7 @@ class Admin::ShipmentsController < Admin::BaseController
     if @shipment.save
       redirect_to admin_shipments_path, notice: 'Shipment method created successfully'
     else
-      redirect_to new_admin_shipment_path, alert: @shipment.errors.full_messages
+      redirect_to new_admin_shipment_path, alert: @shipment.errors.full_messages.to_sentence
     end
   end
 
@@ -27,7 +27,7 @@ class Admin::ShipmentsController < Admin::BaseController
     if @shipment.update(shipment_params)
       redirect_to admin_shipments_path, notice: 'Shipment method updated successfully'
     else
-      redirect_to edit_admin_shipment_path, alert: @shipment.errors.full_messages
+      redirect_to edit_admin_shipment_path, alert: @shipment.errors.full_messages.to_sentence
     end
   end
 

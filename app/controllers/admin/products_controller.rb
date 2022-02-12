@@ -22,7 +22,7 @@ class Admin::ProductsController < Admin::BaseController
       redirect_to admin_root_path
       flash[:notice] = 'Product has been successfully created.'
     else
-      flash[:alert] = 'Product has not been created.'
+      flash[:alert] = @product.errors.full_messages.to_sentence
       render 'new'
     end
   end
