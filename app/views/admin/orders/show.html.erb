@@ -45,6 +45,6 @@
       <p class="card-text">Subtotal: <%= number_to_currency(item.total_price) %></p>
     <% end %>
       <h5 class="card-title">Total: <%= number_to_currency(@order.total_price) %></h5>
-      <%= link_to 'Go Back', admin_root_path, class: "btn btn-primary" %>
+      <%= link_to 'Go Back', :back, class: "btn btn-primary" %>
   </div>
 </div>

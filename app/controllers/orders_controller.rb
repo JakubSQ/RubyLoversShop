@@ -8,6 +8,9 @@ class OrdersController < ApplicationController
   end
 
   def confirm
+    
+    binding.pry
+    
     @cart = cart
     @order_presenter = OrderPresenter.new(params)
     confirm = Checkout::Confirm.new.call(order_params)
@@ -19,6 +22,9 @@ class OrdersController < ApplicationController
   end
 
   def create
+    
+    binding.pry
+    
     order = Checkout::Creator.new.call(cart, current_user, order_params)
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'
@@ -66,6 +72,6 @@ class OrdersController < ApplicationController
                                                        phone]).merge(user_address: params[:user][:address_b],
                                                                      user_email: params[:user][:email],
                                                                      save_address: params[:save_address],
-                                                                     ship_method: params[:shipment][:shipment_id])
+                                                                     ship_method: params[:shipment])
   end
 end

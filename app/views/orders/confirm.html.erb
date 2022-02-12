@@ -3,13 +3,11 @@
 <%= form_with url: orders_path, scope: :order, local: true do |order| %>
   <%= hidden_field :user, :address_b, value: params[:user][:address_b] %>
   <%= hidden_field :user, :email, value: params[:user][:email] %>
+  <%= hidden_field :shipment, :shipment_id, value: params[:shipment][:shipment_id] %>
   <%= hidden_field_tag :save_address, params[:save_address] %>
   <br></br>
-  Your shipping method details
-  <br></br>
-  <div class="mb-3">
-      <%= text_field :shipment, :name,  readonly: true, class: "form-control", value: @order_presenter.shipping_method %>
-  </div>    
+  Your shipping method details: <%= @order_presenter.shipping_method %>
+  <br></br>   
 <div id="billing_address_hide">
   Your billing address
   <br></br>             

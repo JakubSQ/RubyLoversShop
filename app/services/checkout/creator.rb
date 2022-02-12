@@ -34,6 +34,9 @@ module Checkout
     end
 
     def create_order(user, params)
+      
+      binding.pry
+      
       return @error = 'Invalid address' if address_form_valid?(params)
 
       billing_address = create_billing_address(user, params)
@@ -44,17 +47,13 @@ module Checkout
                          end
       @order = Order.create!(user_id: user.id,
                              payment_id: payment.id,
-                             shipment_id: shipment.id,
+                             shipment_id: params[:ship_method][:shipment_id],
                              billing_address_id: billing_address.id,
                              shipping_address_id: shipping_address.id)
     end
 
     def payment
       Payment.create!
-    end
-
-    def shipment
-      Shipment.create!
     end
 
     def address_form_valid?(params)
