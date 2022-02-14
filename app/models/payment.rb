@@ -2,7 +2,7 @@
 
 class Payment < ApplicationRecord
   has_one :order, dependent: :nullify
-  has_one :shipment, through: :order
+  has_one :shipping_method, through: :order
 
   include AASM
 

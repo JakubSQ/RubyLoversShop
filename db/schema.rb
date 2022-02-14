@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_08_171411) do
+ActiveRecord::Schema.define(version: 2022_02_14_161801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,13 +106,13 @@ ActiveRecord::Schema.define(version: 2022_02_08_171411) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "payment_id"
-    t.bigint "shipment_id"
+    t.bigint "shipping_method_id"
     t.bigint "billing_address_id"
     t.bigint "shipping_address_id"
     t.index ["billing_address_id"], name: "index_orders_on_billing_address_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
-    t.index ["shipment_id"], name: "index_orders_on_shipment_id"
     t.index ["shipping_address_id"], name: "index_orders_on_shipping_address_id"
+    t.index ["shipping_method_id"], name: "index_orders_on_shipping_method_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -150,6 +150,16 @@ ActiveRecord::Schema.define(version: 2022_02_08_171411) do
     t.string "name"
     t.integer "price"
     t.integer "delivery_time"
+    t.boolean "active", default: true
+  end
+
+  create_table "shipping_methods", force: :cascade do |t|
+    t.string "aasm_state"
+    t.string "name"
+    t.integer "price"
+    t.integer "delivery_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -173,6 +183,6 @@ ActiveRecord::Schema.define(version: 2022_02_08_171411) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "payments"
-  add_foreign_key "orders", "shipments"
+  add_foreign_key "orders", "shipping_methods"
   add_foreign_key "orders", "users"
 end
