@@ -31,8 +31,8 @@ class Admin::OrdersController < Admin::BaseController
 
   def shipment_status
     @order = order
-    if @order.shipment.update(aasm_state: params[:aasm_state])
-      flash[:notice] = "Status updated to #{@order.shipment.aasm_state}"
+    if @order.shipping_method.update(aasm_state: params[:aasm_state])
+      flash[:notice] = "Status updated to #{@order.shipping_method.aasm_state}"
     else
       flash[:alert] = 'Something went wrong.'
     end

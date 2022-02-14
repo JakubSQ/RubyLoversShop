@@ -27,7 +27,7 @@ class Order < ApplicationRecord
   delegate :id, :email, to: :user, prefix: 'user', allow_nil: true
   delegate :id, :email, to: :admin, prefix: 'admin', allow_nil: true
   delegate :id, :aasm_state, to: :payment, prefix: 'payment', allow_nil: true
-  delegate :id, :aasm_state, to: :shipment, prefix: 'shipment', allow_nil: true
+  delegate :id, :aasm_state, to: :shipping_method, prefix: 'shipment', allow_nil: true
 
   def total_price
     @total_price ||= line_items.includes(:product).reduce(0) do |sum, item|
@@ -44,7 +44,7 @@ class Order < ApplicationRecord
   end
 
   def ship_transitions
-    shipment.aasm.permitted_transitions
+    shipping_method.aasm.permitted_transitions
   end
 
   def paid_and_shipped?
