@@ -11,5 +11,9 @@
   <%= f.label :delivery_time, class: "form-label"  %>
   <%= f.number_field :delivery_time, class: "form-control" %>
 </div>
+<div class="mb-3">
+  <%= f.check_box(:active) %>
+  <%= f.label(:active, "Active") %>
+</div>
   <%= f.submit %>
 <% end %>

@@ -40,6 +40,6 @@ class Admin::ShipmentsController < Admin::BaseController
   private
 
   def shipment_params
-    params.require(:shipment).permit(:name, :price, :delivery_time)
+    params.require(:shipment).permit(:name, :price, :delivery_time, :active)
   end
 end
