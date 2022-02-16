@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Checkout, type: :model do
+  let(:shipping_method) { create(:shipping_method) }
   let(:cart) { create(:cart) }
   let(:address) { create(:address) }
   let(:address1) { create(:address) }
@@ -10,7 +11,7 @@ RSpec.describe Checkout, type: :model do
   let!(:line_item) { create(:line_item, cart_id: cart.id) }
   let(:params) do
     { billing_address: address.as_json.symbolize_keys, shipping_address: address1.as_json.symbolize_keys,
-      user_address: user_address, save_address: save_address }
+      user_address: user_address, save_address: save_address, ship_method: { shipment_id: shipping_method.id }, }
   end
 
   describe 'When logged in as user' do

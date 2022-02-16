@@ -4,9 +4,14 @@ require 'rails_helper'
 
 RSpec.describe 'AdminOrderShipmentStatus', type: :request do
   let(:user) { create(:user) }
+  let(:address) { create(:address) }
   let(:shipment) { create(:shipment) }
   let(:payment) { create(:payment) }
-  let(:order) { create(:order, user: user, payment: payment, shipment: shipment) }
+  let(:order) { create(:order, user: user,
+                               payment: payment,
+                               shipment: shipment,
+                               billing_address_id: address.id,
+                               shipping_address_id: address.id) }
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }
