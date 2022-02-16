@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ShippingMethodCRUD', type: :system do
-  context 'when logged in as an user' do
+RSpec.describe 'ShippingMethodList', type: :system do
+  context 'when logged in as user' do
     let!(:shipping_method1) { create(:shipping_method) }
     let!(:shipping_method2) { create(:shipping_method, active: false) }
     let(:user) { create(:user) }
