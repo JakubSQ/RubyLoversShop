@@ -8,8 +8,6 @@ class OrdersController < ApplicationController
   end
 
   def confirm
-    # binding.pry
-
     @cart = cart
     @order_presenter = OrderPresenter.new(params)
     confirm = Checkout::Confirm.new.call(order_params)
@@ -21,8 +19,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    # binding.pry
-
     order = Checkout::Creator.new.call(cart, current_user, order_params)
     if order.success?
       redirect_to root_path, notice: 'Order successfully created.'

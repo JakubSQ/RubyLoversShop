@@ -5,6 +5,7 @@ FactoryBot.define do
     sequence(:id) do |n|
       n
     end
+    payment
     shipment
     user
   end
