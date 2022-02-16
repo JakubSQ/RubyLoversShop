@@ -44,14 +44,15 @@ module Checkout
                          end
       @order = Order.create!(user_id: user.id,
                              payment_id: payment.id,
-                             shipping_method_id: shipping_method(params).id,
+                             shipment_id: shipment(params).id,
                              billing_address_id: billing_address.id,
                              shipping_address_id: shipping_address.id)
     end
 
-    def shipping_method(params)
-      shipment = Shipment.find(params[:ship_method][:shipment_id])
-      ShippingMethod.create!(name: shipment.name, price: shipment.price, delivery_time: shipment.delivery_time)
+    def shipment(params)
+      shipping_method = ShippingMethod.find(params[:ship_method][:shipment_id])
+      Shipment.create!(name: shipping_method.name, price: shipping_method.price,
+                       delivery_time: shipping_method.delivery_time)
     end
 
     def payment

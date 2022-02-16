@@ -12,7 +12,7 @@ class OrderPresenter
   end
 
   def shipping_method
-    Shipment.find(@params[:shipment][:shipment_id]).shipment_info
+    ShippingMethod.find(@params[:shipment][:shipment_id]).shipping_method_info
   end
 
   def shipping_params

@@ -34,7 +34,8 @@ module ApplicationHelper
   end
 
   def skip_button?(request)
-    return nil if request == nil
+    return nil if request.nil?
+
     request.include?("/carts/#{session[:cart_id]}")
   end
 

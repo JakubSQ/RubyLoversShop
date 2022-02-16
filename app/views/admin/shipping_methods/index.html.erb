@@ -1,0 +1,27 @@
+<%= link_to 'Add new shipping method', new_admin_shipping_method_path, class: "btn btn-outline-success mb-3" %>
+<tbody>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Average delivery time</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+
+      <% @shipping_methods.each do |shipping_method| %>
+      <tr>
+        <td><%= shipping_method.id %></td>
+        <td><%= shipping_method.name %></td>
+        <td><%= shipping_method.price %></td>
+        <td><%= shipping_method.delivery_time %></td>
+        <td>
+          <%= link_to 'Edit', edit_admin_shipping_method_path(shipping_method), class: "btn btn-outline-primary btn-sm" %>
+          <%= link_to 'Delete', admin_shipping_method_path(shipping_method), method: :delete, class: "btn btn-outline-danger btn-sm" %>
+        </td>
+      </tr>
+      <% end %>
+  </table>
+</tbody>

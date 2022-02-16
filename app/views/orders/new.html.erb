@@ -5,7 +5,7 @@
         <%= form_with url: confirm_orders_path, scope: :order, local: true do |order| %>
         <div class="mb-3">
           Please, choose shipping method from the list below 
-          <%= collection_select(:shipment, :shipment_id, Shipment.where(active: true), :id, :shipment_info,
+          <%= collection_select(:shipment, :shipment_id, ShippingMethod.where(active: true), :id, :shipping_method_info,
               { prompt: "Choose shipment method" }, { size: 1, required: true, class: "custom-select shadow rounded mt-2" }) %>
         </div>
         <% if current_user %>
