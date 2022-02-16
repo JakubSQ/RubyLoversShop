@@ -8,18 +8,18 @@ RSpec.describe 'AdminOrderPage', type: :request do
     let(:admin) { create(:admin) }
     let(:user) { create(:user) }
     let!(:payment) { create(:payment) }
-    let!(:order) { create(:order, user_id: user.id,
-                          payment_id: payment.id,
-                          billing_address_id: address.id,
-                          shipping_address_id: address.id) }
+    let!(:order) do
+      create(:order, user_id: user.id,
+                     payment_id: payment.id,
+                     billing_address_id: address.id,
+                     shipping_address_id: address.id)
+    end
 
     context 'when logged in as admin' do
       it "gets order's page" do
         post admin_session_path, params: { admin: { email: admin.email, password: admin.password } }
         get "/admin/orders/#{Order.last.id}"
-        
-        binding.pry
-        
+
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(order.id.to_s)
       end

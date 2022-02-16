@@ -6,15 +6,19 @@ RSpec.describe 'AdminOrderStatus', type: :request do
   let(:user) { create(:user) }
   let(:address) { create(:address) }
   let(:shipping_method) { create(:shipping_method) }
-  let(:shipment) { create(:shipment, name: shipping_method.name,
-                                     price: shipping_method.price,
-                                     delivery_time: shipping_method.delivery_time) }
+  let(:shipment) do
+    create(:shipment, name: shipping_method.name,
+                      price: shipping_method.price,
+                      delivery_time: shipping_method.delivery_time)
+  end
   let(:payment) { create(:payment) }
-  let(:order) { create(:order, user: user,
-                               payment: payment,
-                               shipment: shipment,
-                               billing_address_id: address.id,
-                               shipping_address_id: address.id) }
+  let(:order) do
+    create(:order, user: user,
+                   payment: payment,
+                   shipment: shipment,
+                   billing_address_id: address.id,
+                   shipping_address_id: address.id)
+  end
 
   describe 'when logged in as admin' do
     let(:admin) { create(:admin) }

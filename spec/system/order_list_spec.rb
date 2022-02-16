@@ -3,10 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'AdminOrdersList', type: :system do
+  let(:address) { create(:address) }
   let!(:admin) { create(:admin) }
   let!(:user) { create(:user) }
   let!(:payment) { create(:payment) }
-  let!(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
+  let!(:order) do
+    create(:order, user_id: user.id,
+                   payment_id: payment.id,
+                   billing_address_id: address.id,
+                   shipping_address_id: address.id)
+  end
 
   before do
     driven_by(:rack_test)

@@ -92,7 +92,8 @@ RSpec.describe 'OrderAddress', type: :request do
       it 'with correct address data' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
         post orders_path, params: { user: { address_b: '' },
-                                    order: { billing_address: { name: address.name, shipment: { shipment_id: shipping_method.id },
+                                    shipment: { shipment_id: shipping_method.id },
+                                    order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
                                                                 country: address.country,
@@ -111,7 +112,8 @@ RSpec.describe 'OrderAddress', type: :request do
     context 'guest is not allowed to create order' do
       it 'with correct address data' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { user: { address_b: '', email: 'guest@com.pl' }, shipment: { shipment_id: shipping_method.id },
+        post orders_path, params: { user: { address_b: '', email: 'guest@com.pl' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,

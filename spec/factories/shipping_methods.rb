@@ -5,12 +5,8 @@ FactoryBot.define do
     sequence(:name) do |n|
       "name#{n}"
     end
-    sequence(:price) do |n|
-      "#{n}"
-    end
-    sequence(:delivery_time) do |n|
-      "#{n}"
-    end
+    sequence(:price, &:to_s)
+    sequence(:delivery_time, &:to_s)
     active { true }
   end
 end

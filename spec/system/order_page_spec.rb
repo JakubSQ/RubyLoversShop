@@ -3,13 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe 'AdminOrderPage', type: :system do
+  let(:address) { create(:address) }
   let(:admin) { create(:admin) }
   let(:user) { create(:user) }
   let!(:cart) { create(:cart) }
   let!(:product) { create(:product) }
   let!(:payment) { create(:payment) }
-  let!(:line_item) { create(:line_item, cart_id: cart.id, product_id: product.id, order_id: order.id) }
-  let(:order) { create(:order, user_id: user.id, payment_id: payment.id) }
+  let!(:line_item) do
+    create(:line_item, cart_id: cart.id,
+                       product_id: product.id,
+                       order_id: order.id)
+  end
+  let(:order) do
+    create(:order, user_id: user.id,
+                   payment_id: payment.id,
+                   billing_address_id: address.id,
+                   shipping_address_id: address.id)
+  end
 
   before do
     driven_by(:rack_test)

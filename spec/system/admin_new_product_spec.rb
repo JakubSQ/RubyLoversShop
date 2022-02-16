@@ -35,7 +35,7 @@ RSpec.describe 'AdminAddingProducts', type: :system do
     select category.title, from: 'product_category_id'
     select brand.title, from: 'product_brand_id'
     click_button 'Create Product'
-    expect(page).to have_content('Product has not been created.')
+    expect(page).to have_content("Name can't be blank")
     expect(page).to have_no_content(product.name)
   end
 
@@ -45,7 +45,7 @@ RSpec.describe 'AdminAddingProducts', type: :system do
     select category.title, from: 'product_category_id'
     select brand.title, from: 'product_brand_id'
     click_button 'Create Product'
-    expect(page).to have_content('Product has not been created.')
+    expect(page).to have_content("Prize can't be blank")
     expect(page).to have_no_content(product.name)
   end
 end
