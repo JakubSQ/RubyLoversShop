@@ -51,8 +51,7 @@ module Checkout
 
     def shipment(params)
       shipping_method = ShippingMethod.find(params[:ship_method][:shipment_id])
-      Shipment.create!(name: shipping_method.name, price: shipping_method.price,
-                       delivery_time: shipping_method.delivery_time)
+      Shipment.create!(shipping_method_id: shipping_method.id)
     end
 
     def payment
