@@ -107,8 +107,6 @@ RSpec.describe 'OrderAddress', type: :request do
   end
 
   describe 'without logging in' do
-    # let!(:admin) { create(:admin) }
-
     context 'guest is not allowed to create order' do
       it 'with correct address data' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }

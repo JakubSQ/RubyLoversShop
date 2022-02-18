@@ -27,13 +27,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def destroy
-    @order = Order.find(params[:id])
-    @order.destroy if @order.id == session[:cart_id]
-    session[:cart_id] = nil
-    redirect_to root_path, notice: 'Order was successfully destroyed.'
-  end
-
   def remove_address
     @address = Address.find(params[:address_id])
     if @address.nil?

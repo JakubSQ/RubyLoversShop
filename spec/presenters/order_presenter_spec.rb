@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe OrderPresenter do
-  # let(:address) { create(:address) }
   let(:address1) { create(:address) }
   let(:params) do
     { order: { billing_address: address.as_json.symbolize_keys,

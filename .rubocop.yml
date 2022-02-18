@@ -43,6 +43,9 @@ RSpec/ExampleLength:
   Enabled: false
 RSpec/MultipleExpectations:
   Enabled: false
+RSpec/NestedGroups:
+  Exclude:
+    - 'spec/models/shipping_method_spec.rb'
 RSpec/ContextWording:
   Enabled: false
 Rails/LexicallyScopedActionFilter:

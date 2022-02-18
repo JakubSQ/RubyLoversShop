@@ -2,7 +2,7 @@
 
 class Admin::ShippingMethodsController < Admin::BaseController
   def index
-    @shipping_methods = ShippingMethod.all
+    @pagy, @shipping_methods = pagy(ShippingMethod.order(created_at: :desc))
   end
 
   def new
@@ -29,12 +29,6 @@ class Admin::ShippingMethodsController < Admin::BaseController
     else
       redirect_to edit_admin_shipping_method_path, alert: @shipping_method.errors.full_messages.to_sentence
     end
-  end
-
-  def destroy
-    @shipping_method = ShippingMethod.find(params[:id])
-    @shipping_method.destroy
-    redirect_to admin_shipping_methods_path, alert: 'Shipping method destroyed successfully'
   end
 
   private

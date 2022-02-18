@@ -1,6 +1,7 @@
 <%= link_to 'Add new shipping method', new_admin_shipping_method_path, class: "btn btn-outline-success mb-3" %>
 <tbody>
   <table class="table">
+  <%== pagy_bootstrap_nav(@pagy) %>
     <thead>
       <tr>
         <th scope="col">Id</th>
@@ -19,7 +20,6 @@
         <td><%= shipping_method.delivery_time %></td>
         <td>
           <%= link_to 'Edit', edit_admin_shipping_method_path(shipping_method), class: "btn btn-outline-primary btn-sm" %>
-          <%= link_to 'Delete', admin_shipping_method_path(shipping_method), method: :delete, class: "btn btn-outline-danger btn-sm" %>
         </td>
       </tr>
       <% end %>
