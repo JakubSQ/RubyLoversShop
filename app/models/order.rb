@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :payment, optional: true
   belongs_to :shipment
   belongs_to :billing_address, class_name: 'Address'
@@ -9,6 +9,7 @@ class Order < ApplicationRecord
   has_many :line_items, dependent: :destroy
   has_many :products, through: :line_items
   enum state: { new: 0, failed: 1, completed: 2 }, _prefix: true
+  validates :email, presence: true
   include AASM
 
   aasm column: :state, enum: true do

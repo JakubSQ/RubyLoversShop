@@ -5,9 +5,6 @@ module Checkout
     include BooleanValue
 
     def call(cart, user, params)
-      user = Checkout::CurrentUser.new.call(user, params).payload
-      return OpenStruct.new({ success?: false, payload: { error: user[:error] } }) if user[:error].present?
-
       if order_assignment(cart, user, params)
         OpenStruct.new({ success?: true, payload: @order })
       else
@@ -42,11 +39,17 @@ module Checkout
                          else
                            billing_address
                          end
-      @order = Order.create!(user_id: user.id,
+      @order = Order.create!(user_id: user_id(user, params),
+                             email: user_email(user, params),
                              payment_id: payment.id,
                              shipment_id: shipment(params).id,
                              billing_address_id: billing_address.id,
                              shipping_address_id: shipping_address.id)
+    end
+
+    def user_email(user, params)
+      return params[:user_email] unless user
+      user.email
     end
 
     def shipment(params)
@@ -87,6 +90,7 @@ module Checkout
     end
 
     def address_exist?(user, params)
+      return nil unless user
       user.addresses.map(&:name).include?(params[:billing_address][:name])
     end
 

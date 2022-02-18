@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_18_133148) do
+ActiveRecord::Schema.define(version: 2022_02_18_201550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 2022_02_18_133148) do
     t.bigint "shipment_id"
     t.bigint "billing_address_id"
     t.bigint "shipping_address_id"
+    t.string "email"
     t.index ["billing_address_id"], name: "index_orders_on_billing_address_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
     t.index ["shipment_id"], name: "index_orders_on_shipment_id"
@@ -169,7 +170,6 @@ ActiveRecord::Schema.define(version: 2022_02_18_133148) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "provider", limit: 50, default: "", null: false
     t.string "uid", limit: 500, default: "", null: false
-    t.boolean "registered", default: true, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
