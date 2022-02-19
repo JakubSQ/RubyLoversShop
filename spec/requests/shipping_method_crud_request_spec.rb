@@ -23,14 +23,6 @@ RSpec.describe '/admin/shipping_methods', type: :request do
       end
     end
 
-    context 'DELETE /admin/shipping_methods/:id' do
-      it 'deletes a shipping method' do
-        delete "/admin/shipping_methods/#{existing_shipping_method.id}"
-        follow_redirect!
-        expect(response.body).to include('Shipping method destroyed successfully')
-      end
-    end
-
     context 'GET /admin/shipping_methods/:id/edit' do
       it 'displays edit form' do
         get "/admin/shipping_methods/#{existing_shipping_method.id}/edit"

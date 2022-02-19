@@ -35,13 +35,6 @@ RSpec.describe 'ShippingMethodCRUD', type: :system do
       expect(page).to have_content('Shipping method updated successfully')
       expect(page).to have_content('new name')
     end
-
-    it 'is allowed to delete shipping method' do
-      click_on 'Delete'
-
-      expect(page).to have_content('Shipping method destroyed successfully')
-      expect(page).not_to have_content(existing_shipping_method.name)
-    end
   end
 
   context 'when logged in as an user' do

@@ -5,12 +5,14 @@ require 'rails_helper'
 RSpec.describe 'AdminOrderShipmentStatus', type: :request do
   let(:user) { create(:user) }
   let(:address) { create(:address) }
-  let(:shipment) { create(:shipment) }
+  let(:shipping_method) { create(:shipping_method) }
+  let!(:shipment) { create(:shipment, shipping_method_id: shipping_method.id) }
   let(:payment) { create(:payment) }
-  let(:order) do
-    create(:order, user: user,
-                   payment: payment,
-                   shipment: shipment,
+  let!(:order) do
+    create(:order, user_id: user.id,
+                   email: user.email,
+                   payment_id: payment.id,
+                   shipment_id: shipment.id,
                    billing_address_id: address.id,
                    shipping_address_id: address.id)
   end

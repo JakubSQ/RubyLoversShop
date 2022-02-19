@@ -5,17 +5,14 @@ require 'rails_helper'
 RSpec.describe 'OrderStatus', type: :system do
   let(:user) { create(:user) }
   let(:address) { create(:address) }
-  let(:shipping_method) { create(:shipping_method) }
-  let(:shipment) do
-    create(:shipment, name: shipping_method.name,
-                      price: shipping_method.price,
-                      delivery_time: shipping_method.delivery_time)
-  end
   let(:payment) { create(:payment) }
-  let(:order) do
-    create(:order, user: user,
-                   payment: payment,
-                   shipment: shipment,
+  let!(:shipment) { create(:shipment, shipping_method_id: shipping_method.id) }
+  let!(:shipping_method) { create(:shipping_method) }
+  let!(:order) do
+    create(:order, user_id: user.id,
+                   email: user.email,
+                   payment_id: payment.id,
+                   shipment_id: shipment.id,
                    billing_address_id: address.id,
                    shipping_address_id: address.id)
   end

@@ -39,12 +39,17 @@ module Checkout
                          else
                            billing_address
                          end
-      @order = Order.create!(user_id: user_id(user, params),
+      @order = Order.create!(user_id: order_user_id(user, params),
                              email: user_email(user, params),
                              payment_id: payment.id,
                              shipment_id: shipment(params).id,
                              billing_address_id: billing_address.id,
                              shipping_address_id: shipping_address.id)
+    end
+
+    def order_user_id(user, params)
+      return nil unless user
+      user.id
     end
 
     def user_email(user, params)
