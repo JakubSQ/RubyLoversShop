@@ -47,13 +47,15 @@ module Checkout
                              shipping_address_id: shipping_address.id)
     end
 
-    def order_user_id(user, params)
+    def order_user_id(user, _params)
       return nil unless user
+
       user.id
     end
 
     def user_email(user, params)
       return params[:user_email] unless user
+
       user.email
     end
 
@@ -96,6 +98,7 @@ module Checkout
 
     def address_exist?(user, params)
       return nil unless user
+
       user.addresses.map(&:name).include?(params[:billing_address][:name])
     end
 
