@@ -9,7 +9,8 @@ RSpec.describe 'AdminOrderPage', type: :system do
   let!(:cart) { create(:cart) }
   let!(:product) { create(:product) }
   let!(:payment) { create(:payment) }
-  let!(:shipment) { create(:shipment, shipping_method_id: 1) }
+  let(:shipping_method) { create(:shipping_method) }
+  let!(:shipment) { create(:shipment, shipping_method_id: shipping_method.id) }
   let!(:line_item) do
     create(:line_item, cart_id: cart.id,
                        product_id: product.id,
