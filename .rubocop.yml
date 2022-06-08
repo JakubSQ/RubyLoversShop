@@ -36,15 +36,16 @@ RSpec/LetSetup:
 RSpec/DescribeClass:
   Enabled: false
 RSpec/MultipleMemoizedHelpers:
-  Max: 7
+  Max: 10
 Metrics/BlockLength:
   IgnoredMethods: ['describe', 'context']
 RSpec/ExampleLength:
   Enabled: false
 RSpec/MultipleExpectations:
   Enabled: false
-RSpec/MultipleMemoizedHelpers:
-  Max: 8
+RSpec/NestedGroups:
+  Exclude:
+    - 'spec/models/shipping_method_spec.rb'
 RSpec/ContextWording:
   Enabled: false
 Rails/LexicallyScopedActionFilter:

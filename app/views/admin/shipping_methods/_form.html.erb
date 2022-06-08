@@ -1,0 +1,19 @@
+<%= form_for [:admin, @shipping_method] do |f| %>
+<div class="mb-3">
+  <%= f.label :name, class: "form-label" %>
+  <%= f.text_field :name, class: "form-control" %>
+</div>
+<div class="mb-3">
+  <%= f.label :price, class: "form-label"  %>
+  <%= f.number_field :price, class: "form-control" %>
+</div>
+<div class="mb-3">
+  <%= f.label :delivery_time, class: "form-label"  %>
+  <%= f.number_field :delivery_time, class: "form-control" %>
+</div>
+<div class="mb-3">
+  <%= f.check_box(:active) %>
+  <%= f.label(:active, "Active") %>
+</div>
+  <%= f.submit %>
+<% end %>

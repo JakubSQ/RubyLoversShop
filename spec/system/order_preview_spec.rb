@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Saving address during checkout', type: :system do
+  let!(:shipping_method) { create(:shipping_method) }
   let!(:product) { create(:product) }
   let(:address) { create(:address) }
 
@@ -20,6 +21,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
 
     context 'is allowed to' do
       it "get order's preview page" do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -34,6 +36,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
       end
 
       it 'go back to previous page' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -49,6 +52,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
       end
 
       it 'confirm checkout' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -99,6 +103,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
 
     context 'is allowed to' do
       it "get order's preview page" do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -113,6 +118,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
       end
 
       it 'go back to previous page' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -128,6 +134,7 @@ RSpec.describe 'Saving address during checkout', type: :system do
       end
 
       it 'confirm checkout' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1

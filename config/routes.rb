@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "pages#home"
+  root to: "products#index"
   resources :orders, only: [:new, :create, :destroy] do
     collection do
       get 'set_address'
@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "products#dashboard"
     resources :products, except: :show
+    resources :shipping_methods, except: :show
     resources :orders, only: [:index, :show, :edit] do
       member do
         patch :order_status

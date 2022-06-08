@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'OrderSaveAddress', type: :request do
+  let(:shipping_method) { create(:shipping_method) }
   let(:cart) { create(:cart) }
   let(:address) { create(:address) }
   let!(:line_item) { create(:line_item, cart_id: cart.id) }
@@ -17,7 +18,7 @@ RSpec.describe 'OrderSaveAddress', type: :request do
     it "is allowed to get order's preview page" do
       allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
       post confirm_orders_path, params: { save_address: 1,
-                                          user: { address_b: '' },
+                                          user: { address_b: '' }, shipment: { shipment_id: shipping_method.id },
                                           order: { billing_address: { name: address.name,
                                                                       street_name1: address.street_name1,
                                                                       city: address.city,
@@ -42,7 +43,7 @@ RSpec.describe 'OrderSaveAddress', type: :request do
     it "is not allowed to get order's preview page" do
       allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
       post confirm_orders_path, params: { save_address: 1,
-                                          user: { address_b: '' },
+                                          user: { address_b: '' }, shipment: { shipment_id: shipping_method.id },
                                           order: { billing_address: { name: address.name,
                                                                       street_name1: address.street_name1,
                                                                       city: address.city,
@@ -61,7 +62,7 @@ RSpec.describe 'OrderSaveAddress', type: :request do
   context 'when logged in as guest' do
     it "is allowed to get order's preview page" do
       allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-      post confirm_orders_path, params: { save_address: 1,
+      post confirm_orders_path, params: { save_address: 1, shipment: { shipment_id: shipping_method.id },
                                           user: { address_b: '' },
                                           order: { billing_address: { name: address.name,
                                                                       street_name1: address.street_name1,

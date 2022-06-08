@@ -4,7 +4,7 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">User</th>
+        <th scope="col">Email</th>
         <th scope="col">Quantity</th>
         <th scope="col">State</th>
         <th scope="col">Created</th>
@@ -15,7 +15,7 @@
       <% @orders.each do |order| %>
       <tr>
         <td><%= order.id %></td>
-        <td><%= order.user_email %></td>
+        <td><%= order.email %></td>
         <td><%= order.products.count %></td>
         <td><%= order.state %></td>
         <td><%= order.created_at %></td>

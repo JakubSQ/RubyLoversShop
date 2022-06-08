@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Adding addresses to checkout', type: :system do
+  let!(:shipping_method) { create(:shipping_method) }
   let!(:product) { create(:product) }
   let(:address) { create(:address) }
   let(:address1) { create(:address) }
@@ -21,6 +22,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
 
     context 'is allowed to checkout' do
       it 'with two seperate addresses' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -41,6 +43,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
       end
 
       it 'with billing_address and checked checkbox' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -57,6 +60,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
 
     context 'is not allowed to checkout' do
       it 'with only one address and unchecked checkbox' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city
@@ -104,6 +108,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
 
     context 'is allowed to checkout' do
       it 'with email and two seperate addresses' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
@@ -125,6 +130,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
       end
 
       it 'with email and billing_address and checked checkbox' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
@@ -142,6 +148,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
 
     context 'is not allowed to checkout' do
       it 'with email and only one address and unchecked checkbox' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'user_email', with: email
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
@@ -155,6 +162,7 @@ RSpec.describe 'Adding addresses to checkout', type: :system do
       end
 
       it 'without email address' do
+        select shipping_method.shipping_method_info, from: 'shipment_shipment_id'
         fill_in 'order_billing_address_name', with: address.name
         fill_in 'order_billing_address_street_name1', with: address.street_name1
         fill_in 'order_billing_address_city', with: address.city

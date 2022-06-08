@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddressPresenter
+class OrderPresenter
   include BooleanValue
 
   def initialize(params)
@@ -9,6 +9,10 @@ class AddressPresenter
 
   def billing_params
     @params[:order][:billing_address]
+  end
+
+  def shipping_method
+    ShippingMethod.find(@params[:shipment][:shipment_id]).shipping_method_info
   end
 
   def shipping_params

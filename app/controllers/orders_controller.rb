@@ -9,12 +9,21 @@ class OrdersController < ApplicationController
 
   def confirm
     @cart = cart
-    @address_presenter = AddressPresenter.new(params)
+    @order_presenter = OrderPresenter.new(params)
     confirm = Checkout::Confirm.new.call(order_params)
     if confirm.success?
       render :confirm
     else
       redirect_to new_order_path, alert: confirm.payload[:error]
+    end
+  end
+
+  def create
+    order = Checkout::Creator.new.call(cart, current_user, order_params)
+    if order.success?
+      redirect_to root_path, notice: 'Order successfully created.'
+    else
+      redirect_to new_order_path, alert: order.payload[:error]
     end
   end
 
@@ -35,22 +44,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def create
-    order = Checkout::Creator.new.call(cart, current_user, order_params)
-    if order.success?
-      redirect_to root_path, notice: 'Order successfully created.'
-    else
-      redirect_to new_order_path, alert: order.payload[:error]
-    end
-  end
-
-  def destroy
-    @order = Order.find(params[:id])
-    @order.destroy if @order.id == session[:cart_id]
-    session[:cart_id] = nil
-    redirect_to root_path, notice: 'Order was successfully destroyed.'
-  end
-
   private
 
   def cart
@@ -65,6 +58,7 @@ class OrdersController < ApplicationController
                                   shipping_address: %i[name street_name1 street_name2 city country state zip
                                                        phone]).merge(user_address: params[:user][:address_b],
                                                                      user_email: params[:user][:email],
-                                                                     save_address: params[:save_address])
+                                                                     save_address: params[:save_address],
+                                                                     ship_method: params[:shipment])
   end
 end

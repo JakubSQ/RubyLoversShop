@@ -3,12 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'OrderSaveAddress', type: :request do
+  let(:shipping_method) { create(:shipping_method) }
   let(:cart) { create(:cart) }
   let(:address) { create(:address) }
   let!(:line_item) { create(:line_item, cart_id: cart.id) }
   let(:params) do
     { save_address: '',
-      user: { address_b: '' },
+      user: { address_b: '' }, shipment: { shipment_id: shipping_method.id },
       order: { billing_address: { name: address.name,
                                   street_name1: address.street_name1,
                                   city: address.city,
@@ -62,6 +63,7 @@ RSpec.describe 'OrderSaveAddress', type: :request do
       let(:params) do
         { save_address: '',
           user: { address_b: '', email: 'example@email.com' },
+          shipment: { shipment_id: shipping_method.id },
           order: { billing_address: { name: address.name,
                                       street_name1: address.street_name1,
                                       city: address.city,

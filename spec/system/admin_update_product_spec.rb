@@ -39,7 +39,6 @@ RSpec.describe 'AdminUpdatingProducts', type: :system do
     fill_in 'product_name', with: ' '
     fill_in 'product_prize', with: product.prize
     click_button 'Update Product'
-    expect(page).to have_content('Product has not been updated.')
     expect(page).to have_content("Name can't be blank")
   end
 
@@ -47,7 +46,6 @@ RSpec.describe 'AdminUpdatingProducts', type: :system do
     fill_in 'product_name', with: product.name
     fill_in 'product_prize', with: ' '
     click_button 'Update Product'
-    expect(page).to have_content('Product has not been updated.')
     expect(page).to have_content("Prize can't be blank")
   end
 end

@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'OrderAddress', type: :request do
+  let(:shipping_method) { create(:shipping_method) }
   let(:cart) { create(:cart) }
   let(:address) { create(:address) }
   let(:address1) { create(:address) }
@@ -19,6 +20,7 @@ RSpec.describe 'OrderAddress', type: :request do
       it 'with only one address and unchecked checkbox' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
         post orders_path, params: { user: { address_b: '' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
@@ -36,7 +38,9 @@ RSpec.describe 'OrderAddress', type: :request do
     context 'is allowed to create order' do
       it 'with only one address and checked checkbox' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { save_address: 'value ', user: { address_b: '' },
+        post orders_path, params: { save_address: '',
+                                    user: { address_b: '' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
@@ -52,7 +56,9 @@ RSpec.describe 'OrderAddress', type: :request do
 
       it 'with two seperate addresses' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { save_address: 'value ', user: { address_b: '' },
+        post orders_path, params: { save_address: '',
+                                    user: { address_b: '' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
@@ -86,6 +92,7 @@ RSpec.describe 'OrderAddress', type: :request do
       it 'with correct address data' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
         post orders_path, params: { user: { address_b: '' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,
@@ -100,12 +107,11 @@ RSpec.describe 'OrderAddress', type: :request do
   end
 
   describe 'without logging in' do
-    let!(:admin) { create(:admin) }
-
     context 'guest is not allowed to create order' do
       it 'with correct address data' do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session) { { cart_id: cart.id } }
-        post orders_path, params: { user: { address_b: '' },
+        post orders_path, params: { user: { address_b: '', email: 'guest@com.pl' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,

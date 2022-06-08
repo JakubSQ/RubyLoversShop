@@ -1,7 +1,7 @@
 
 <div class="card">
   <div class="card-header">
-    Order id: <%= @order.id %> set by: <%= @order.user_email %> (user id: <%= @order.user_id %>) at <%= @order.created_at %> with current state: <%= @order.state %>
+    Order id: <%= @order.id %> set by: <%= @order.email %> (user id: <%= @order.user.present? ? @order.user_id : 'guest' %>) at <%= @order.created_at %> with current state: <%= @order.state %>
   </div>
   <div class="card-body">
   <p class="card-text">Order Status: <%= @order.state %></p>
@@ -45,6 +45,6 @@
       <p class="card-text">Subtotal: <%= number_to_currency(item.total_price) %></p>
     <% end %>
       <h5 class="card-title">Total: <%= number_to_currency(@order.total_price) %></h5>
-      <%= link_to 'Go Back', admin_root_path, class: "btn btn-primary" %>
+      <%= link_to 'Go Back', admin_orders_path, class: "btn btn-primary" %>
   </div>
 </div>

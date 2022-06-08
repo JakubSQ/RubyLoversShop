@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Carts', type: :request do
+  let(:shipping_method) { create(:shipping_method) }
   let!(:user) { create :user }
   let!(:product) { create :product }
   let(:address) { create :address }
@@ -39,7 +40,8 @@ RSpec.describe 'Carts', type: :request do
       it 'checks out the order' do
         post line_items_path(product_id: product.id), params: { quantity: 1 }
         post '/carts'
-        post orders_path, params: { save_address: 'value ', user: { address_b: '' },
+        post orders_path, params: { save_address: '', user: { address_b: '' },
+                                    shipment: { shipment_id: shipping_method.id },
                                     order: { billing_address: { name: address.name,
                                                                 street_name1: address.street_name1,
                                                                 city: address.city,

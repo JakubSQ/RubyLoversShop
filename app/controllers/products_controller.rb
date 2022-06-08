@@ -22,8 +22,4 @@ class ProductsController < ApplicationController
     session[:cart_id] = @cart.id
     @cart
   end
-
-  def product_params
-    params.require(:product).permit(:name, :description, :cover_photo, :category_id, :brand_id)
-  end
 end
